@@ -3,7 +3,6 @@ import { User, Mail, Phone, MapPin, Briefcase, Globe, Linkedin } from 'lucide-re
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { FormSection } from './FormSection';
 import { useResume } from '@/contexts/ResumeContext';
 
 export const PersonalInfoForm: React.FC = () => {
@@ -11,7 +10,7 @@ export const PersonalInfoForm: React.FC = () => {
   const { personalInfo } = resumeData;
 
   return (
-    <FormSection title="Personal Information" icon={<User className="w-5 h-5" />}>
+    <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="fullName" className="text-sm font-medium text-foreground">
@@ -140,6 +139,6 @@ export const PersonalInfoForm: React.FC = () => {
           />
         </div>
       </div>
-    </FormSection>
+    </div>
   );
 };

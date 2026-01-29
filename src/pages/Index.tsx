@@ -1,5 +1,4 @@
-import React from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult, DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
+import React, { useState } from 'react';
 import { PersonalInfoForm } from '@/components/resume/PersonalInfoForm';
 import { ExperienceForm } from '@/components/resume/ExperienceForm';
 import { EducationForm } from '@/components/resume/EducationForm';
@@ -8,25 +7,35 @@ import { ResumePreview } from '@/components/resume/ResumePreview';
 import { TemplateSelector } from '@/components/resume/TemplateSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
-import { FileText } from 'lucide-react';
+import { FileText, User, Briefcase, GraduationCap, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const sectionComponents: Record<string, React.FC<{ dragHandleProps?: DraggableProvidedDragHandleProps | null; isDragging?: boolean }>> = {
-  experience: ExperienceForm,
-  education: EducationForm,
-  skills: SkillsForm,
-};
+type TabId = 'personal' | 'experience' | 'education' | 'skills';
+
+const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
+  { id: 'personal', label: 'Personal', icon: <User className="w-4 h-4" /> },
+  { id: 'experience', label: 'Experience', icon: <Briefcase className="w-4 h-4" /> },
+  { id: 'education', label: 'Education', icon: <GraduationCap className="w-4 h-4" /> },
+  { id: 'skills', label: 'Skills', icon: <Sparkles className="w-4 h-4" /> },
+];
 
 const ResumeBuilderContent: React.FC = () => {
-  const { resumeData, selectedTemplate, setSelectedTemplate, reorderSections } = useResume();
+  const { resumeData, selectedTemplate, setSelectedTemplate } = useResume();
+  const [activeTab, setActiveTab] = useState<TabId>('personal');
 
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    
-    const newOrder = Array.from(resumeData.sectionOrder);
-    const [removed] = newOrder.splice(result.source.index, 1);
-    newOrder.splice(result.destination.index, 0, removed);
-    
-    reorderSections(newOrder);
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'personal':
+        return <PersonalInfoForm />;
+      case 'experience':
+        return <ExperienceForm />;
+      case 'education':
+        return <EducationForm />;
+      case 'skills':
+        return <SkillsForm />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -58,43 +67,31 @@ const ResumeBuilderContent: React.FC = () => {
               <TemplateSelector selected={selectedTemplate} onSelect={setSelectedTemplate} />
             </div>
 
-            {/* Personal Info (not draggable) */}
-            <PersonalInfoForm />
-
-            {/* Draggable Sections */}
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="sections">
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className="space-y-4"
+            {/* Tabs Navigation */}
+            <div className="border-b border-border">
+              <nav className="flex gap-1 -mb-px overflow-x-auto">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={cn(
+                      'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all duration-fast whitespace-nowrap',
+                      activeTab === tab.id
+                        ? 'border-primary text-primary'
+                        : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    )}
                   >
-                    {resumeData.sectionOrder.map((sectionId, index) => {
-                      const SectionComponent = sectionComponents[sectionId];
-                      if (!SectionComponent) return null;
-                      
-                      return (
-                        <Draggable key={sectionId} draggableId={sectionId} index={index}>
-                          {(provided, snapshot) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                            >
-                              <SectionComponent
-                                dragHandleProps={provided.dragHandleProps}
-                                isDragging={snapshot.isDragging}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+                    {tab.icon}
+                    {tab.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            {/* Tab Content */}
+            <div className="min-h-[400px]">
+              {renderTabContent()}
+            </div>
           </div>
         </div>
 
