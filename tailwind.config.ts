@@ -57,6 +57,23 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        resume: {
+          DEFAULT: "hsl(var(--resume-bg))",
+          border: "hsl(var(--resume-border))",
+          accent: "hsl(var(--resume-accent))",
+          "accent-light": "hsl(var(--resume-accent-light))",
+          text: "hsl(var(--resume-text))",
+          "text-muted": "hsl(var(--resume-text-muted))",
+        },
+        panel: {
+          DEFAULT: "hsl(var(--panel-bg))",
+          header: "hsl(var(--panel-header))",
+        },
+      },
+      transitionDuration: {
+        fast: "var(--transition-fast)",
+        normal: "var(--transition-normal)",
+        slow: "var(--transition-slow)",
       },
       borderRadius: {
         lg: "var(--radius)",
