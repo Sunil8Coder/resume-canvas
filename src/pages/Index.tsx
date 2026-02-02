@@ -57,9 +57,30 @@ const ResumeBuilderContent: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 73px)' }}>
+        {/* Sidebar Navigation */}
+        <aside className="w-16 lg:w-56 bg-card border-r border-border flex flex-col shrink-0">
+          <nav className="flex flex-col gap-1 p-2">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-fast',
+                  activeTab === tab.id
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                )}
+              >
+                {tab.icon}
+                <span className="hidden lg:inline">{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+        </aside>
+
         {/* Form Panel */}
-        <div className="w-full lg:w-1/2 xl:w-2/5 border-r border-border bg-panel overflow-y-auto">
+        <div className="flex-1 lg:max-w-md xl:max-w-lg bg-panel overflow-y-auto border-r border-border">
           <div className="p-6 space-y-6">
             {/* Template Selection */}
             <div className="space-y-3">
@@ -67,28 +88,7 @@ const ResumeBuilderContent: React.FC = () => {
               <TemplateSelector selected={selectedTemplate} onSelect={setSelectedTemplate} />
             </div>
 
-            {/* Tabs Navigation */}
-            <div className="border-b border-border">
-              <nav className="flex gap-1 -mb-px overflow-x-auto">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={cn(
-                      'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all duration-fast whitespace-nowrap',
-                      activeTab === tab.id
-                        ? 'border-primary text-primary'
-                        : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
-                    )}
-                  >
-                    {tab.icon}
-                    {tab.label}
-                  </button>
-                ))}
-              </nav>
-            </div>
-
-            {/* Tab Content */}
+            {/* Form Content */}
             <div className="min-h-[400px]">
               {renderTabContent()}
             </div>
@@ -96,12 +96,10 @@ const ResumeBuilderContent: React.FC = () => {
         </div>
 
         {/* Preview Panel */}
-        <div className="w-full lg:w-1/2 xl:w-3/5 bg-muted/30 overflow-auto min-h-screen">
+        <div className="flex-1 bg-muted/30 overflow-auto">
           <div className="p-6">
-            <div className="sticky top-6">
-              <div className="overflow-hidden rounded-xl shadow-2xl" style={{ width: 'fit-content' }}>
-                <ResumePreview data={resumeData} template={selectedTemplate} />
-              </div>
+            <div className="overflow-hidden rounded-xl shadow-2xl" style={{ width: 'fit-content' }}>
+              <ResumePreview data={resumeData} template={selectedTemplate} />
             </div>
           </div>
         </div>
