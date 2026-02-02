@@ -23,6 +23,16 @@ const templates: { id: TemplateType; name: string; description: string }[] = [
     name: 'Minimal',
     description: 'Clean and simple',
   },
+  {
+    id: 'executive',
+    name: 'Executive',
+    description: 'Elegant and refined',
+  },
+  {
+    id: 'creative',
+    name: 'Creative',
+    description: 'Bold and colorful',
+  },
 ];
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
@@ -30,13 +40,13 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   onSelect,
 }) => {
   return (
-    <div className="flex gap-3">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
       {templates.map((template) => (
         <button
           key={template.id}
           onClick={() => onSelect(template.id)}
           className={cn(
-            'flex-1 p-3 rounded-lg border-2 transition-all duration-fast text-left',
+            'p-3 rounded-lg border-2 transition-all duration-fast text-left',
             'hover:border-resume-accent/50 hover:shadow-sm',
             selected === template.id
               ? 'border-resume-accent bg-resume-accent-light'

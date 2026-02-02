@@ -7,6 +7,18 @@ export const exportToPDF = async () => {
   const element = document.getElementById('resume-preview');
   if (!element) return;
 
+  // Store original styles
+  const originalTransform = element.style.transform;
+  const originalTransformOrigin = element.style.transformOrigin;
+  const originalWidth = element.style.width;
+  const originalMinHeight = element.style.minHeight;
+
+  // Reset transform for accurate PDF capture
+  element.style.transform = 'none';
+  element.style.transformOrigin = 'top left';
+  element.style.width = '210mm';
+  element.style.minHeight = '297mm';
+
   const opt = {
     margin: 0,
     filename: 'resume.pdf',
@@ -15,6 +27,10 @@ export const exportToPDF = async () => {
       scale: 2,
       useCORS: true,
       letterRendering: true,
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
     },
     jsPDF: { 
       unit: 'mm' as const, 
@@ -23,7 +39,15 @@ export const exportToPDF = async () => {
     },
   };
 
-  await html2pdf().set(opt).from(element).save();
+  try {
+    await html2pdf().set(opt).from(element).save();
+  } finally {
+    // Restore original styles
+    element.style.transform = originalTransform;
+    element.style.transformOrigin = originalTransformOrigin;
+    element.style.width = originalWidth;
+    element.style.minHeight = originalMinHeight;
+  }
 };
 
 const formatDate = (dateStr: string) => {
