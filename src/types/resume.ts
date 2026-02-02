@@ -44,7 +44,7 @@ export interface ResumeData {
   sectionOrder: string[];
 }
 
-export type TemplateType = 'classic' | 'modern' | 'minimal';
+export type TemplateType = 'classic' | 'modern' | 'minimal' | 'executive' | 'creative';
 
 export const defaultResumeData: ResumeData = {
   personalInfo: {
