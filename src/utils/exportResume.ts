@@ -12,12 +12,19 @@ export const exportToPDF = async () => {
   const originalTransformOrigin = element.style.transformOrigin;
   const originalWidth = element.style.width;
   const originalMinHeight = element.style.minHeight;
+  const originalHeight = element.style.height;
 
-  // Reset transform for accurate PDF capture
+  // Reset transform for accurate PDF capture - use exact A4 dimensions
   element.style.transform = 'none';
   element.style.transformOrigin = 'top left';
   element.style.width = '210mm';
+  element.style.height = '297mm';
   element.style.minHeight = '297mm';
+  element.style.maxHeight = '297mm';
+  element.style.overflow = 'hidden';
+
+  // Wait for styles to apply
+  await new Promise(resolve => setTimeout(resolve, 100));
 
   const opt = {
     margin: 0,
@@ -27,10 +34,8 @@ export const exportToPDF = async () => {
       scale: 2,
       useCORS: true,
       letterRendering: true,
-      width: element.scrollWidth,
-      height: element.scrollHeight,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
+      scrollY: 0,
+      scrollX: 0,
     },
     jsPDF: { 
       unit: 'mm' as const, 
@@ -46,7 +51,10 @@ export const exportToPDF = async () => {
     element.style.transform = originalTransform;
     element.style.transformOrigin = originalTransformOrigin;
     element.style.width = originalWidth;
+    element.style.height = originalHeight;
     element.style.minHeight = originalMinHeight;
+    element.style.maxHeight = '';
+    element.style.overflow = '';
   }
 };
 
