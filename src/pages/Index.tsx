@@ -5,11 +5,13 @@ import { EducationForm } from '@/components/resume/EducationForm';
 import { SkillsForm } from '@/components/resume/SkillsForm';
 import { ResumePreview } from '@/components/resume/ResumePreview';
 import { TemplateSelector } from '@/components/resume/TemplateSelector';
+import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
 import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { TemplateType, ResumeType } from '@/types/resume';
 
 type TabId = 'personal' | 'experience' | 'education' | 'skills' | 'preview';
 
@@ -22,8 +24,16 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 ];
 
 const ResumeBuilderContent: React.FC = () => {
-  const { resumeData, selectedTemplate, setSelectedTemplate } = useResume();
+  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType } = useResume();
   const [activeTab, setActiveTab] = useState<TabId>('personal');
+
+  const handleResumeTypeSelect = (type: ResumeType, recommendedTemplates: TemplateType[]) => {
+    setSelectedResumeType(type);
+    // Auto-select the first recommended template for this resume type
+    if (recommendedTemplates.length > 0) {
+      setSelectedTemplate(recommendedTemplates[0]);
+    }
+  };
 
   const currentTabIndex = tabs.findIndex(t => t.id === activeTab);
   const isFirstTab = currentTabIndex === 0;
@@ -54,6 +64,18 @@ const ResumeBuilderContent: React.FC = () => {
       case 'preview':
         return (
           <div className="space-y-6">
+            {/* Resume Type Selection */}
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
+              <p className="text-sm text-muted-foreground">
+                Choose the type that matches your career situation. Hover over each option for detailed guidance.
+              </p>
+              <ResumeTypeSelector 
+                selected={selectedResumeType} 
+                onSelect={handleResumeTypeSelect} 
+              />
+            </div>
+
             {/* Template Selection */}
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-foreground">Choose Your Template</h2>
