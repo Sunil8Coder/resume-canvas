@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { ResumeData, TemplateType, defaultResumeData } from '@/types/resume';
+import { ResumeData, TemplateType, ResumeType, defaultResumeData } from '@/types/resume';
 
 interface ResumeContextType {
   resumeData: ResumeData;
   setResumeData: React.Dispatch<React.SetStateAction<ResumeData>>;
   selectedTemplate: TemplateType;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<TemplateType>>;
+  selectedResumeType: ResumeType;
+  setSelectedResumeType: React.Dispatch<React.SetStateAction<ResumeType>>;
   updatePersonalInfo: (field: string, value: string) => void;
   addExperience: () => void;
   updateExperience: (id: string, field: string, value: string | boolean) => void;
@@ -24,6 +26,7 @@ const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('classic');
+  const [selectedResumeType, setSelectedResumeType] = useState<ResumeType>('professional');
 
   const updatePersonalInfo = (field: string, value: string) => {
     setResumeData(prev => ({
@@ -139,6 +142,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setResumeData,
         selectedTemplate,
         setSelectedTemplate,
+        selectedResumeType,
+        setSelectedResumeType,
         updatePersonalInfo,
         addExperience,
         updateExperience,

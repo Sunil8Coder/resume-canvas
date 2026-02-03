@@ -5,6 +5,10 @@ import { ModernTemplate } from './templates/ModernTemplate';
 import { MinimalTemplate } from './templates/MinimalTemplate';
 import { ExecutiveTemplate } from './templates/ExecutiveTemplate';
 import { CreativeTemplate } from './templates/CreativeTemplate';
+import { TechTemplate } from './templates/TechTemplate';
+import { AcademicTemplate } from './templates/AcademicTemplate';
+import { CompactTemplate } from './templates/CompactTemplate';
+import { ElegantTemplate } from './templates/ElegantTemplate';
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -22,6 +26,14 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) 
         return <ExecutiveTemplate data={data} />;
       case 'creative':
         return <CreativeTemplate data={data} />;
+      case 'tech':
+        return <TechTemplate data={data} />;
+      case 'academic':
+        return <AcademicTemplate data={data} />;
+      case 'compact':
+        return <CompactTemplate data={data} />;
+      case 'elegant':
+        return <ElegantTemplate data={data} />;
       case 'classic':
       default:
         return <ClassicTemplate data={data} />;

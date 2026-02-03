@@ -33,6 +33,26 @@ const templates: { id: TemplateType; name: string; description: string }[] = [
     name: 'Creative',
     description: 'Bold and colorful',
   },
+  {
+    id: 'tech',
+    name: 'Tech',
+    description: 'Developer-focused dark theme',
+  },
+  {
+    id: 'academic',
+    name: 'Academic',
+    description: 'Research & education focused',
+  },
+  {
+    id: 'compact',
+    name: 'Compact',
+    description: 'Dense two-column layout',
+  },
+  {
+    id: 'elegant',
+    name: 'Elegant',
+    description: 'Sophisticated with warmth',
+  },
 ];
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({

@@ -44,7 +44,17 @@ export interface ResumeData {
   sectionOrder: string[];
 }
 
-export type TemplateType = 'classic' | 'modern' | 'minimal' | 'executive' | 'creative';
+export type TemplateType = 'classic' | 'modern' | 'minimal' | 'executive' | 'creative' | 'tech' | 'academic' | 'compact' | 'elegant';
+
+export type ResumeType = 'professional' | 'entry-level' | 'career-change' | 'academic' | 'technical' | 'executive' | 'creative' | 'internship';
+
+export interface ResumeTypeInfo {
+  id: ResumeType;
+  name: string;
+  description: string;
+  tooltip: string;
+  recommendedTemplates: TemplateType[];
+}
 
 export const defaultResumeData: ResumeData = {
   personalInfo: {
