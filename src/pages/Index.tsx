@@ -8,10 +8,12 @@ import { TemplateSelector } from '@/components/resume/TemplateSelector';
 import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
-import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft } from 'lucide-react';
+import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { TemplateType, ResumeType } from '@/types/resume';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 type TabId = 'personal' | 'experience' | 'education' | 'skills' | 'preview';
 
@@ -25,7 +27,14 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 
 const ResumeBuilderContent: React.FC = () => {
   const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType } = useResume();
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('personal');
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
 
   const handleResumeTypeSelect = (type: ResumeType, recommendedTemplates: TemplateType[]) => {
     setSelectedResumeType(type);
@@ -144,13 +153,25 @@ const ResumeBuilderContent: React.FC = () => {
               ))}
             </div>
             
-            {/* Login Button */}
-            <Button variant="outline" size="sm" asChild className="gap-2">
-              <a href="/auth">
-                <User className="w-4 h-4" />
-                <span className="hidden sm:inline">Login</span>
-              </a>
-            </Button>
+            {/* Auth Buttons */}
+            {isAuthenticated ? (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground hidden sm:inline">
+                  Hi, {user?.name?.split(' ')[0] || 'User'}
+                </span>
+                <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">Logout</span>
+                </Button>
+              </div>
+            ) : (
+              <Button variant="outline" size="sm" asChild className="gap-2">
+                <a href="/auth">
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">Login</span>
+                </a>
+              </Button>
+            )}
           </div>
         </div>
       </header>
