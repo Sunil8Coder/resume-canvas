@@ -112,34 +112,45 @@ const ResumeBuilderContent: React.FC = () => {
               <FileText className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Resume Builder</h1>
-              <p className="text-xs text-muted-foreground">Create your professional resume</p>
+              <h1 className="text-xl font-bold text-foreground">Free Resume Builder</h1>
+              <p className="text-xs text-muted-foreground">Create professional resumes for all professions</p>
             </div>
           </div>
           
-          {/* Progress indicator */}
-          <div className="hidden md:flex items-center gap-2">
-            {tabs.map((tab, index) => (
-              <React.Fragment key={tab.id}>
-                <button
-                  onClick={() => setActiveTab(tab.id)}
-                  className={cn(
-                    'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all',
-                    activeTab === tab.id
-                      ? 'bg-primary text-primary-foreground'
-                      : currentTabIndex > index
-                      ? 'bg-primary/20 text-primary'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
+          {/* Auth & Progress */}
+          <div className="flex items-center gap-4">
+            {/* Progress indicator - Desktop */}
+            <div className="hidden md:flex items-center gap-2">
+              {tabs.map((tab, index) => (
+                <React.Fragment key={tab.id}>
+                  <button
+                    onClick={() => setActiveTab(tab.id)}
+                    className={cn(
+                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all',
+                      activeTab === tab.id
+                        ? 'bg-primary text-primary-foreground'
+                        : currentTabIndex > index
+                        ? 'bg-primary/20 text-primary'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    )}
+                  >
+                    {tab.icon}
+                    <span className="hidden lg:inline">{tab.label}</span>
+                  </button>
+                  {index < tabs.length - 1 && (
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
                   )}
-                >
-                  {tab.icon}
-                  <span className="hidden lg:inline">{tab.label}</span>
-                </button>
-                {index < tabs.length - 1 && (
-                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                )}
-              </React.Fragment>
-            ))}
+                </React.Fragment>
+              ))}
+            </div>
+            
+            {/* Login Button */}
+            <Button variant="outline" size="sm" asChild className="gap-2">
+              <a href="/auth">
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">Login</span>
+              </a>
+            </Button>
           </div>
         </div>
       </header>

@@ -16,7 +16,8 @@ import {
   Crown, 
   Palette, 
   Rocket,
-  Info
+  Info,
+  User
 } from 'lucide-react';
 
 interface ResumeTypeSelectorProps {
@@ -81,6 +82,13 @@ const resumeTypes: ResumeTypeInfo[] = [
     tooltip: 'Specifically for students seeking internships or co-op positions. Highlights coursework, projects, extracurriculars, and relevant skills. Shows potential and eagerness to learn.',
     recommendedTemplates: ['minimal', 'compact', 'modern'],
   },
+  {
+    id: 'biodata',
+    name: 'Biodata',
+    description: 'Personal & marriage biodata',
+    tooltip: 'Traditional biodata format commonly used in South Asia for marriage proposals, personal profiles, and formal introductions. Includes personal details, family background, education, and interests.',
+    recommendedTemplates: ['biodata', 'elegant', 'classic'],
+  },
 ];
 
 const iconMap: Record<ResumeType, React.ReactNode> = {
@@ -92,6 +100,7 @@ const iconMap: Record<ResumeType, React.ReactNode> = {
   'executive': <Crown className="w-4 h-4" />,
   'creative': <Palette className="w-4 h-4" />,
   'internship': <GraduationCap className="w-4 h-4" />,
+  'biodata': <User className="w-4 h-4" />,
 };
 
 export const ResumeTypeSelector: React.FC<ResumeTypeSelectorProps> = ({

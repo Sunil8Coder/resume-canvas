@@ -53,6 +53,11 @@ const templates: { id: TemplateType; name: string; description: string }[] = [
     name: 'Elegant',
     description: 'Sophisticated with warmth',
   },
+  {
+    id: 'biodata',
+    name: 'Biodata',
+    description: 'Personal & marriage biodata',
+  },
 ];
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
