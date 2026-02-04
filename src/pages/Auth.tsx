@@ -5,13 +5,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Mail, Lock, User, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
+import { FileText, Mail, Lock, User, ArrowLeft, CheckCircle, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { login, register, isLoading: authLoading } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Login form state
   const [loginEmail, setLoginEmail] = useState('');
@@ -23,49 +25,50 @@ const Auth: React.FC = () => {
   const [signupPassword, setSignupPassword] = useState('');
   const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
 
+  const isLoading = isSubmitting || authLoading;
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate login delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Demo validation
     if (!loginEmail || !loginPassword) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
         variant: "destructive",
       });
-      setIsLoading(false);
       return;
     }
 
-    // Demo success - in real app, this would authenticate with backend
+    setIsSubmitting(true);
+    const result = await login({ email: loginEmail, password: loginPassword });
+    setIsSubmitting(false);
+
+    if (result.error) {
+      toast({
+        title: "Login Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
-      title: "Demo Login Successful!",
-      description: "This is a demo. In production, this would authenticate with a real backend.",
+      title: "Welcome back!",
+      description: "You have successfully logged in.",
     });
     
-    setIsLoading(false);
     navigate('/');
   };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate signup delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Demo validation
     if (!signupName || !signupEmail || !signupPassword || !signupConfirmPassword) {
       toast({
         title: "Error",
         description: "Please fill in all fields",
         variant: "destructive",
       });
-      setIsLoading(false);
       return;
     }
 
@@ -75,7 +78,6 @@ const Auth: React.FC = () => {
         description: "Passwords do not match",
         variant: "destructive",
       });
-      setIsLoading(false);
       return;
     }
 
@@ -85,17 +87,27 @@ const Auth: React.FC = () => {
         description: "Password must be at least 6 characters",
         variant: "destructive",
       });
-      setIsLoading(false);
       return;
     }
 
-    // Demo success
+    setIsSubmitting(true);
+    const result = await register({ name: signupName, email: signupEmail, password: signupPassword });
+    setIsSubmitting(false);
+
+    if (result.error) {
+      toast({
+        title: "Registration Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
-      title: "Demo Account Created!",
-      description: "This is a demo. In production, this would create a real account.",
+      title: "Account Created!",
+      description: "Welcome to ResumeForge. Start building your resume!",
     });
     
-    setIsLoading(false);
     navigate('/');
   };
 
@@ -124,13 +136,6 @@ const Auth: React.FC = () => {
           </CardHeader>
 
           <CardContent>
-            {/* Demo Notice */}
-            <div className="mb-6 p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-700 dark:text-amber-300">
-                <strong>Demo Mode:</strong> This is a demonstration. Login/signup will simulate the flow without storing actual data.
-              </p>
-            </div>
 
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
