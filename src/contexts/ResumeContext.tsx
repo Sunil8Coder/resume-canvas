@@ -8,6 +8,10 @@ interface ResumeContextType {
   setSelectedTemplate: React.Dispatch<React.SetStateAction<TemplateType>>;
   selectedResumeType: ResumeType;
   setSelectedResumeType: React.Dispatch<React.SetStateAction<ResumeType>>;
+  currentResumeId: string | null;
+  setCurrentResumeId: React.Dispatch<React.SetStateAction<string | null>>;
+  resumeTitle: string;
+  setResumeTitle: React.Dispatch<React.SetStateAction<string>>;
   updatePersonalInfo: (field: string, value: string) => void;
   addExperience: () => void;
   updateExperience: (id: string, field: string, value: string | boolean) => void;
@@ -19,6 +23,8 @@ interface ResumeContextType {
   updateSkill: (id: string, field: string, value: string) => void;
   removeSkill: (id: string) => void;
   reorderSections: (newOrder: string[]) => void;
+  loadResume: (id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType) => void;
+  resetResume: () => void;
 }
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -27,6 +33,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('classic');
   const [selectedResumeType, setSelectedResumeType] = useState<ResumeType>('professional');
+  const [currentResumeId, setCurrentResumeId] = useState<string | null>(null);
+  const [resumeTitle, setResumeTitle] = useState<string>('My Resume');
 
   const updatePersonalInfo = (field: string, value: string) => {
     setResumeData(prev => ({
@@ -135,6 +143,22 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }));
   };
 
+  const loadResume = (id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType) => {
+    setCurrentResumeId(id);
+    setResumeTitle(title);
+    setResumeData(data);
+    setSelectedTemplate(template);
+    setSelectedResumeType(resumeType);
+  };
+
+  const resetResume = () => {
+    setCurrentResumeId(null);
+    setResumeTitle('My Resume');
+    setResumeData(defaultResumeData);
+    setSelectedTemplate('classic');
+    setSelectedResumeType('professional');
+  };
+
   return (
     <ResumeContext.Provider
       value={{
@@ -144,6 +168,10 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setSelectedTemplate,
         selectedResumeType,
         setSelectedResumeType,
+        currentResumeId,
+        setCurrentResumeId,
+        resumeTitle,
+        setResumeTitle,
         updatePersonalInfo,
         addExperience,
         updateExperience,
@@ -155,6 +183,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         updateSkill,
         removeSkill,
         reorderSections,
+        loadResume,
+        resetResume,
       }}
     >
       {children}

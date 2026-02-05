@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { PersonalInfoForm } from '@/components/resume/PersonalInfoForm';
 import { ExperienceForm } from '@/components/resume/ExperienceForm';
 import { EducationForm } from '@/components/resume/EducationForm';
@@ -8,7 +9,7 @@ import { TemplateSelector } from '@/components/resume/TemplateSelector';
 import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
-import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut } from 'lucide-react';
+import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { TemplateType, ResumeType } from '@/types/resume';
@@ -26,10 +27,24 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 ];
 
 const ResumeBuilderContent: React.FC = () => {
-  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType } = useResume();
+  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, loadResume, resetResume } = useResume();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('personal');
+
+  // Load resume from sessionStorage if editing
+  useEffect(() => {
+    const editResumeData = sessionStorage.getItem('editResume');
+    if (editResumeData) {
+      try {
+        const resume = JSON.parse(editResumeData);
+        loadResume(resume.id, resume.title, resume.data, resume.templateType, resume.resumeType);
+        sessionStorage.removeItem('editResume');
+      } catch {
+        console.error('Failed to load resume from session');
+      }
+    }
+  }, [loadResume]);
 
   const handleLogout = async () => {
     await logout();
@@ -159,6 +174,10 @@ const ResumeBuilderContent: React.FC = () => {
                 <span className="text-sm text-muted-foreground hidden sm:inline">
                   Hi, {user?.name?.split(' ')[0] || 'User'}
                 </span>
+                <Button variant="outline" size="sm" onClick={() => navigate('/my-resumes')} className="gap-2">
+                  <FolderOpen className="w-4 h-4" />
+                  <span className="hidden sm:inline">My Resumes</span>
+                </Button>
                 <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
                   <LogOut className="w-4 h-4" />
                   <span className="hidden sm:inline">Logout</span>
