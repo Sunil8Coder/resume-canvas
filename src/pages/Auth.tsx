@@ -105,7 +105,7 @@ const Auth: React.FC = () => {
 
     toast({
       title: "Account Created!",
-      description: "Welcome to ResumeForge. Start building your resume!",
+      description: "Welcome to Resume4J. Start building your resume!",
     });
     
     navigate('/');
@@ -129,7 +129,7 @@ const Auth: React.FC = () => {
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary flex items-center justify-center">
               <FileText className="w-8 h-8 text-primary-foreground" />
             </div>
-            <CardTitle className="text-2xl font-bold">Welcome to ResumeForge</CardTitle>
+            <CardTitle className="text-2xl font-bold">Welcome to Resume4J</CardTitle>
             <CardDescription>
               Create professional resumes for free
             </CardDescription>
