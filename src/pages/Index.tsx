@@ -121,8 +121,8 @@ const ResumeBuilderContent: React.FC = () => {
               <FileText className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Free Resume Builder</h1>
-              <p className="text-xs text-muted-foreground">Create professional resumes for all professions</p>
+              <h1 className="text-xl font-bold text-foreground">Resume4J</h1>
+              <p className="text-xs text-muted-foreground">Create professional resumes for free</p>
             </div>
           </div>
           
@@ -256,7 +256,7 @@ const ResumeBuilderContent: React.FC = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>© {new Date().getFullYear()} Free Resume Builder. All rights reserved.</span>
+              <span>© {new Date().getFullYear()} Resume4J. All rights reserved.</span>
             </div>
             <div className="text-sm text-muted-foreground">
               Developed by <span className="font-semibold text-foreground">Scriptimiz Insight LLP</span>
