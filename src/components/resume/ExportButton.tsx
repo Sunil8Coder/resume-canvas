@@ -10,11 +10,28 @@ import {
 import { exportToPDF, exportToWord } from '@/utils/exportResume';
 import { useResume } from '@/contexts/ResumeContext';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const ExportButton: React.FC = () => {
   const { resumeData } = useResume();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const requireAuth = () => {
+    toast({
+      title: 'Login Required',
+      description: 'Please login to download your resume.',
+      variant: 'destructive',
+    });
+    navigate('/auth');
+  };
 
   const handleExportPDF = async () => {
+    if (!isAuthenticated) {
+      requireAuth();
+      return;
+    }
     try {
       await exportToPDF();
       toast({
@@ -31,6 +48,10 @@ export const ExportButton: React.FC = () => {
   };
 
   const handleExportWord = async () => {
+    if (!isAuthenticated) {
+      requireAuth();
+      return;
+    }
     try {
       await exportToWord(resumeData);
       toast({
