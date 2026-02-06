@@ -54,7 +54,6 @@ const ResumeBuilderContent: React.FC = () => {
 
   const handleResumeTypeSelect = (type: ResumeType, recommendedTemplates: TemplateType[]) => {
     setSelectedResumeType(type);
-    // Auto-select the first recommended template for this resume type
     if (recommendedTemplates.length > 0) {
       setSelectedTemplate(recommendedTemplates[0]);
     }
@@ -89,11 +88,10 @@ const ResumeBuilderContent: React.FC = () => {
       case 'preview':
         return (
           <div className="space-y-6">
-            {/* Resume Type Selection */}
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
               <p className="text-sm text-muted-foreground">
-                Choose the type that matches your career situation. Hover over each option for detailed guidance.
+                Choose the type that matches your career situation.
               </p>
               <ResumeTypeSelector 
                 selected={selectedResumeType} 
@@ -101,20 +99,18 @@ const ResumeBuilderContent: React.FC = () => {
               />
             </div>
 
-            {/* Template Selection */}
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-foreground">Choose Your Template</h2>
               <p className="text-sm text-muted-foreground">Select a design that best represents you</p>
               <TemplateSelector selected={selectedTemplate} onSelect={setSelectedTemplate} />
             </div>
 
-            {/* Live Preview */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
                 <ExportButton />
               </div>
-              <div className="bg-muted/50 rounded-xl p-4 overflow-auto">
+              <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
                 <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
                   <ResumePreview data={resumeData} template={selectedTemplate} />
                 </div>
@@ -128,43 +124,45 @@ const ResumeBuilderContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background bg-grid-pattern bg-radial-glow">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
+      <header className="sticky top-0 z-50 glass-header">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center gradient-border glow-sm"
+              style={{ background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))` }}>
               <FileText className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">Resume4J</h1>
+              <h1 className="text-xl font-bold gradient-text">Resume4J</h1>
               <p className="text-xs text-muted-foreground">Create professional resumes for free</p>
             </div>
           </div>
           
           {/* Auth, Theme & Progress */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <ThemeSelector />
+            
             {/* Progress indicator - Desktop */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-1.5">
               {tabs.map((tab, index) => (
                 <React.Fragment key={tab.id}>
                   <button
                     onClick={() => setActiveTab(tab.id)}
                     className={cn(
-                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all',
+                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200',
                       activeTab === tab.id
-                        ? 'bg-primary text-primary-foreground'
+                        ? 'bg-primary text-primary-foreground glow-sm'
                         : currentTabIndex > index
                         ? 'bg-primary/20 text-primary'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                        : 'bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground'
                     )}
                   >
                     {tab.icon}
                     <span className="hidden lg:inline">{tab.label}</span>
                   </button>
                   {index < tabs.length - 1 && (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    <ChevronRight className="w-3 h-3 text-muted-foreground/40" />
                   )}
                 </React.Fragment>
               ))}
@@ -172,21 +170,21 @@ const ResumeBuilderContent: React.FC = () => {
             
             {/* Auth Buttons */}
             {isAuthenticated ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground hidden sm:inline">
-                  Hi, {user?.name?.split(' ')[0] || 'User'}
+                  {user?.name?.split(' ')[0] || 'User'}
                 </span>
-                <Button variant="outline" size="sm" onClick={() => navigate('/my-resumes')} className="gap-2">
+                <Button variant="outline" size="sm" onClick={() => navigate('/my-resumes')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                   <FolderOpen className="w-4 h-4" />
                   <span className="hidden sm:inline">My Resumes</span>
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
+                <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                   <LogOut className="w-4 h-4" />
                   <span className="hidden sm:inline">Logout</span>
                 </Button>
               </div>
             ) : (
-              <Button variant="outline" size="sm" asChild className="gap-2">
+              <Button variant="outline" size="sm" asChild className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                 <a href="/auth">
                   <User className="w-4 h-4" />
                   <span className="hidden sm:inline">Login</span>
@@ -198,17 +196,17 @@ const ResumeBuilderContent: React.FC = () => {
       </header>
 
       {/* Mobile Tab Navigation */}
-      <div className="md:hidden border-b border-border bg-card overflow-x-auto">
+      <div className="md:hidden border-b border-border/50 bg-card/60 backdrop-blur-sm overflow-x-auto">
         <div className="flex p-2 gap-1">
-          {tabs.map((tab, index) => (
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
                 'flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all',
                 activeTab === tab.id
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted'
+                  ? 'bg-primary text-primary-foreground glow-sm'
+                  : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
               )}
             >
               {tab.icon}
@@ -219,18 +217,26 @@ const ResumeBuilderContent: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto max-w-3xl px-4 py-6">
+      <div className="container mx-auto max-w-3xl px-4 py-8">
         {/* Section Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-2">
             <div className={cn(
-              'w-10 h-10 rounded-xl flex items-center justify-center',
-              activeTab === 'preview' ? 'bg-primary' : 'bg-muted'
-            )}>
-              {tabs.find(t => t.id === activeTab)?.icon}
+              'w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300',
+              activeTab === 'preview' 
+                ? 'glow-md' 
+                : ''
+            )} style={activeTab === 'preview' ? {
+              background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))`
+            } : {
+              background: 'hsl(var(--secondary))'
+            }}>
+              <span className={activeTab === 'preview' ? 'text-primary-foreground' : 'text-muted-foreground'}>
+                {tabs.find(t => t.id === activeTab)?.icon}
+              </span>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground">
+              <h2 className="text-2xl font-bold text-foreground tracking-tight">
                 {tabs.find(t => t.id === activeTab)?.label} {activeTab !== 'preview' && 'Details'}
               </h2>
               <p className="text-sm text-muted-foreground">
@@ -245,7 +251,7 @@ const ResumeBuilderContent: React.FC = () => {
         </div>
 
         {/* Form Content */}
-        <div className="bg-card rounded-xl border border-border p-6 mb-6">
+        <div className="glass-card p-6 mb-8 glow-sm">
           {renderTabContent()}
         </div>
 
@@ -255,14 +261,15 @@ const ResumeBuilderContent: React.FC = () => {
             variant="outline"
             onClick={goToPrevTab}
             disabled={isFirstTab}
-            className="gap-2"
+            className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary"
           >
             <ChevronLeft className="w-4 h-4" />
             Previous
           </Button>
           
           {!isLastTab ? (
-            <Button onClick={goToNextTab} className="gap-2">
+            <Button onClick={goToNextTab} className="gap-2 glow-sm"
+              style={{ background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))` }}>
               Next
               <ChevronRight className="w-4 h-4" />
             </Button>
@@ -273,14 +280,14 @@ const ResumeBuilderContent: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/50 mt-auto">
+      <footer className="border-t border-border/30 mt-auto">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>© {new Date().getFullYear()} Resume4J. All rights reserved.</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              Developed by <span className="font-semibold text-foreground">Scriptimiz Insight LLP</span>
+              Developed by <span className="font-semibold gradient-text">Scriptimiz Insight LLP</span>
             </div>
           </div>
         </div>
