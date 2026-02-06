@@ -7,7 +7,8 @@ All colors MUST be HSL.
 */
 
 @layer base {
-  :root {
+  :root,
+  .theme-blue {
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
 
@@ -63,6 +64,68 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217 91% 60%;
+  }
+
+  /* Emerald Theme */
+  .theme-emerald {
+    --primary: 160 84% 39%;
+    --accent: 160 84% 39%;
+    --ring: 160 84% 39%;
+    --resume-accent: 160 84% 39%;
+    --resume-accent-light: 160 84% 95%;
+    --sidebar-ring: 160 84% 39%;
+  }
+
+  /* Violet Theme */
+  .theme-violet {
+    --primary: 263 70% 50%;
+    --accent: 263 70% 50%;
+    --ring: 263 70% 50%;
+    --resume-accent: 263 70% 50%;
+    --resume-accent-light: 263 70% 95%;
+    --sidebar-ring: 263 70% 50%;
+  }
+
+  /* Rose Theme */
+  .theme-rose {
+    --primary: 347 77% 50%;
+    --accent: 347 77% 50%;
+    --ring: 347 77% 50%;
+    --resume-accent: 347 77% 50%;
+    --resume-accent-light: 347 77% 95%;
+    --sidebar-ring: 347 77% 50%;
+  }
+
+  /* Amber Theme */
+  .theme-amber {
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 100%;
+    --ring: 38 92% 50%;
+    --resume-accent: 38 92% 50%;
+    --resume-accent-light: 38 92% 95%;
+    --sidebar-ring: 38 92% 50%;
+  }
+
+  /* Teal Theme */
+  .theme-teal {
+    --primary: 174 72% 40%;
+    --accent: 174 72% 40%;
+    --ring: 174 72% 40%;
+    --resume-accent: 174 72% 40%;
+    --resume-accent-light: 174 72% 95%;
+    --sidebar-ring: 174 72% 40%;
+  }
+
+  /* Slate Theme */
+  .theme-slate {
+    --primary: 215 25% 27%;
+    --accent: 215 25% 27%;
+    --ring: 215 25% 27%;
+    --resume-accent: 215 25% 27%;
+    --resume-accent-light: 215 25% 90%;
+    --sidebar-ring: 215 25% 27%;
   }
 
   .dark {
