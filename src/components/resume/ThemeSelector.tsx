@@ -10,13 +10,13 @@ import {
 import { Button } from '@/components/ui/button';
 
 const themePreviewColors: Record<ColorTheme, string> = {
-  blue: 'bg-[hsl(217,91%,60%)]',
+  blue: 'bg-[hsl(250,85%,67%)]',
   emerald: 'bg-[hsl(160,84%,39%)]',
   violet: 'bg-[hsl(263,70%,50%)]',
   rose: 'bg-[hsl(347,77%,50%)]',
   amber: 'bg-[hsl(38,92%,50%)]',
   teal: 'bg-[hsl(174,72%,40%)]',
-  slate: 'bg-[hsl(215,25%,27%)]',
+  slate: 'bg-[hsl(215,25%,45%)]',
 };
 
 export const ThemeSelector: React.FC = () => {
@@ -25,26 +25,30 @@ export const ThemeSelector: React.FC = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          <div className={cn('w-4 h-4 rounded-full', themePreviewColors[colorTheme])} />
+        <Button variant="outline" size="sm" className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
+          <div className={cn('w-4 h-4 rounded-full ring-2 ring-border/50', themePreviewColors[colorTheme])} />
           <Palette className="w-4 h-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-56 p-3" align="end">
-        <p className="text-sm font-medium text-foreground mb-3">Color Theme</p>
-        <div className="grid grid-cols-1 gap-1.5">
+      <PopoverContent className="w-56 p-3 glass-card border-border/50" align="end">
+        <p className="text-sm font-semibold text-foreground mb-3 tracking-tight">Color Theme</p>
+        <div className="grid grid-cols-1 gap-1">
           {themeOptions.map((theme) => (
             <button
               key={theme.id}
               onClick={() => setColorTheme(theme.id)}
               className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all',
+                'flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200',
                 colorTheme === theme.id
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:bg-muted'
+                  ? 'bg-primary/15 text-primary'
+                  : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
               )}
             >
-              <div className={cn('w-5 h-5 rounded-full shrink-0', themePreviewColors[theme.id])} />
+              <div className={cn(
+                'w-5 h-5 rounded-full shrink-0 ring-2',
+                themePreviewColors[theme.id],
+                colorTheme === theme.id ? 'ring-primary/50' : 'ring-border/30'
+              )} />
               <span className="flex-1 text-left">{theme.label}</span>
               {colorTheme === theme.id && <Check className="w-4 h-4 text-primary" />}
             </button>

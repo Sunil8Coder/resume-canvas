@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const THEME_STORAGE_KEY = 'resume4j-color-theme';
 
 export const themeOptions: { id: ColorTheme; label: string; color: string }[] = [
-  { id: 'blue', label: 'Ocean Blue', color: '217 91% 60%' },
+  { id: 'blue', label: 'Indigo', color: '250 85% 67%' },
   { id: 'emerald', label: 'Emerald', color: '160 84% 39%' },
   { id: 'violet', label: 'Violet', color: '263 70% 50%' },
   { id: 'rose', label: 'Rose', color: '347 77% 50%' },
