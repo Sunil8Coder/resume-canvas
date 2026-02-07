@@ -8,7 +8,7 @@ import { ResumePreview } from '@/components/resume/ResumePreview';
 import { TemplateSelector } from '@/components/resume/TemplateSelector';
 import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
-import { ThemeSelector } from '@/components/resume/ThemeSelector';
+
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
 import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -141,8 +141,6 @@ const ResumeBuilderContent: React.FC = () => {
           
           {/* Auth, Theme & Progress */}
           <div className="flex items-center gap-3">
-            <ThemeSelector />
-            
             {/* Progress indicator - Desktop */}
             <div className="hidden md:flex items-center gap-1.5">
               {tabs.map((tab, index) => (
