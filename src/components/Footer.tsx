@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-border/20 pt-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex flex-col items-center justify-center gap-2 text-center">
             <p className="text-xs text-muted-foreground">
               © {currentYear} Resume4J. All rights reserved.
             </p>
