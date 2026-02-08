@@ -117,7 +117,7 @@ export const EducationForm: React.FC = () => {
         type="button"
         variant="outline"
         onClick={addEducation}
-        className="w-full border-dashed border-2 hover:border-resume-accent hover:text-resume-accent"
+        className="w-full border-dashed border-2 hover:border-resume-accent hover:bg-resume-accent/10 hover:text-foreground"
       >
         <Plus className="w-4 h-4 mr-2" />
         Add Education

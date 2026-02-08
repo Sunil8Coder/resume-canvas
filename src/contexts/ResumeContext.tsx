@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { ResumeData, TemplateType, ResumeType, defaultResumeData } from '@/types/resume';
 
 interface ResumeContextType {
@@ -143,21 +143,21 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }));
   };
 
-  const loadResume = (id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType) => {
+  const loadResume = useCallback((id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType) => {
     setCurrentResumeId(id);
     setResumeTitle(title);
     setResumeData(data);
     setSelectedTemplate(template);
     setSelectedResumeType(resumeType);
-  };
+  }, []);
 
-  const resetResume = () => {
+  const resetResume = useCallback(() => {
     setCurrentResumeId(null);
     setResumeTitle('My Resume');
     setResumeData(defaultResumeData);
     setSelectedTemplate('classic');
     setSelectedResumeType('professional');
-  };
+  }, []);
 
   return (
     <ResumeContext.Provider
