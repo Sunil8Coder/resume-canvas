@@ -305,11 +305,7 @@ const ResumeBuilderContent: React.FC = () => {
 };
 
 const Index: React.FC = () => {
-  return (
-    <ResumeProvider>
-      <ResumeBuilderContent />
-    </ResumeProvider>
-  );
+  return <ResumeBuilderContent />;
 };
 
 export default Index;
