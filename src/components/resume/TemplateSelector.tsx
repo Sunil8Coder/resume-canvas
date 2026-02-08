@@ -74,12 +74,18 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
             'p-3 rounded-lg border-2 transition-all duration-fast text-left',
             'hover:border-resume-accent/50 hover:shadow-sm',
             selected === template.id
-              ? 'border-resume-accent bg-resume-accent-light'
+              ? 'border-resume-accent bg-resume-accent/15'
               : 'border-border bg-card'
           )}
         >
-          <div className="font-medium text-foreground text-sm">{template.name}</div>
-          <div className="text-xs text-muted-foreground mt-0.5">{template.description}</div>
+          <div className={cn(
+            "font-medium text-sm",
+            selected === template.id ? "text-resume-accent" : "text-foreground"
+          )}>{template.name}</div>
+          <div className={cn(
+            "text-xs mt-0.5",
+            selected === template.id ? "text-resume-accent/70" : "text-muted-foreground"
+          )}>{template.description}</div>
         </button>
       ))}
     </div>
