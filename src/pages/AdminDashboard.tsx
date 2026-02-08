@@ -77,7 +77,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchResumes = async () => {
     setLoadingResumes(true);
-    const result = await resumeService.listResumes();
+    const result = await resumeService.adminListResumes();
     if (result.data) setResumes(result.data);
     else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
     setLoadingResumes(false);
