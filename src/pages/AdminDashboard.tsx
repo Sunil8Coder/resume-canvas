@@ -60,7 +60,7 @@ const AdminDashboard: React.FC = () => {
       navigate('/auth');
       return;
     }
-    if (user?.role !== 'admin') {
+    if (user?.role?.toLowerCase() !== 'admin') {
       toast({ title: 'Access Denied', description: 'You need admin privileges to view this page.', variant: 'destructive' });
       navigate('/');
       return;

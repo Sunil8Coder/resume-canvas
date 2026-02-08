@@ -181,7 +181,7 @@ const ResumeBuilderContent: React.FC = () => {
                   <FolderOpen className="w-4 h-4" />
                   <span className="hidden sm:inline">My Resumes</span>
                 </Button>
-                {user?.role === 'admin' && (
+                {user?.role?.toLowerCase() === 'admin' && (
                   <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                     <Shield className="w-4 h-4" />
                     <span className="hidden sm:inline">Admin</span>
