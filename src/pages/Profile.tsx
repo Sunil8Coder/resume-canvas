@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import {
   ArrowLeft, User, Mail, Calendar, Shield, FileText, Edit, Trash2,
-  Loader2, Save, X, Plus, Briefcase,
+  Loader2, Save, X, Plus, Briefcase, Check, Pencil,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { userService } from '@/services/userService';
@@ -31,6 +31,11 @@ const Profile: React.FC = () => {
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // Rename resume state
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
+  const [savingRename, setSavingRename] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -69,7 +74,6 @@ const Profile: React.FC = () => {
     if (result.error) {
       toast({ title: 'Update Failed', description: result.error, variant: 'destructive' });
     } else {
-      // Update localStorage user data
       const updatedUser = { ...user, name: editName.trim(), email: editEmail.trim() };
       localStorage.setItem('user', JSON.stringify(updatedUser));
       refreshUser();
@@ -93,6 +97,34 @@ const Profile: React.FC = () => {
   const handleEditResume = (resume: SavedResume) => {
     sessionStorage.setItem('editResume', JSON.stringify(resume));
     navigate('/');
+  };
+
+  const handleStartRename = (resume: SavedResume) => {
+    setRenamingId(resume.id);
+    setRenameValue(resume.title);
+  };
+
+  const handleCancelRename = () => {
+    setRenamingId(null);
+    setRenameValue('');
+  };
+
+  const handleSaveRename = async (id: string) => {
+    if (!renameValue.trim()) {
+      toast({ title: 'Error', description: 'Resume name cannot be empty.', variant: 'destructive' });
+      return;
+    }
+    setSavingRename(true);
+    const result = await resumeService.updateResume(id, { title: renameValue.trim() });
+    setSavingRename(false);
+    if (result.error) {
+      toast({ title: 'Rename Failed', description: result.error, variant: 'destructive' });
+    } else {
+      setResumes(prev => prev.map(r => r.id === id ? { ...r, title: renameValue.trim() } : r));
+      toast({ title: 'Renamed', description: 'Resume name updated.' });
+      setRenamingId(null);
+      setRenameValue('');
+    }
   };
 
   const formatDate = (dateStr?: string) => {
@@ -156,27 +188,14 @@ const Profile: React.FC = () => {
                   <Label htmlFor="edit-name">Full Name</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="edit-name"
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className="pl-10"
-                      placeholder="Your name"
-                    />
+                    <Input id="edit-name" value={editName} onChange={(e) => setEditName(e.target.value)} className="pl-10" placeholder="Your name" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="edit-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="edit-email"
-                      type="email"
-                      value={editEmail}
-                      onChange={(e) => setEditEmail(e.target.value)}
-                      className="pl-10"
-                      placeholder="your@email.com"
-                    />
+                    <Input id="edit-email" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} className="pl-10" placeholder="your@email.com" />
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -261,14 +280,40 @@ const Profile: React.FC = () => {
                 <Card key={resume.id} className="glass-card border-border/30 hover:glow-sm transition-all duration-300">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">{resume.title}</CardTitle>
+                      <div className="flex-1 min-w-0">
+                        {renamingId === resume.id ? (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              value={renameValue}
+                              onChange={(e) => setRenameValue(e.target.value)}
+                              className="h-8 text-sm"
+                              autoFocus
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSaveRename(resume.id);
+                                if (e.key === 'Escape') handleCancelRename();
+                              }}
+                            />
+                            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={() => handleSaveRename(resume.id)} disabled={savingRename}>
+                              {savingRename ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4 text-green-500" />}
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleCancelRename}>
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 group">
+                            <CardTitle className="text-lg truncate">{resume.title}</CardTitle>
+                            <Button variant="ghost" size="icon" className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" onClick={() => handleStartRename(resume)}>
+                              <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
+                            </Button>
+                          </div>
+                        )}
                         <CardDescription className="flex items-center gap-1 mt-1">
                           <Calendar className="w-3 h-3" />
                           Updated {formatDate(resume.updatedAt)}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 ml-2">
                         <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full capitalize">
                           {resume.templateType}
                         </span>
