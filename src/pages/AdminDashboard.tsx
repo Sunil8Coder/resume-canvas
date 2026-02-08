@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import {
   FileText, Users, Eye, ArrowLeft, Loader2, Trash2, RefreshCw,
-  Monitor, Globe, Clock,
+  Monitor, Globe, Clock, User as UserIcon, Mail, Calendar, Shield, Save, X, Edit,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { resumeService, SavedResume } from '@/services/resumeService';
@@ -21,10 +21,12 @@ import { userService } from '@/services/userService';
 import { User } from '@/services/authService';
 import { visitorService, Visitor } from '@/services/visitorService';
 import { toast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, refreshUser } = useAuth();
 
   const [resumes, setResumes] = useState<SavedResume[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -33,6 +35,19 @@ const AdminDashboard: React.FC = () => {
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [loadingVisitors, setLoadingVisitors] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Profile edit state
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editName, setEditName] = useState(user?.name || '');
+  const [editEmail, setEditEmail] = useState(user?.email || '');
+  const [savingProfile, setSavingProfile] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setEditName(user.name || '');
+      setEditEmail(user.email || '');
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -106,6 +121,26 @@ const AdminDashboard: React.FC = () => {
       setResumes(prev => prev.filter(r => r.id !== id));
     }
     setDeletingId(null);
+  };
+
+  const handleSaveProfile = async () => {
+    if (!user?.id) return;
+    if (!editName.trim() || !editEmail.trim()) {
+      toast({ title: 'Error', description: 'Name and email are required.', variant: 'destructive' });
+      return;
+    }
+    setSavingProfile(true);
+    const result = await userService.updateUser(user.id, { name: editName.trim(), email: editEmail.trim() });
+    setSavingProfile(false);
+    if (result.error) {
+      toast({ title: 'Update Failed', description: result.error, variant: 'destructive' });
+    } else {
+      const updatedUser = { ...user, name: editName.trim(), email: editEmail.trim() };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      refreshUser();
+      setIsEditingProfile(false);
+      toast({ title: 'Profile Updated', description: 'Your profile has been updated.' });
+    }
   };
 
   const formatDate = (dateStr?: string) => {
@@ -207,8 +242,12 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="resumes" className="space-y-4">
+        <Tabs defaultValue="profile" className="space-y-4">
           <TabsList className="glass-card border border-border/30">
+            <TabsTrigger value="profile" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <UserIcon className="w-4 h-4" />
+              Profile
+            </TabsTrigger>
             <TabsTrigger value="resumes" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <FileText className="w-4 h-4" />
               Resumes
@@ -222,6 +261,82 @@ const AdminDashboard: React.FC = () => {
               Visitors
             </TabsTrigger>
           </TabsList>
+
+          {/* Profile Tab */}
+          <TabsContent value="profile">
+            <Card className="glass-card border-border/30">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                      style={{ background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))` }}>
+                      <UserIcon className="w-8 h-8 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl">{user?.name || 'Admin'}</CardTitle>
+                      <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
+                        <Shield className="w-3 h-3" />
+                        <span className="capitalize">{user?.role || 'admin'}</span>
+                      </p>
+                    </div>
+                  </div>
+                  {!isEditingProfile && (
+                    <Button variant="outline" size="sm" onClick={() => setIsEditingProfile(true)} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
+                      <Edit className="w-4 h-4" />
+                      <span className="hidden sm:inline">Edit</span>
+                    </Button>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                {isEditingProfile ? (
+                  <div className="space-y-4 max-w-md">
+                    <div className="space-y-2">
+                      <Label htmlFor="admin-name">Full Name</Label>
+                      <div className="relative">
+                        <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input id="admin-name" value={editName} onChange={(e) => setEditName(e.target.value)} className="pl-10" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="admin-email">Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input id="admin-email" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} className="pl-10" />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={handleSaveProfile} disabled={savingProfile} className="gap-2">
+                        {savingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                        Save
+                      </Button>
+                      <Button variant="outline" onClick={() => { setIsEditingProfile(false); setEditName(user?.name || ''); setEditEmail(user?.email || ''); }} className="gap-2 border-border/50">
+                        <X className="w-4 h-4" />
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2 max-w-lg">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
+                      <Mail className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Email</p>
+                        <p className="text-sm font-medium">{user?.email || '—'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
+                      <Calendar className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Member Since</p>
+                        <p className="text-sm font-medium">{formatDate(user?.createdAt)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* Resumes Tab */}
           <TabsContent value="resumes">
