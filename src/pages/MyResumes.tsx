@@ -7,6 +7,7 @@ import { FileText, Plus, Edit, Trash2, ArrowLeft, Loader2, Calendar, Check, X, P
 import { useAuth } from '@/contexts/AuthContext';
 import { resumeService, SavedResume } from '@/services/resumeService';
 import { toast } from '@/hooks/use-toast';
+import Footer from '@/components/Footer';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -223,6 +224,7 @@ const MyResumes: React.FC = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
