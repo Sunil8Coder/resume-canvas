@@ -11,9 +11,10 @@ import {
 } from '@/components/ui/alert-dialog';
 import {
   ArrowLeft, User, Mail, Calendar, Shield, FileText, Edit, Trash2,
-  Loader2, Save, X, Plus, Briefcase, Check, Pencil,
+  Loader2, Save, X, Plus, Briefcase, Check, Pencil, Monitor,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import Footer from '@/components/Footer';
 import { userService } from '@/services/userService';
 import { resumeService, SavedResume } from '@/services/resumeService';
 import { toast } from '@/hooks/use-toast';
@@ -151,6 +152,14 @@ const Profile: React.FC = () => {
               <h1 className="text-xl font-bold gradient-text">My Profile</h1>
               <p className="text-xs text-muted-foreground">Manage your account & resumes</p>
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {user?.role === 'admin' && (
+              <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
+                <Monitor className="w-4 h-4" />
+                <span className="hidden sm:inline">Admin</span>
+              </Button>
+            )}
           </div>
         </div>
       </header>
@@ -378,6 +387,7 @@ const Profile: React.FC = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

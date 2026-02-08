@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { TemplateType, ResumeType } from '@/types/resume';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Footer from '@/components/Footer';
 
 type TabId = 'personal' | 'experience' | 'education' | 'skills' | 'preview';
 
@@ -288,18 +289,7 @@ const ResumeBuilderContent: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-border/30 mt-auto">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>© {new Date().getFullYear()} Resume4J. All rights reserved.</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Developed by <span className="font-semibold gradient-text">Scriptimiz Insight LLP</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

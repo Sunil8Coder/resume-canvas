@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -59,8 +60,13 @@ const AdminDashboard: React.FC = () => {
       navigate('/auth');
       return;
     }
+    if (user?.role !== 'admin') {
+      toast({ title: 'Access Denied', description: 'You need admin privileges to view this page.', variant: 'destructive' });
+      navigate('/');
+      return;
+    }
     fetchAll();
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const fetchAll = () => {
     fetchResumes();
@@ -616,6 +622,7 @@ const AdminDashboard: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </div>
   );
 };
