@@ -1,5 +1,20 @@
 import { api } from '@/lib/api';
 
+export interface Visitor {
+  id: string;
+  userAgent?: string;
+  language?: string;
+  platform?: string;
+  screenWidth?: number;
+  screenHeight?: number;
+  referrer?: string;
+  url?: string;
+  timestamp?: string;
+  timezone?: string;
+  ip?: string;
+  createdAt?: string;
+}
+
 interface VisitorInfo {
   userAgent: string;
   language: string;
@@ -30,18 +45,28 @@ function getVisitorInfo(): VisitorInfo {
 
 export const visitorService = {
   async logVisit(): Promise<void> {
-    // Only log once per session to avoid spamming
     if (sessionStorage.getItem(VISITOR_LOGGED_KEY)) {
       return;
     }
 
     try {
       const visitorInfo = getVisitorInfo();
-      await api.post('/visitors/log', visitorInfo, false);
+      await api.post('/visitors', visitorInfo, false);
       sessionStorage.setItem(VISITOR_LOGGED_KEY, 'true');
     } catch (error) {
-      // Silently fail - visitor logging shouldn't block the app
       console.warn('Visitor logging failed:', error);
     }
+  },
+
+  async listVisitors(): Promise<{ data?: Visitor[]; error?: string }> {
+    return api.get<Visitor[]>('/visitors');
+  },
+
+  async getVisitor(id: string): Promise<{ data?: Visitor; error?: string }> {
+    return api.get<Visitor>(`/visitors/${id}`);
+  },
+
+  async deleteVisitor(id: string): Promise<{ data?: void; error?: string }> {
+    return api.delete(`/visitors/${id}`);
   },
 };

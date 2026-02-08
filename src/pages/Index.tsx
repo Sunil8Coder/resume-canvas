@@ -10,7 +10,7 @@ import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
 
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
-import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen } from 'lucide-react';
+import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { TemplateType, ResumeType } from '@/types/resume';
@@ -176,6 +176,12 @@ const ResumeBuilderContent: React.FC = () => {
                   <FolderOpen className="w-4 h-4" />
                   <span className="hidden sm:inline">My Resumes</span>
                 </Button>
+                {user?.role === 'admin' && (
+                  <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
+                    <Shield className="w-4 h-4" />
+                    <span className="hidden sm:inline">Admin</span>
+                  </Button>
+                )}
                 <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                   <LogOut className="w-4 h-4" />
                   <span className="hidden sm:inline">Logout</span>
