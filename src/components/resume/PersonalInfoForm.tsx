@@ -7,7 +7,9 @@ import { useResume } from '@/contexts/ResumeContext';
 
 export const PersonalInfoForm: React.FC = () => {
   const { resumeData, updatePersonalInfo } = useResume();
-  const { personalInfo } = resumeData;
+  const personalInfo = resumeData?.personalInfo ?? {
+    fullName: '', email: '', phone: '', location: '', title: '', summary: '', linkedin: '', website: ''
+  };
 
   return (
     <div className="space-y-4">
