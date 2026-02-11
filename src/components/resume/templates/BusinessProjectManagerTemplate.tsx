@@ -69,7 +69,7 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
             <img
               src={personalInfo.photo}
               alt={personalInfo.fullName}
-              className="w-[72px] h-[72px] rounded-lg object-cover border-2 border-gray-200 ml-4 shadow-sm"
+              className="w-[72px] h-[72px] rounded-sm object-cover border-2 border-gray-200 ml-4 shadow-sm"
             />
           )}
         </div>
@@ -159,9 +159,9 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
                 {safeSkills.map((skill) => (
                   <div key={skill.id} className="flex items-center gap-2">
                     <span className="text-[11px] text-gray-700 w-28 shrink-0 font-medium">{skill.name}</span>
-                    <div className="flex-1 bg-gray-100 rounded-full h-2">
+                    <div className="flex-1 bg-gray-100 rounded-sm h-2">
                       <div
-                        className="bg-emerald-500 h-2 rounded-full"
+                        className="bg-emerald-500 h-2 rounded-sm"
                         style={{ width: `${skillLevelPercent(skill.level)}%` }}
                       />
                     </div>
@@ -275,7 +275,7 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
               <div className="space-y-1.5">
                 {safeSkills.slice(0, 5).map((skill) => (
                   <div key={skill.id} className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-sm bg-emerald-500 shrink-0" />
                     <span className="text-[10px] text-gray-700 leading-tight">{skill.name} — <span className="capitalize text-gray-500">{skill.level}</span></span>
                   </div>
                 ))}
