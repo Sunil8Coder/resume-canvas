@@ -32,9 +32,15 @@ class ApiClient {
     return headers;
   }
 
-  async get<T>(endpoint: string, includeAuth: boolean = true): Promise<ApiResponse<T>> {
+  async get<T>(endpoint: string, includeAuth: boolean = true, params?: Record<string, string | number>): Promise<ApiResponse<T>> {
     try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      let url = `${this.baseUrl}${endpoint}`;
+      if (params) {
+        const searchParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => searchParams.append(key, String(value)));
+        url += `?${searchParams.toString()}`;
+      }
+      const response = await fetch(url, {
         method: 'GET',
         headers: this.getHeaders(includeAuth),
       });

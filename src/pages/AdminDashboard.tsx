@@ -15,7 +15,7 @@ import {
 import {
   FileText, Users, Eye, ArrowLeft, Loader2, Trash2, RefreshCw,
   Monitor, Globe, Clock, User as UserIcon, Mail, Calendar, Shield, Save, X, Edit,
-  ScrollText, Bot, Activity,
+  ScrollText, Bot, Activity, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { resumeService, SavedResume } from '@/services/resumeService';
@@ -27,6 +27,31 @@ import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+
+const PAGE_SIZE = 10;
+
+const PaginationControls = ({
+  page, totalPages, onPageChange, loading,
+}: {
+  page: number; totalPages: number; onPageChange: (p: number) => void; loading: boolean;
+}) => {
+  if (totalPages <= 1) return null;
+  return (
+    <div className="flex items-center justify-between pt-4">
+      <p className="text-sm text-muted-foreground">
+        Page {page} of {totalPages}
+      </p>
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="sm" disabled={page <= 1 || loading} onClick={() => onPageChange(page - 1)} className="gap-1 border-border/50">
+          <ChevronLeft className="w-4 h-4" /> Previous
+        </Button>
+        <Button variant="outline" size="sm" disabled={page >= totalPages || loading} onClick={() => onPageChange(page + 1)} className="gap-1 border-border/50">
+          Next <ChevronRight className="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -41,6 +66,16 @@ const AdminDashboard: React.FC = () => {
   const [loadingVisitors, setLoadingVisitors] = useState(false);
   const [loadingLogs, setLoadingLogs] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Pagination state
+  const [resumePage, setResumePage] = useState(1);
+  const [resumeTotal, setResumeTotal] = useState(0);
+  const [userPage, setUserPage] = useState(1);
+  const [userTotal, setUserTotal] = useState(0);
+  const [visitorPage, setVisitorPage] = useState(1);
+  const [visitorTotal, setVisitorTotal] = useState(0);
+  const [logPage, setLogPage] = useState(1);
+  const [logTotal, setLogTotal] = useState(0);
 
   // Profile edit state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -69,41 +104,57 @@ const AdminDashboard: React.FC = () => {
   }, [isAuthenticated, user, navigate]);
 
   const fetchAll = () => {
-    fetchResumes();
-    fetchUsers();
-    fetchVisitors();
-    fetchLogs();
+    fetchResumes(1);
+    fetchUsers(1);
+    fetchVisitors(1);
+    fetchLogs(1);
   };
 
-  const fetchResumes = async () => {
+  const fetchResumes = async (page: number) => {
     setLoadingResumes(true);
-    const result = await resumeService.adminListResumes();
-    if (result.data) setResumes(result.data);
-    else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
+    setResumePage(page);
+    const offset = (page - 1) * PAGE_SIZE;
+    const result = await resumeService.adminListResumes(offset, PAGE_SIZE);
+    if (result.data) {
+      setResumes(result.data);
+      setResumeTotal(result.total ?? 0);
+    } else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
     setLoadingResumes(false);
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (page: number) => {
     setLoadingUsers(true);
-    const result = await userService.listUsers();
-    if (result.data) setUsers(result.data);
-    else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
+    setUserPage(page);
+    const offset = (page - 1) * PAGE_SIZE;
+    const result = await userService.listUsers(offset, PAGE_SIZE);
+    if (result.data) {
+      setUsers(result.data);
+      setUserTotal(result.total ?? 0);
+    } else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
     setLoadingUsers(false);
   };
 
-  const fetchVisitors = async () => {
+  const fetchVisitors = async (page: number) => {
     setLoadingVisitors(true);
-    const result = await visitorService.listVisitors();
-    if (result.data) setVisitors(result.data);
-    else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
+    setVisitorPage(page);
+    const offset = (page - 1) * PAGE_SIZE;
+    const result = await visitorService.listVisitors(offset, PAGE_SIZE);
+    if (result.data) {
+      setVisitors(result.data);
+      setVisitorTotal(result.total ?? 0);
+    } else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
     setLoadingVisitors(false);
   };
 
-  const fetchLogs = async () => {
+  const fetchLogs = async (page: number) => {
     setLoadingLogs(true);
-    const result = await logService.listLogs();
-    if (result.data) setLogs(result.data);
-    else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
+    setLogPage(page);
+    const offset = (page - 1) * PAGE_SIZE;
+    const result = await logService.listLogs(offset, PAGE_SIZE);
+    if (result.data) {
+      setLogs(result.data);
+      setLogTotal(result.total ?? 0);
+    } else if (result.error) toast({ title: 'Error', description: result.error, variant: 'destructive' });
     setLoadingLogs(false);
   };
 
@@ -114,7 +165,7 @@ const AdminDashboard: React.FC = () => {
       toast({ title: 'Delete Failed', description: result.error, variant: 'destructive' });
     } else {
       toast({ title: 'Visitor Deleted', description: 'Visitor record removed.' });
-      setVisitors(prev => prev.filter(v => v.id !== id));
+      fetchVisitors(visitorPage);
     }
     setDeletingId(null);
   };
@@ -126,7 +177,7 @@ const AdminDashboard: React.FC = () => {
       toast({ title: 'Delete Failed', description: result.error, variant: 'destructive' });
     } else {
       toast({ title: 'User Deleted', description: 'User has been removed.' });
-      setUsers(prev => prev.filter(u => u.id !== id));
+      fetchUsers(userPage);
     }
     setDeletingId(null);
   };
@@ -138,7 +189,7 @@ const AdminDashboard: React.FC = () => {
       toast({ title: 'Delete Failed', description: result.error, variant: 'destructive' });
     } else {
       toast({ title: 'Resume Deleted', description: 'Resume has been removed.' });
-      setResumes(prev => prev.filter(r => r.id !== id));
+      fetchResumes(resumePage);
     }
     setDeletingId(null);
   };
@@ -150,7 +201,7 @@ const AdminDashboard: React.FC = () => {
       toast({ title: 'Delete Failed', description: result.error, variant: 'destructive' });
     } else {
       toast({ title: 'Log Deleted', description: 'Log entry removed.' });
-      setLogs(prev => prev.filter(l => l.id !== id));
+      fetchLogs(logPage);
     }
     setDeletingId(null);
   };
@@ -207,6 +258,8 @@ const AdminDashboard: React.FC = () => {
     if (status < 400) return 'text-yellow-500';
     return 'text-red-500';
   };
+
+  const totalPages = (total: number) => Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const DeleteButton = ({ id, onDelete, label }: { id: string; onDelete: (id: string) => void; label: string }) => (
     <AlertDialog>
@@ -267,7 +320,7 @@ const AdminDashboard: React.FC = () => {
               <FileText className="w-4 h-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold gradient-text">{loadingResumes ? '...' : resumes.length}</div>
+              <div className="text-3xl font-bold gradient-text">{loadingResumes ? '...' : resumeTotal}</div>
             </CardContent>
           </Card>
           <Card className="glass-card glow-sm border-border/30">
@@ -276,7 +329,7 @@ const AdminDashboard: React.FC = () => {
               <Users className="w-4 h-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold gradient-text">{loadingUsers ? '...' : users.length}</div>
+              <div className="text-3xl font-bold gradient-text">{loadingUsers ? '...' : userTotal}</div>
             </CardContent>
           </Card>
           <Card className="glass-card glow-sm border-border/30">
@@ -285,7 +338,7 @@ const AdminDashboard: React.FC = () => {
               <Eye className="w-4 h-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold gradient-text">{loadingVisitors ? '...' : visitors.length}</div>
+              <div className="text-3xl font-bold gradient-text">{loadingVisitors ? '...' : visitorTotal}</div>
             </CardContent>
           </Card>
           <Card className="glass-card glow-sm border-border/30">
@@ -294,7 +347,7 @@ const AdminDashboard: React.FC = () => {
               <ScrollText className="w-4 h-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold gradient-text">{loadingLogs ? '...' : logs.length}</div>
+              <div className="text-3xl font-bold gradient-text">{loadingLogs ? '...' : logTotal}</div>
             </CardContent>
           </Card>
         </div>
@@ -445,6 +498,7 @@ const AdminDashboard: React.FC = () => {
                     </Table>
                   </div>
                 )}
+                <PaginationControls page={resumePage} totalPages={totalPages(resumeTotal)} onPageChange={fetchResumes} loading={loadingResumes} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -490,6 +544,7 @@ const AdminDashboard: React.FC = () => {
                     </Table>
                   </div>
                 )}
+                <PaginationControls page={userPage} totalPages={totalPages(userTotal)} onPageChange={fetchUsers} loading={loadingUsers} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -551,6 +606,7 @@ const AdminDashboard: React.FC = () => {
                     </Table>
                   </div>
                 )}
+                <PaginationControls page={visitorPage} totalPages={totalPages(visitorTotal)} onPageChange={fetchVisitors} loading={loadingVisitors} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -617,6 +673,7 @@ const AdminDashboard: React.FC = () => {
                     </Table>
                   </div>
                 )}
+                <PaginationControls page={logPage} totalPages={totalPages(logTotal)} onPageChange={fetchLogs} loading={loadingLogs} />
               </CardContent>
             </Card>
           </TabsContent>

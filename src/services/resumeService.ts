@@ -86,11 +86,13 @@ export const resumeService = {
     return { data: normalized };
   },
 
-  async adminListResumes(): Promise<{ data?: SavedResume[]; error?: string }> {
-    const response = await api.get<BackendResume[]>('/admin/resumes');
+  async adminListResumes(offset = 0, limit = 10): Promise<{ data?: SavedResume[]; total?: number; error?: string }> {
+    const response = await api.get<{ data: BackendResume[]; total: number }>('/admin/resumes', true, { offset, limit });
     if (response.error) return { error: response.error };
-    const normalized = (response.data || []).map(normalizeResume);
-    return { data: normalized };
+    const raw = response.data;
+    if (!raw) return { data: [], total: 0 };
+    const normalized = (raw.data || []).map(normalizeResume);
+    return { data: normalized, total: raw.total };
   },
 
   async getResume(id: string): Promise<{ data?: SavedResume; error?: string }> {
