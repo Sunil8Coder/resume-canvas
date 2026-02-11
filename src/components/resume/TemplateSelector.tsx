@@ -68,6 +68,21 @@ const templates: { id: TemplateType; name: string; description: string }[] = [
     name: 'Timeline',
     description: 'Career timeline with green accents',
   },
+  {
+    id: 'professional',
+    name: 'Professional',
+    description: 'Two-column with green sidebar',
+  },
+  {
+    id: 'centered',
+    name: 'Centered',
+    description: 'Clean centered with achievements grid',
+  },
+  {
+    id: 'sidebar',
+    name: 'Sidebar',
+    description: 'Dark teal right sidebar layout',
+  },
 ];
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
