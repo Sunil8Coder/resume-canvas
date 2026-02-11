@@ -34,7 +34,7 @@ const ResumeBuilderContent: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('personal');
 
-  // Load resume from sessionStorage if editing
+  // Load resume from sessionStorage if editing or restoring after auth
   useEffect(() => {
     const editResumeData = sessionStorage.getItem('editResume');
     if (editResumeData) {
@@ -44,6 +44,22 @@ const ResumeBuilderContent: React.FC = () => {
         sessionStorage.removeItem('editResume');
       } catch {
         console.error('Failed to load resume from session');
+      }
+    }
+
+    // Restore resume data after auth redirect
+    const params = new URLSearchParams(window.location.search);
+    const pendingResume = sessionStorage.getItem('pendingResume');
+    if (params.get('restoreResume') === 'true' && pendingResume) {
+      try {
+        const restored = JSON.parse(pendingResume);
+        loadResume(null, restored.title, restored.data, restored.template, restored.resumeType);
+        sessionStorage.removeItem('pendingResume');
+        // Navigate to preview tab and clean URL
+        setActiveTab('preview');
+        window.history.replaceState({}, '', '/');
+      } catch {
+        console.error('Failed to restore resume from session');
       }
     }
   }, [loadResume]);
