@@ -47,7 +47,7 @@ export interface ResumeData {
 
 export type TemplateType = 'classic' | 'modern' | 'minimal' | 'executive' | 'creative' | 'tech' | 'academic' | 'compact' | 'elegant' | 'biodata';
 
-export type ResumeType = 'professional' | 'entry-level' | 'career-change' | 'academic' | 'technical' | 'executive' | 'creative' | 'internship' | 'biodata';
+export type ResumeType = 'professional' | 'entry-level' | 'career-change' | 'academic' | 'technical' | 'executive' | 'creative' | 'internship' | 'biodata' | 'sales' | 'marketing' | 'finance' | 'fresher' | 'hr' | 'operations' | 'management' | 'healthcare' | 'government';
 
 export interface ResumeTypeInfo {
   id: ResumeType;
