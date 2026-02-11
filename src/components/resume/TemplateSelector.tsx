@@ -83,6 +83,11 @@ const templates: { id: TemplateType; name: string; description: string }[] = [
     name: 'Sidebar',
     description: 'Dark teal right sidebar layout',
   },
+  {
+    id: 'business-project-manager',
+    name: 'Business Project Manager',
+    description: 'Corporate two-column with achievements',
+  },
 ];
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
