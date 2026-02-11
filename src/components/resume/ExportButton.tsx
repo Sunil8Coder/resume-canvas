@@ -21,12 +21,19 @@ export const ExportButton: React.FC = () => {
   const [isSaving, setIsSaving] = React.useState(false);
 
   const requireAuth = () => {
+    // Persist resume state so data survives the auth redirect
+    sessionStorage.setItem('pendingResume', JSON.stringify({
+      data: resumeData,
+      template: selectedTemplate,
+      resumeType: selectedResumeType,
+      title: resumeTitle,
+    }));
     toast({
       title: 'Login Required',
-      description: 'Please login to download your resume.',
+      description: 'Please login to download your resume. Your data has been saved.',
       variant: 'destructive',
     });
-    navigate('/auth');
+    navigate('/auth?redirect=export');
   };
 
   const saveResumeToBackend = async (): Promise<boolean> => {

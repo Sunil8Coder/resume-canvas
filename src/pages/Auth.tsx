@@ -57,7 +57,8 @@ const Auth: React.FC = () => {
       description: "You have successfully logged in.",
     });
     
-    navigate('/');
+    const params = new URLSearchParams(window.location.search);
+    navigate(params.get('redirect') === 'export' ? '/?restoreResume=true' : '/');
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -108,7 +109,8 @@ const Auth: React.FC = () => {
       description: "Welcome to Resume4J. Start building your resume!",
     });
     
-    navigate('/');
+    const params = new URLSearchParams(window.location.search);
+    navigate(params.get('redirect') === 'export' ? '/?restoreResume=true' : '/');
   };
 
   return (
