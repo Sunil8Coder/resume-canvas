@@ -16,7 +16,7 @@ export const TimelineTemplate: React.FC<TimelineTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-800 p-8 min-h-full font-sans">
+    <div className="bg-white text-gray-800 px-8 pt-10 pb-8 min-h-full font-sans">
       {/* Header */}
       <header className="flex items-center gap-6 mb-8 pb-6 border-b-2 border-emerald-500">
         {personalInfo.photo && (

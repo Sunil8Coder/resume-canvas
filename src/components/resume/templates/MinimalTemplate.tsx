@@ -15,7 +15,7 @@ export const MinimalTemplate: React.FC<MinimalTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-900 p-8 min-h-full font-sans">
+    <div className="bg-white text-gray-900 px-8 pt-10 pb-8 min-h-full font-sans">
       {/* Header */}
       <header className="mb-8">
         <div className="flex items-center gap-4">

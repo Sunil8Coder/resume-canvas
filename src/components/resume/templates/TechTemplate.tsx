@@ -16,7 +16,7 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-slate-900 text-gray-100 p-8 min-h-full font-mono">
+    <div className="bg-slate-900 text-gray-100 px-8 pt-10 pb-8 min-h-full font-mono">
       {/* Header */}
       <header className="mb-8 border-b border-emerald-500/30 pb-6">
         <div className="flex items-center gap-2 mb-2">
