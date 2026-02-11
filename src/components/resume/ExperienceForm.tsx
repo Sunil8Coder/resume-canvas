@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 export const ExperienceForm: React.FC = () => {
   const { resumeData, addExperience, updateExperience, removeExperience } = useResume();
-  const { experiences } = resumeData;
+  const experiences = resumeData.experiences || [];
 
   return (
     <div className="space-y-6">

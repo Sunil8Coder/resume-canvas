@@ -21,7 +21,7 @@ const skillLevels = [
 
 export const SkillsForm: React.FC = () => {
   const { resumeData, addSkill, updateSkill, removeSkill } = useResume();
-  const { skills } = resumeData;
+  const skills = resumeData.skills || [];
 
   return (
     <div className="space-y-4">
