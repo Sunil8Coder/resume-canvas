@@ -38,6 +38,25 @@ export const exportToPDF = async () => {
   element.style.maxHeight = 'none';
   element.style.overflow = 'visible';
 
+  // Fix rounded elements: force text to stay inside rounded containers
+  const roundedEls = element.querySelectorAll<HTMLElement>(
+    '[class*="rounded-full"], [class*="rounded-lg"], [class*="rounded-2xl"], [class*="rounded-md"]'
+  );
+  const originalRoundedStyles: { el: HTMLElement; overflow: string; whiteSpace: string; textOverflow: string; lineHeight: string }[] = [];
+  roundedEls.forEach((el) => {
+    originalRoundedStyles.push({
+      el,
+      overflow: el.style.overflow,
+      whiteSpace: el.style.whiteSpace,
+      textOverflow: el.style.textOverflow,
+      lineHeight: el.style.lineHeight,
+    });
+    el.style.overflow = 'hidden';
+    el.style.whiteSpace = 'nowrap';
+    el.style.textOverflow = 'ellipsis';
+    el.style.lineHeight = 'normal';
+  });
+
   await new Promise(resolve => setTimeout(resolve, 150));
 
   // Measure the natural content height vs A4 height
@@ -118,6 +137,14 @@ export const exportToPDF = async () => {
     element.style.maxHeight = originalMaxHeight;
     element.style.overflow = originalOverflow;
     element.style.fontSize = originalFontSize;
+
+    // Restore rounded element styles
+    originalRoundedStyles.forEach(({ el, overflow, whiteSpace, textOverflow, lineHeight }) => {
+      el.style.overflow = overflow;
+      el.style.whiteSpace = whiteSpace;
+      el.style.textOverflow = textOverflow;
+      el.style.lineHeight = lineHeight;
+    });
   }
 };
 
