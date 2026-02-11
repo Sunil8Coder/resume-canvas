@@ -47,12 +47,15 @@ export const exportToPDF = async () => {
       letterRendering: true,
       scrollY: 0,
       scrollX: 0,
+      height: element.scrollHeight,
+      windowHeight: element.scrollHeight,
     },
     jsPDF: { 
       unit: 'mm' as const, 
       format: 'a4' as const, 
       orientation: 'portrait' as const,
     },
+    pagebreak: { mode: ['avoid-all'] },
   };
 
   try {
