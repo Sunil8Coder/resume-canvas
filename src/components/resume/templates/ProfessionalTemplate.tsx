@@ -16,9 +16,9 @@ export const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({ data
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-800 min-h-full font-sans flex">
-      {/* Left Main Column */}
-      <div className="flex-1 p-6 pr-4">
+     <div className="bg-white text-gray-800 min-h-full font-sans flex pt-3">
+       {/* Left Main Column */}
+       <div className="flex-1 p-6 pr-4 pt-8">
         {/* Header */}
         <header className="mb-5">
           <div className="flex items-center gap-4 mb-2">

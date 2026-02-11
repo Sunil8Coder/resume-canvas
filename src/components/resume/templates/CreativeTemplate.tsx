@@ -23,7 +23,7 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-900 min-h-full" style={{ fontFamily: 'system-ui, sans-serif' }}>
+    <div className="bg-white text-gray-900 min-h-full pt-3" style={{ fontFamily: 'system-ui, sans-serif' }}>
       {/* Vibrant Header */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600"></div>

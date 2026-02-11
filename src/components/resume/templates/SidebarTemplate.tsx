@@ -16,9 +16,9 @@ export const SidebarTemplate: React.FC<SidebarTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-800 min-h-full font-sans flex">
-      {/* Left Main Content */}
-      <div className="flex-1 p-6">
+     <div className="bg-white text-gray-800 min-h-full font-sans flex pt-3">
+       {/* Left Main Content */}
+       <div className="flex-1 p-6 pt-8">
         {/* Header */}
         <header className="mb-5">
           <h1 className="text-2xl font-bold text-gray-900 uppercase tracking-wide mb-1">

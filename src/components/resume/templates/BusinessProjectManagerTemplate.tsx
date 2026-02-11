@@ -36,9 +36,9 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
   });
 
   return (
-    <div className="bg-white text-gray-800 font-sans flex flex-col" style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", minHeight: '297mm' }}>
-      {/* Header */}
-      <header className="px-7 pt-7 pb-4 bg-gray-50 border-b border-gray-200">
+     <div className="bg-white text-gray-800 font-sans flex flex-col pt-3" style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", minHeight: '297mm' }}>
+       {/* Header */}
+       <header className="px-7 pt-5 pb-4 bg-gray-50 border-b border-gray-200">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h1 className="text-[26px] font-extrabold text-gray-900 tracking-tight uppercase leading-tight">

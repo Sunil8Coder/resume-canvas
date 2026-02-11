@@ -9,7 +9,7 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
   const { personalInfo, education, skills } = data;
 
   return (
-    <div className="p-10 font-serif text-gray-800 bg-gradient-to-br from-amber-50 to-orange-50 min-h-full">
+    <div className="px-10 pt-12 pb-10 font-serif text-gray-800 bg-gradient-to-br from-amber-50 to-orange-50 min-h-full">
       {/* Decorative Header */}
       <div className="text-center mb-8 relative">
         <div className="absolute left-0 right-0 top-1/2 border-t-2 border-amber-400" />

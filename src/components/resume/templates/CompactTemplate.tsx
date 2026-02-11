@@ -16,7 +16,7 @@ export const CompactTemplate: React.FC<CompactTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-900 p-6 min-h-full font-sans text-sm">
+    <div className="bg-white text-gray-900 px-6 pt-8 pb-6 min-h-full font-sans text-sm">
       {/* Header - Compact */}
       <header className="mb-4 pb-3 border-b border-gray-300">
         <div className="flex justify-between items-start flex-wrap gap-2">

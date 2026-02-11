@@ -16,7 +16,7 @@ export const CenteredTemplate: React.FC<CenteredTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-800 p-8 min-h-full font-sans">
+    <div className="bg-white text-gray-800 px-8 pt-10 pb-8 min-h-full font-sans">
       {/* Centered Header */}
       <header className="text-center mb-6 pb-4 border-b border-gray-200">
         <div className="flex items-center justify-center gap-4 mb-2">

@@ -16,7 +16,7 @@ export const ElegantTemplate: React.FC<ElegantTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-gradient-to-br from-stone-50 to-amber-50 text-gray-900 p-8 min-h-full font-serif">
+    <div className="bg-gradient-to-br from-stone-50 to-amber-50 text-gray-900 px-8 pt-10 pb-8 min-h-full font-serif">
       {/* Header */}
       <header className="text-center mb-8">
         {personalInfo.photo && (

@@ -16,7 +16,7 @@ export const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-    <div className="bg-white text-gray-900 p-8 min-h-full font-serif">
+    <div className="bg-white text-gray-900 px-8 pt-10 pb-8 min-h-full font-serif">
       {/* Header */}
       <header className="text-center border-b-2 border-gray-800 pb-4 mb-6">
         {personalInfo.photo && (
