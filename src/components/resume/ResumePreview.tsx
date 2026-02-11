@@ -10,6 +10,8 @@ import { AcademicTemplate } from './templates/AcademicTemplate';
 import { CompactTemplate } from './templates/CompactTemplate';
 import { ElegantTemplate } from './templates/ElegantTemplate';
 import { BiodataTemplate } from './templates/BiodataTemplate';
+import { CorporateTemplate } from './templates/CorporateTemplate';
+import { TimelineTemplate } from './templates/TimelineTemplate';
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -37,6 +39,10 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) 
         return <ElegantTemplate data={data} />;
       case 'biodata':
         return <BiodataTemplate data={data} />;
+      case 'corporate':
+        return <CorporateTemplate data={data} />;
+      case 'timeline':
+        return <TimelineTemplate data={data} />;
       case 'classic':
       default:
         return <ClassicTemplate data={data} />;

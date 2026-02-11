@@ -1,7 +1,18 @@
 import { ResumeData, ResumeType } from '@/types/resume';
 import defaultAvatar from '@/assets/default-avatar.jpg';
-import maleAvatar from '@/assets/male-avatar.jpg';
-import femaleAvatar from '@/assets/female-avatar.jpg';
+import avatarTechnical from '@/assets/avatar-technical.jpg';
+import avatarSales from '@/assets/avatar-sales.jpg';
+import avatarMarketing from '@/assets/avatar-marketing.jpg';
+import avatarFinance from '@/assets/avatar-finance.jpg';
+import avatarFresher from '@/assets/avatar-fresher.jpg';
+import avatarHR from '@/assets/avatar-hr.jpg';
+import avatarOperations from '@/assets/avatar-operations.jpg';
+import avatarManagement from '@/assets/avatar-management.jpg';
+import avatarHealthcare from '@/assets/avatar-healthcare.jpg';
+import avatarCreative from '@/assets/avatar-creative.jpg';
+import avatarGovernment from '@/assets/avatar-government.jpg';
+import avatarMale from '@/assets/avatar-male.jpg';
+import avatarFemale from '@/assets/avatar-female.jpg';
 
 const sectionOrder = ['experience', 'education', 'skills'];
 
@@ -15,7 +26,7 @@ const technicalData: ResumeData = {
     summary: 'Full Stack Developer with 6+ years of experience in building scalable web applications using React, Node.js, and AWS. Passionate about clean architecture, performance optimization, and mentoring teams.',
     linkedin: 'linkedin.com/in/arjunmehta',
     website: 'arjunmehta.dev',
-    photo: maleAvatar,
+    photo: avatarTechnical,
   },
   experiences: [
     {
@@ -52,7 +63,7 @@ const salesData: ResumeData = {
     title: 'Senior Sales Executive',
     summary: 'Results-driven Sales Executive with 7+ years of experience in B2B sales and business development. Consistently exceeded annual targets by 20-30%. Skilled in consultative selling, key account management, and building long-term client relationships.',
     linkedin: 'linkedin.com/in/priyasharma',
-    photo: femaleAvatar,
+    photo: avatarSales,
   },
   experiences: [
     {
@@ -91,7 +102,7 @@ const marketingData: ResumeData = {
     summary: 'Creative Digital Marketing Manager with 5+ years driving brand growth through data-driven campaigns. Expertise in SEO, SEM, social media strategy, and performance marketing. Delivered 3x ROI on ad spend across multiple channels.',
     linkedin: 'linkedin.com/in/snehakapoor',
     website: 'snehakapoor.com',
-    photo: femaleAvatar,
+    photo: avatarMarketing,
   },
   experiences: [
     {
@@ -128,7 +139,7 @@ const financeData: ResumeData = {
     title: 'Chartered Accountant & Financial Analyst',
     summary: 'Chartered Accountant with 6+ years of experience in financial reporting, tax compliance, and audit management. Expert in GST, Income Tax, and IFRS. Proficient in SAP FICO and Tally ERP for streamlined financial operations.',
     linkedin: 'linkedin.com/in/rahuljain',
-    photo: maleAvatar,
+    photo: avatarFinance,
   },
   experiences: [
     {
@@ -166,7 +177,7 @@ const fresherData: ResumeData = {
     title: 'B.Tech Graduate — Computer Science',
     summary: 'Motivated B.Tech graduate in Computer Science with strong academic record and hands-on project experience. Proficient in Java, Python, and web development. Eager to apply theoretical knowledge and fresh perspectives in a dynamic work environment.',
     linkedin: 'linkedin.com/in/ananyasingh',
-    photo: femaleAvatar,
+    photo: avatarFresher,
   },
   experiences: [
     {
@@ -199,7 +210,7 @@ const hrData: ResumeData = {
     title: 'Senior HR Business Partner',
     summary: 'HR professional with 8+ years of experience in talent acquisition, employee engagement, and organizational development. Reduced attrition by 25% through data-driven retention strategies. Skilled in HR analytics, policy design, and performance management systems.',
     linkedin: 'linkedin.com/in/kavitareddy',
-    photo: femaleAvatar,
+    photo: avatarHR,
   },
   experiences: [
     {
@@ -236,7 +247,7 @@ const operationsData: ResumeData = {
     title: 'Operations Manager',
     summary: 'Operations Manager with 9+ years of experience in process optimization, supply chain management, and cost reduction. Achieved 30% improvement in operational efficiency through lean methodologies and vendor management strategies.',
     linkedin: 'linkedin.com/in/vikrampatel',
-    photo: maleAvatar,
+    photo: avatarOperations,
   },
   experiences: [
     {
@@ -274,7 +285,7 @@ const managementData: ResumeData = {
     title: 'Director of Product & Engineering',
     summary: 'Strategic leader with 12+ years of experience driving product strategy, engineering excellence, and cross-functional team management. Delivered products impacting 10M+ users. Skilled in stakeholder management, agile transformation, and P&L ownership.',
     linkedin: 'linkedin.com/in/deepakgupta',
-    photo: maleAvatar,
+    photo: avatarManagement,
   },
   experiences: [
     {
@@ -312,7 +323,7 @@ const healthcareData: ResumeData = {
     title: 'Senior Physician — Internal Medicine',
     summary: 'Experienced physician with 10+ years in internal medicine, patient care, and clinical research. Published 8 research papers in peer-reviewed journals. Committed to evidence-based practice and compassionate patient care with expertise in chronic disease management.',
     linkedin: 'linkedin.com/in/drmeera',
-    photo: femaleAvatar,
+    photo: avatarHealthcare,
   },
   experiences: [
     {
@@ -351,7 +362,7 @@ const creativeData: ResumeData = {
     summary: 'Creative UI/UX Designer with 6+ years crafting delightful digital experiences. Portfolio includes 50+ shipped products across web and mobile. Expert in design systems, user research, and prototyping. Passionate about accessibility and human-centered design.',
     linkedin: 'linkedin.com/in/nishaverma',
     website: 'nishaverma.design',
-    photo: femaleAvatar,
+    photo: avatarCreative,
   },
   experiences: [
     {
@@ -389,7 +400,7 @@ const governmentData: ResumeData = {
     title: 'Administrative Officer — Government Services',
     summary: 'Dedicated administrative officer with 10+ years in public sector management. Experienced in policy implementation, public grievance redressal, and e-governance initiatives. Cleared UPSC Civil Services Examination and served in multiple government departments.',
     linkedin: 'linkedin.com/in/rajeshkumar',
-    photo: maleAvatar,
+    photo: avatarGovernment,
   },
   experiences: [
     {
@@ -415,6 +426,23 @@ const governmentData: ResumeData = {
     { id: '5', name: 'Stakeholder Coordination', level: 'expert' },
     { id: '6', name: 'Disaster Management', level: 'intermediate' },
   ],
+  sectionOrder,
+};
+
+const newTemplateData: ResumeData = {
+  personalInfo: {
+    fullName: 'New Template User',
+    email: 'new.template@email.com',
+    phone: '+91 12345 67890',
+    location: 'New City, India',
+    title: 'Entry Level Position',
+    summary: 'A summary for the new template user.',
+    linkedin: 'linkedin.com/in/newtemplate',
+    photo: avatarMale,
+  },
+  experiences: [],
+  education: [],
+  skills: [],
   sectionOrder,
 };
 
