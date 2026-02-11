@@ -103,23 +103,15 @@ const ResumeBuilderContent: React.FC = () => {
     switch (activeTab) {
       case 'purpose':
         return (
-          <div className="space-y-6">
-            <div className="space-y-3">
-              <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
-              <p className="text-sm text-muted-foreground">
-                Choose the type that matches your career situation. This will pre-fill your resume with relevant sample data.
-              </p>
-              <ResumeTypeSelector 
-                selected={selectedResumeType} 
-                onSelect={handleResumeTypeSelect} 
-              />
-            </div>
-
-            <div className="space-y-3">
-              <h2 className="text-lg font-semibold text-foreground">Choose Your Template</h2>
-              <p className="text-sm text-muted-foreground">Select a design that best represents you</p>
-              <TemplateSelector selected={selectedTemplate} onSelect={setSelectedTemplate} />
-            </div>
+          <div className="space-y-3">
+            <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
+            <p className="text-sm text-muted-foreground">
+              Choose the type that matches your career situation. This will pre-fill your resume with relevant sample data.
+            </p>
+            <ResumeTypeSelector 
+              selected={selectedResumeType} 
+              onSelect={handleResumeTypeSelect} 
+            />
           </div>
         );
       case 'personal':
@@ -132,14 +124,22 @@ const ResumeBuilderContent: React.FC = () => {
         return <SkillsForm />;
       case 'preview':
         return (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
-              <ExportButton />
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-foreground">Choose Your Template</h2>
+              <p className="text-sm text-muted-foreground">Select a design that best represents you</p>
+              <TemplateSelector selected={selectedTemplate} onSelect={setSelectedTemplate} />
             </div>
-            <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
-              <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
-                <ResumePreview data={resumeData} template={selectedTemplate} />
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
+                <ExportButton />
+              </div>
+              <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
+                <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
+                  <ResumePreview data={resumeData} template={selectedTemplate} />
+                </div>
               </div>
             </div>
           </div>
