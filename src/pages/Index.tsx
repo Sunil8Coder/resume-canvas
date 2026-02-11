@@ -19,9 +19,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
 
-type TabId = 'personal' | 'experience' | 'education' | 'skills' | 'preview';
+type TabId = 'purpose' | 'personal' | 'experience' | 'education' | 'skills' | 'preview';
 
 const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
+  { id: 'purpose', label: 'Purpose', icon: <FileText className="w-4 h-4" /> },
   { id: 'personal', label: 'Personal', icon: <User className="w-4 h-4" /> },
   { id: 'experience', label: 'Experience', icon: <Briefcase className="w-4 h-4" /> },
   { id: 'education', label: 'Education', icon: <GraduationCap className="w-4 h-4" /> },
@@ -33,7 +34,7 @@ const ResumeBuilderContent: React.FC = () => {
   const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, loadResume, resetResume } = useResume();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<TabId>('personal');
+  const [activeTab, setActiveTab] = useState<TabId>('purpose');
 
   // Load resume from sessionStorage if editing or restoring after auth
   useEffect(() => {
@@ -100,21 +101,13 @@ const ResumeBuilderContent: React.FC = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'personal':
-        return <PersonalInfoForm />;
-      case 'experience':
-        return <ExperienceForm />;
-      case 'education':
-        return <EducationForm />;
-      case 'skills':
-        return <SkillsForm />;
-      case 'preview':
+      case 'purpose':
         return (
           <div className="space-y-6">
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
               <p className="text-sm text-muted-foreground">
-                Choose the type that matches your career situation.
+                Choose the type that matches your career situation. This will pre-fill your resume with relevant sample data.
               </p>
               <ResumeTypeSelector 
                 selected={selectedResumeType} 
@@ -127,16 +120,26 @@ const ResumeBuilderContent: React.FC = () => {
               <p className="text-sm text-muted-foreground">Select a design that best represents you</p>
               <TemplateSelector selected={selectedTemplate} onSelect={setSelectedTemplate} />
             </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
-                <ExportButton />
-              </div>
-              <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
-                <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
-                  <ResumePreview data={resumeData} template={selectedTemplate} />
-                </div>
+          </div>
+        );
+      case 'personal':
+        return <PersonalInfoForm />;
+      case 'experience':
+        return <ExperienceForm />;
+      case 'education':
+        return <EducationForm />;
+      case 'skills':
+        return <SkillsForm />;
+      case 'preview':
+        return (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
+              <ExportButton />
+            </div>
+            <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
+              <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
+                <ResumePreview data={resumeData} template={selectedTemplate} />
               </div>
             </div>
           </div>
@@ -271,6 +274,7 @@ const ResumeBuilderContent: React.FC = () => {
                 {tabs.find(t => t.id === activeTab)?.label} {activeTab !== 'preview' && 'Details'}
               </h2>
               <p className="text-sm text-muted-foreground">
+                {activeTab === 'purpose' && 'Choose your resume type and template'}
                 {activeTab === 'personal' && 'Add your basic contact information'}
                 {activeTab === 'experience' && 'Add your work experience'}
                 {activeTab === 'education' && 'Add your educational background'}
