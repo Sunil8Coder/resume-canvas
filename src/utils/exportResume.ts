@@ -38,23 +38,27 @@ export const exportToPDF = async () => {
   element.style.maxHeight = 'none';
   element.style.overflow = 'visible';
 
-  // Fix rounded elements: force text to stay inside rounded containers
+  // Fix rounded elements for html2canvas: temporarily remove border-radius
+  // and ensure text stays contained. html2canvas misrenders text in rounded containers.
   const roundedEls = element.querySelectorAll<HTMLElement>(
-    '[class*="rounded-full"], [class*="rounded-lg"], [class*="rounded-2xl"], [class*="rounded-md"]'
+    '[class*="rounded"]'
   );
-  const originalRoundedStyles: { el: HTMLElement; overflow: string; whiteSpace: string; textOverflow: string; lineHeight: string }[] = [];
+  const originalRoundedStyles: { el: HTMLElement; borderRadius: string; overflow: string }[] = [];
   roundedEls.forEach((el) => {
-    originalRoundedStyles.push({
-      el,
-      overflow: el.style.overflow,
-      whiteSpace: el.style.whiteSpace,
-      textOverflow: el.style.textOverflow,
-      lineHeight: el.style.lineHeight,
-    });
-    el.style.overflow = 'hidden';
-    el.style.whiteSpace = 'nowrap';
-    el.style.textOverflow = 'ellipsis';
-    el.style.lineHeight = 'normal';
+    const computed = window.getComputedStyle(el);
+    if (computed.borderRadius && computed.borderRadius !== '0px') {
+      originalRoundedStyles.push({
+        el,
+        borderRadius: el.style.borderRadius,
+        overflow: el.style.overflow,
+      });
+      // Keep a small radius for visual appeal, but remove full rounding that causes text issues
+      const radiusValue = parseFloat(computed.borderRadius);
+      if (radiusValue > 8) {
+        el.style.borderRadius = '4px';
+      }
+      el.style.overflow = 'hidden';
+    }
   });
 
   await new Promise(resolve => setTimeout(resolve, 150));
@@ -139,11 +143,9 @@ export const exportToPDF = async () => {
     element.style.fontSize = originalFontSize;
 
     // Restore rounded element styles
-    originalRoundedStyles.forEach(({ el, overflow, whiteSpace, textOverflow, lineHeight }) => {
+    originalRoundedStyles.forEach(({ el, borderRadius, overflow }) => {
+      el.style.borderRadius = borderRadius;
       el.style.overflow = overflow;
-      el.style.whiteSpace = whiteSpace;
-      el.style.textOverflow = textOverflow;
-      el.style.lineHeight = lineHeight;
     });
   }
 };
