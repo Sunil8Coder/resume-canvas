@@ -11,8 +11,6 @@ import avatarManagement from '@/assets/avatar-management.jpg';
 import avatarHealthcare from '@/assets/avatar-healthcare.jpg';
 import avatarCreative from '@/assets/avatar-creative.jpg';
 import avatarGovernment from '@/assets/avatar-government.jpg';
-import avatarMale from '@/assets/avatar-male.jpg';
-import avatarFemale from '@/assets/avatar-female.jpg';
 
 const sectionOrder = ['experience', 'education', 'skills'];
 
@@ -429,22 +427,6 @@ const governmentData: ResumeData = {
   sectionOrder,
 };
 
-const newTemplateData: ResumeData = {
-  personalInfo: {
-    fullName: 'New Template User',
-    email: 'new.template@email.com',
-    phone: '+91 12345 67890',
-    location: 'New City, India',
-    title: 'Entry Level Position',
-    summary: 'A summary for the new template user.',
-    linkedin: 'linkedin.com/in/newtemplate',
-    photo: avatarMale,
-  },
-  experiences: [],
-  education: [],
-  skills: [],
-  sectionOrder,
-};
 
 export const resumeTypeDataMap: Partial<Record<ResumeType, ResumeData>> = {
   technical: technicalData,
