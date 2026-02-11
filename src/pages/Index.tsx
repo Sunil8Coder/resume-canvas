@@ -31,7 +31,7 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 ];
 
 const ResumeBuilderContent: React.FC = () => {
-  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, loadResume, resetResume } = useResume();
+  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, currentResumeId, loadResume, resetResume } = useResume();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('purpose');
@@ -44,9 +44,8 @@ const ResumeBuilderContent: React.FC = () => {
         const resume = JSON.parse(editResumeData);
         loadResume(resume.id, resume.title, resume.data, resume.templateType, resume.resumeType);
         sessionStorage.removeItem('editResume');
-        // Jump to personal tab so the user edits their data instead of landing on purpose tab
-        // which would overwrite their saved data with prefilled sample data
-        setActiveTab('personal');
+        // Stay on purpose tab (default) — data is already loaded into context
+        // so all tabs will show the saved data
       } catch {
         console.error('Failed to load resume from session');
       }
@@ -79,10 +78,12 @@ const ResumeBuilderContent: React.FC = () => {
     if (recommendedTemplates.length > 0) {
       setSelectedTemplate(recommendedTemplates[0]);
     }
-    // Load prefilled data for this type if available
-    const prefilledData = resumeTypeDataMap[type];
-    if (prefilledData) {
-      loadResume(null, `My ${type.charAt(0).toUpperCase() + type.slice(1)} Resume`, prefilledData, recommendedTemplates[0] || selectedTemplate, type);
+    // Only load prefilled sample data for NEW resumes, not when editing a saved one
+    if (!currentResumeId) {
+      const prefilledData = resumeTypeDataMap[type];
+      if (prefilledData) {
+        loadResume(null, `My ${type.charAt(0).toUpperCase() + type.slice(1)} Resume`, prefilledData, recommendedTemplates[0] || selectedTemplate, type);
+      }
     }
   };
 
