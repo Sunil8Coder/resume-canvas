@@ -23,7 +23,7 @@ export const ProfessionalTemplate: React.FC<ProfessionalTemplateProps> = ({ data
         <header className="mb-5">
           <div className="flex items-center gap-4 mb-2">
             {personalInfo.photo && (
-              <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-14 h-14 rounded-full object-cover" />
+              <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-14 h-14 rounded-sm object-cover" />
             )}
             <div>
               <h1 className="text-2xl font-bold text-gray-900 uppercase tracking-wide">

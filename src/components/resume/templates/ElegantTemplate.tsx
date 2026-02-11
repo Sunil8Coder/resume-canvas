@@ -20,7 +20,7 @@ export const ElegantTemplate: React.FC<ElegantTemplateProps> = ({ data }) => {
       {/* Header */}
       <header className="text-center mb-8">
         {personalInfo.photo && (
-          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-amber-400 shadow-md" />
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-sm object-cover mx-auto mb-4 border-2 border-amber-400 shadow-md" />
         )}
         <div className="inline-block">
           <h1 className="text-4xl font-light text-stone-800 tracking-widest mb-2">
@@ -139,7 +139,7 @@ export const ElegantTemplate: React.FC<ElegantTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-4 py-1.5 bg-white/60 text-stone-700 text-sm rounded-full border border-amber-200 shadow-sm"
+                className="px-4 py-1.5 bg-white/60 text-stone-700 text-sm rounded-sm border border-amber-200 shadow-sm"
               >
                 {skill.name}
               </span>

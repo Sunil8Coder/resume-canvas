@@ -15,9 +15,9 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
         <div className="absolute left-0 right-0 top-1/2 border-t-2 border-amber-400" />
         <div className="relative inline-block bg-gradient-to-br from-amber-50 to-orange-50 px-6">
           {personalInfo.photo ? (
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 mx-auto mb-4 rounded-full object-cover border-4 border-amber-500" />
-          ) : (
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-amber-500 bg-amber-100 flex items-center justify-center">
+             <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 mx-auto mb-4 rounded-sm object-cover border-4 border-amber-500" />
+           ) : (
+             <div className="w-20 h-20 mx-auto mb-4 rounded-sm border-4 border-amber-500 bg-amber-100 flex items-center justify-center">
               <span className="text-3xl text-amber-700">
                 {personalInfo.fullName.charAt(0)}
               </span>
@@ -32,7 +32,7 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
           {personalInfo.fullName || 'Your Name'}
         </h1>
         <p className="text-lg text-amber-600 italic">Biodata</p>
-        <div className="w-32 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-4 rounded-full" />
+        <div className="w-32 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-4 rounded-sm" />
       </div>
 
       {/* Personal Information Section */}
@@ -115,7 +115,7 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-full border border-amber-300 text-sm"
+                className="px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-sm border border-amber-300 text-sm"
               >
                 {skill.name}
               </span>
@@ -143,7 +143,7 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
 
       {/* Decorative Footer */}
       <div className="mt-8 text-center">
-        <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-full" />
+        <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-sm" />
       </div>
     </div>
   );

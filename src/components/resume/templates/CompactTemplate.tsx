@@ -22,7 +22,7 @@ export const CompactTemplate: React.FC<CompactTemplateProps> = ({ data }) => {
         <div className="flex justify-between items-start flex-wrap gap-2">
           <div className="flex items-center gap-3">
             {personalInfo.photo && (
-              <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-14 h-14 rounded-full object-cover" />
+              <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-14 h-14 rounded-sm object-cover" />
             )}
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
