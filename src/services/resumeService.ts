@@ -1,11 +1,11 @@
-import { api } from '@/lib/api';
-import { ResumeData, TemplateType, ResumeType } from '@/types/resume';
+import { api } from "@/lib/api";
+import { ResumeData, TemplateType, ResumeType } from "@/types/resume";
 
 // What the backend actually returns
 interface BackendResume {
   id: string;
   title: string;
-  resume_type: string;
+  resumeType: string;
   content: string; // JSON string of ResumeData
   template: string;
   created_at: string;
@@ -44,24 +44,24 @@ export interface UpdateResumeRequest {
 function normalizeResume(raw: BackendResume): SavedResume {
   let parsedData: ResumeData;
   try {
-    parsedData = typeof raw.content === 'string' ? JSON.parse(raw.content) : raw.content;
+    parsedData = typeof raw.content === "string" ? JSON.parse(raw.content) : raw.content;
   } catch {
-    console.error('Failed to parse resume content:', raw.content);
+    console.error("Failed to parse resume content:", raw.content);
     parsedData = {
-      personalInfo: { fullName: '', email: '', phone: '', location: '', title: '', summary: '' },
+      personalInfo: { fullName: "", email: "", phone: "", location: "", title: "", summary: "" },
       experiences: [],
       education: [],
       skills: [],
-      sectionOrder: ['experience', 'education', 'skills'],
+      sectionOrder: ["experience", "education", "skills"],
     };
   }
 
   return {
     id: raw.id,
-    userId: raw.userId || raw.user_id || '',
-    title: raw.title || 'Untitled',
-    templateType: (raw.template as TemplateType) || 'classic',
-    resumeType: (raw.resume_type as ResumeType) || 'professional',
+    userId: raw.userId || raw.user_id || "",
+    title: raw.title || "Untitled",
+    templateType: (raw.template as TemplateType) || "classic",
+    resumeType: (raw.resumeType as ResumeType) || "professional",
     data: parsedData,
     createdAt: raw.created_at || new Date().toISOString(),
     updatedAt: raw.updated_at || raw.created_at || new Date().toISOString(),
@@ -71,16 +71,16 @@ function normalizeResume(raw: BackendResume): SavedResume {
 // Transform frontend request to backend format
 function toBackendPayload(request: CreateResumeRequest | UpdateResumeRequest) {
   const payload: Record<string, unknown> = {};
-  if ('title' in request && request.title !== undefined) payload.title = request.title;
-  if ('templateType' in request && request.templateType !== undefined) payload.template = request.templateType;
-  if ('resumeType' in request && request.resumeType !== undefined) payload.resume_type = request.resumeType;
-  if ('data' in request && request.data !== undefined) payload.content = JSON.stringify(request.data);
+  if ("title" in request && request.title !== undefined) payload.title = request.title;
+  if ("templateType" in request && request.templateType !== undefined) payload.template = request.templateType;
+  if ("resumeType" in request && request.resumeType !== undefined) payload.resumeType = request.resumeType;
+  if ("data" in request && request.data !== undefined) payload.content = JSON.stringify(request.data);
   return payload;
 }
 
 export const resumeService = {
   async listResumes(): Promise<{ data?: SavedResume[]; total?: number; error?: string }> {
-    const response = await api.get<{ data: BackendResume[]; total: number }>('/resumes');
+    const response = await api.get<{ data: BackendResume[]; total: number }>("/resumes");
     if (response.error) return { error: response.error };
     const raw = response.data;
     if (!raw) return { data: [], total: 0 };
@@ -89,7 +89,7 @@ export const resumeService = {
   },
 
   async adminListResumes(offset = 0, limit = 10): Promise<{ data?: SavedResume[]; total?: number; error?: string }> {
-    const response = await api.get<{ data: BackendResume[]; total: number }>('/admin/resumes', true, { offset, limit });
+    const response = await api.get<{ data: BackendResume[]; total: number }>("/admin/resumes", true, { offset, limit });
     if (response.error) return { error: response.error };
     const raw = response.data;
     if (!raw) return { data: [], total: 0 };
@@ -100,15 +100,15 @@ export const resumeService = {
   async getResume(id: string): Promise<{ data?: SavedResume; error?: string }> {
     const response = await api.get<BackendResume>(`/resumes/${id}`);
     if (response.error) return { error: response.error };
-    if (!response.data) return { error: 'Resume not found' };
+    if (!response.data) return { error: "Resume not found" };
     return { data: normalizeResume(response.data) };
   },
 
   async createResume(resume: CreateResumeRequest): Promise<{ data?: SavedResume; error?: string }> {
     const payload = toBackendPayload(resume);
-    const response = await api.post<BackendResume>('/resumes', payload);
+    const response = await api.post<BackendResume>("/resumes", payload);
     if (response.error) return { error: response.error };
-    if (!response.data) return { error: 'No data returned' };
+    if (!response.data) return { error: "No data returned" };
     return { data: normalizeResume(response.data) };
   },
 
@@ -116,7 +116,7 @@ export const resumeService = {
     const payload = toBackendPayload(updates);
     const response = await api.put<BackendResume>(`/resumes/${id}`, payload);
     if (response.error) return { error: response.error };
-    if (!response.data) return { error: 'No data returned' };
+    if (!response.data) return { error: "No data returned" };
     return { data: normalizeResume(response.data) };
   },
 
