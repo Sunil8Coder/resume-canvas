@@ -44,6 +44,9 @@ const ResumeBuilderContent: React.FC = () => {
         const resume = JSON.parse(editResumeData);
         loadResume(resume.id, resume.title, resume.data, resume.templateType, resume.resumeType);
         sessionStorage.removeItem('editResume');
+        // Jump to personal tab so the user edits their data instead of landing on purpose tab
+        // which would overwrite their saved data with prefilled sample data
+        setActiveTab('personal');
       } catch {
         console.error('Failed to load resume from session');
       }
