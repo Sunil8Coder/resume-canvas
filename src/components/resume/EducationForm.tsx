@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 export const EducationForm: React.FC = () => {
   const { resumeData, addEducation, updateEducation, removeEducation } = useResume();
-  const { education } = resumeData;
+  const education = resumeData.education || [];
 
   return (
     <div className="space-y-6">
