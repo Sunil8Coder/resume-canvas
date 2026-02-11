@@ -1,14 +1,17 @@
-import React, { useRef } from 'react';
-import { User, Mail, Phone, MapPin, Briefcase, Globe, Linkedin, Camera, X } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { User, Mail, Phone, MapPin, Briefcase, Globe, Linkedin, Camera, X, Sparkles, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useResume } from '@/contexts/ResumeContext';
+import { aiService } from '@/services/aiService';
+import { toast } from 'sonner';
 
 export const PersonalInfoForm: React.FC = () => {
   const { resumeData, updatePersonalInfo } = useResume();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isEnhancing, setIsEnhancing] = useState(false);
   const personalInfo = resumeData?.personalInfo ?? {
     fullName: '', email: '', phone: '', location: '', title: '', summary: '', linkedin: '', website: '', photo: ''
   };
@@ -30,6 +33,22 @@ export const PersonalInfoForm: React.FC = () => {
   const removePhoto = () => {
     updatePersonalInfo('photo', '');
     if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleEnhanceSummary = async () => {
+    if (!personalInfo.summary?.trim()) {
+      toast.error('Please write a summary first before enhancing.');
+      return;
+    }
+    setIsEnhancing(true);
+    const result = await aiService.improveSummary(personalInfo.summary);
+    if (result.data) {
+      updatePersonalInfo('summary', result.data);
+      toast.success('Summary enhanced with AI!');
+    } else {
+      toast.error(result.error || 'Failed to enhance summary.');
+    }
+    setIsEnhancing(false);
   };
 
   return (
@@ -196,9 +215,26 @@ export const PersonalInfoForm: React.FC = () => {
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="summary" className="text-sm font-medium text-foreground">
-            Professional Summary
-          </Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="summary" className="text-sm font-medium text-foreground">
+              Professional Summary
+            </Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleEnhanceSummary}
+              disabled={isEnhancing}
+              className="gap-1.5 text-xs h-7 border-primary/30 text-primary hover:bg-primary/10"
+            >
+              {isEnhancing ? (
+                <Loader2 className="w-3 h-3 animate-spin" />
+              ) : (
+                <Sparkles className="w-3 h-3" />
+              )}
+              {isEnhancing ? 'Enhancing...' : 'Enhance with AI'}
+            </Button>
+          </div>
           <Textarea
             id="summary"
             value={personalInfo.summary}
