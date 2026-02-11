@@ -15,6 +15,7 @@ import { TimelineTemplate } from './templates/TimelineTemplate';
 import { ProfessionalTemplate } from './templates/ProfessionalTemplate';
 import { CenteredTemplate } from './templates/CenteredTemplate';
 import { SidebarTemplate } from './templates/SidebarTemplate';
+import { BusinessProjectManagerTemplate } from './templates/BusinessProjectManagerTemplate';
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -52,6 +53,8 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) 
         return <CenteredTemplate data={data} />;
       case 'sidebar':
         return <SidebarTemplate data={data} />;
+      case 'business-project-manager':
+        return <BusinessProjectManagerTemplate data={data} />;
       case 'classic':
       default:
         return <ClassicTemplate data={data} />;
