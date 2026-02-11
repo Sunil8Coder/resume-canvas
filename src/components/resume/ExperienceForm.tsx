@@ -1,5 +1,5 @@
-import React from 'react';
-import { Plus, Trash2, Building, MapPin, Calendar, Briefcase } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Trash2, Building, MapPin, Calendar, Briefcase, Sparkles, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -7,10 +7,30 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useResume } from '@/contexts/ResumeContext';
 import { cn } from '@/lib/utils';
+import { aiService } from '@/services/aiService';
+import { toast } from 'sonner';
 
 export const ExperienceForm: React.FC = () => {
   const { resumeData, addExperience, updateExperience, removeExperience } = useResume();
   const experiences = resumeData.experiences || [];
+  const [enhancingId, setEnhancingId] = useState<string | null>(null);
+
+  const handleEnhanceDescription = async (expId: string) => {
+    const exp = experiences.find(e => e.id === expId);
+    if (!exp?.description?.trim()) {
+      toast.error('Please write a description first before enhancing.');
+      return;
+    }
+    setEnhancingId(expId);
+    const result = await aiService.improveExperienceDescription(exp.position, exp.company, exp.description);
+    if (result.data) {
+      updateExperience(expId, 'description', result.data);
+      toast.success('Description enhanced with AI!');
+    } else {
+      toast.error(result.error || 'Failed to enhance description.');
+    }
+    setEnhancingId(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -120,7 +140,24 @@ export const ExperienceForm: React.FC = () => {
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <Label className="text-sm font-medium">Description</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-medium">Description</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEnhanceDescription(exp.id)}
+                  disabled={enhancingId === exp.id}
+                  className="gap-1.5 text-xs h-7 border-primary/30 text-primary hover:bg-primary/10"
+                >
+                  {enhancingId === exp.id ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <Sparkles className="w-3 h-3" />
+                  )}
+                  {enhancingId === exp.id ? 'Enhancing...' : 'Enhance with AI'}
+                </Button>
+              </div>
               <Textarea
                 value={exp.description}
                 onChange={(e) => updateExperience(exp.id, 'description', e.target.value)}
