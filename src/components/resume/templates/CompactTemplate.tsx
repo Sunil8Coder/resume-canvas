@@ -20,11 +20,16 @@ export const CompactTemplate: React.FC<CompactTemplateProps> = ({ data }) => {
       {/* Header - Compact */}
       <header className="mb-4 pb-3 border-b border-gray-300">
         <div className="flex justify-between items-start flex-wrap gap-2">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {personalInfo.fullName || 'Your Name'}
-            </h1>
-            <p className="text-gray-600">{personalInfo.title || 'Professional Title'}</p>
+          <div className="flex items-center gap-3">
+            {personalInfo.photo && (
+              <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-14 h-14 rounded-full object-cover" />
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {personalInfo.fullName || 'Your Name'}
+              </h1>
+              <p className="text-gray-600">{personalInfo.title || 'Professional Title'}</p>
+            </div>
           </div>
           <div className="text-right text-xs text-gray-600 space-y-0.5">
             {personalInfo.email && (

@@ -19,12 +19,19 @@ export const ExecutiveTemplate: React.FC<ExecutiveTemplateProps> = ({ data }) =>
     <div className="bg-white text-gray-900 min-h-full" style={{ fontFamily: 'Georgia, serif' }}>
       {/* Header with elegant gold accent */}
       <header className="bg-gradient-to-r from-amber-900 to-amber-800 text-white px-8 py-10">
-        <h1 className="text-4xl font-bold tracking-wide mb-2">
-          {personalInfo.fullName || 'Your Name'}
-        </h1>
-        <p className="text-amber-200 text-xl mb-4">
-          {personalInfo.title || 'Professional Title'}
-        </p>
+        <div className="flex items-center gap-6">
+          {personalInfo.photo && (
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-full object-cover border-2 border-amber-300" />
+          )}
+          <div>
+            <h1 className="text-4xl font-bold tracking-wide mb-2">
+              {personalInfo.fullName || 'Your Name'}
+            </h1>
+            <p className="text-amber-200 text-xl mb-4">
+              {personalInfo.title || 'Professional Title'}
+            </p>
+          </div>
+        </div>
         
         <div className="flex flex-wrap gap-4 text-sm text-amber-100">
           {personalInfo.email && (

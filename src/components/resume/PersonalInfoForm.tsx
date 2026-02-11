@@ -1,18 +1,86 @@
-import React from 'react';
-import { User, Mail, Phone, MapPin, Briefcase, Globe, Linkedin } from 'lucide-react';
+import React, { useRef } from 'react';
+import { User, Mail, Phone, MapPin, Briefcase, Globe, Linkedin, Camera, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useResume } from '@/contexts/ResumeContext';
 
 export const PersonalInfoForm: React.FC = () => {
   const { resumeData, updatePersonalInfo } = useResume();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const personalInfo = resumeData?.personalInfo ?? {
-    fullName: '', email: '', phone: '', location: '', title: '', summary: '', linkedin: '', website: ''
+    fullName: '', email: '', phone: '', location: '', title: '', summary: '', linkedin: '', website: '', photo: ''
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Photo must be under 2MB');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      updatePersonalInfo('photo', reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removePhoto = () => {
+    updatePersonalInfo('photo', '');
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   return (
     <div className="space-y-4">
+      {/* Photo Upload */}
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-foreground">Photo (Optional)</Label>
+        <div className="flex items-center gap-4">
+          {personalInfo.photo ? (
+            <div className="relative">
+              <img
+                src={personalInfo.photo}
+                alt="Profile"
+                className="w-20 h-20 rounded-full object-cover border-2 border-muted"
+              />
+              <button
+                onClick={removePhoto}
+                className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ) : (
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="w-20 h-20 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center cursor-pointer hover:border-primary transition-colors"
+            >
+              <Camera className="w-6 h-6 text-muted-foreground" />
+            </div>
+          )}
+          <div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {personalInfo.photo ? 'Change Photo' : 'Upload Photo'}
+            </Button>
+            <p className="text-xs text-muted-foreground mt-1">JPG, PNG under 2MB</p>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handlePhotoUpload}
+            className="hidden"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="fullName" className="text-sm font-medium text-foreground">

@@ -19,6 +19,9 @@ export const ElegantTemplate: React.FC<ElegantTemplateProps> = ({ data }) => {
     <div className="bg-gradient-to-br from-stone-50 to-amber-50 text-gray-900 p-8 min-h-full font-serif">
       {/* Header */}
       <header className="text-center mb-8">
+        {personalInfo.photo && (
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-amber-400 shadow-md" />
+        )}
         <div className="inline-block">
           <h1 className="text-4xl font-light text-stone-800 tracking-widest mb-2">
             {personalInfo.fullName?.toUpperCase() || 'YOUR NAME'}

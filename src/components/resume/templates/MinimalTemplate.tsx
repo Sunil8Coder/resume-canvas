@@ -18,10 +18,17 @@ export const MinimalTemplate: React.FC<MinimalTemplateProps> = ({ data }) => {
     <div className="bg-white text-gray-900 p-8 min-h-full font-sans">
       {/* Header */}
       <header className="mb-8">
-        <h1 className="text-4xl font-light tracking-tight text-gray-900 mb-1">
-          {personalInfo.fullName || 'Your Name'}
-        </h1>
-        <p className="text-lg text-gray-500 mb-4">{personalInfo.title || 'Professional Title'}</p>
+        <div className="flex items-center gap-4">
+          {personalInfo.photo && (
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-full object-cover" />
+          )}
+          <div>
+            <h1 className="text-4xl font-light tracking-tight text-gray-900 mb-1">
+              {personalInfo.fullName || 'Your Name'}
+            </h1>
+            <p className="text-lg text-gray-500">{personalInfo.title || 'Professional Title'}</p>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-4 text-sm text-gray-500">
           {personalInfo.email && <span>{personalInfo.email}</span>}
           {personalInfo.phone && <span>{personalInfo.phone}</span>}
