@@ -58,6 +58,16 @@ const templates: { id: TemplateType; name: string; description: string }[] = [
     name: 'Biodata',
     description: 'Personal & marriage biodata',
   },
+  {
+    id: 'corporate',
+    name: 'Corporate',
+    description: 'Bold sidebar with skill bars',
+  },
+  {
+    id: 'timeline',
+    name: 'Timeline',
+    description: 'Career timeline with green accents',
+  },
 ];
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
