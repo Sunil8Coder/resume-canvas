@@ -19,6 +19,9 @@ export const AcademicTemplate: React.FC<AcademicTemplateProps> = ({ data }) => {
     <div className="bg-white text-gray-900 p-8 min-h-full font-serif">
       {/* Header */}
       <header className="text-center mb-8 pb-6 border-b-4 border-double border-indigo-800">
+        {personalInfo.photo && (
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-20 h-20 rounded-full object-cover mx-auto mb-3 border-2 border-indigo-300" />
+        )}
         <h1 className="text-3xl font-bold text-indigo-900 mb-1 tracking-wide">
           {personalInfo.fullName || 'Your Name'}
         </h1>

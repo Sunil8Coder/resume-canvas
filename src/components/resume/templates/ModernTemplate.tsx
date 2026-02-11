@@ -26,6 +26,9 @@ export const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
     <div className="bg-white text-gray-900 min-h-full font-sans flex">
       {/* Sidebar */}
       <aside className="w-1/3 bg-slate-800 text-white p-6">
+        {personalInfo.photo && (
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-full object-cover border-2 border-blue-400 mb-4" />
+        )}
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1">{personalInfo.fullName || 'Your Name'}</h1>
           <p className="text-slate-300 text-sm">{personalInfo.title || 'Professional Title'}</p>

@@ -14,11 +14,15 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
       <div className="text-center mb-8 relative">
         <div className="absolute left-0 right-0 top-1/2 border-t-2 border-amber-400" />
         <div className="relative inline-block bg-gradient-to-br from-amber-50 to-orange-50 px-6">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-amber-500 bg-amber-100 flex items-center justify-center">
-            <span className="text-3xl text-amber-700">
-              {personalInfo.fullName.charAt(0)}
-            </span>
-          </div>
+          {personalInfo.photo ? (
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 mx-auto mb-4 rounded-full object-cover border-4 border-amber-500" />
+          ) : (
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-amber-500 bg-amber-100 flex items-center justify-center">
+              <span className="text-3xl text-amber-700">
+                {personalInfo.fullName.charAt(0)}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

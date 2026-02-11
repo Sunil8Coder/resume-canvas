@@ -33,12 +33,19 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
         </div>
         
         <div className="relative px-8 py-10 text-white">
-          <h1 className="text-4xl font-black mb-2">
-            {personalInfo.fullName || 'Your Name'}
-          </h1>
-          <p className="text-xl text-purple-200 font-light mb-6">
-            {personalInfo.title || 'Professional Title'}
-          </p>
+          <div className="flex items-center gap-6">
+            {personalInfo.photo && (
+              <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-2xl object-cover border-2 border-white/30" />
+            )}
+            <div>
+              <h1 className="text-4xl font-black mb-2">
+                {personalInfo.fullName || 'Your Name'}
+              </h1>
+              <p className="text-xl text-purple-200 font-light mb-6">
+                {personalInfo.title || 'Professional Title'}
+              </p>
+            </div>
+          </div>
           
           <div className="flex flex-wrap gap-4 text-sm">
             {personalInfo.email && (

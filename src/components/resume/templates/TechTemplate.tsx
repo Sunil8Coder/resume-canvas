@@ -23,10 +23,17 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
           <Terminal className="w-5 h-5 text-emerald-400" />
           <span className="text-emerald-400 text-sm">~/portfolio</span>
         </div>
-        <h1 className="text-3xl font-bold text-white mb-1">
-          {personalInfo.fullName || 'Your Name'}
-        </h1>
-        <p className="text-emerald-400 text-lg mb-4">{personalInfo.title || 'Professional Title'}</p>
+        <div className="flex items-center gap-4">
+          {personalInfo.photo && (
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-lg object-cover border border-emerald-500/50" />
+          )}
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-1">
+              {personalInfo.fullName || 'Your Name'}
+            </h1>
+            <p className="text-emerald-400 text-lg">{personalInfo.title || 'Professional Title'}</p>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-4 text-sm text-gray-400">
           {personalInfo.email && (
             <span className="flex items-center gap-1">
