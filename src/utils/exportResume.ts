@@ -66,10 +66,11 @@ export const exportToPDF = async () => {
     // Calculate how tall the image is in mm when scaled to page width
     const scaledHeightMM = (imgHeight * pageWidthMM) / imgWidth;
 
-    if (scaledHeightMM <= pageHeightMM) {
-      // Fits on one page - fill the page
+    // Allow a small tolerance (3mm) to avoid unnecessary second page from rounding
+    if (scaledHeightMM <= pageHeightMM + 3) {
+      // Fits on one page
       const imgData = canvas.toDataURL('image/jpeg', 0.98);
-      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, scaledHeightMM);
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, Math.min(scaledHeightMM, pageHeightMM));
     } else {
       // Multi-page: slice the canvas into page-sized chunks
       const scaleFactor = imgWidth / pageWidthMM;
