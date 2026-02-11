@@ -12,6 +12,9 @@ import { ElegantTemplate } from './templates/ElegantTemplate';
 import { BiodataTemplate } from './templates/BiodataTemplate';
 import { CorporateTemplate } from './templates/CorporateTemplate';
 import { TimelineTemplate } from './templates/TimelineTemplate';
+import { ProfessionalTemplate } from './templates/ProfessionalTemplate';
+import { CenteredTemplate } from './templates/CenteredTemplate';
+import { SidebarTemplate } from './templates/SidebarTemplate';
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -43,6 +46,12 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) 
         return <CorporateTemplate data={data} />;
       case 'timeline':
         return <TimelineTemplate data={data} />;
+      case 'professional':
+        return <ProfessionalTemplate data={data} />;
+      case 'centered':
+        return <CenteredTemplate data={data} />;
+      case 'sidebar':
+        return <SidebarTemplate data={data} />;
       case 'classic':
       default:
         return <ClassicTemplate data={data} />;
