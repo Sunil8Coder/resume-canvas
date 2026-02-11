@@ -79,11 +79,13 @@ function toBackendPayload(request: CreateResumeRequest | UpdateResumeRequest) {
 }
 
 export const resumeService = {
-  async listResumes(): Promise<{ data?: SavedResume[]; error?: string }> {
-    const response = await api.get<BackendResume[]>('/resumes');
+  async listResumes(): Promise<{ data?: SavedResume[]; total?: number; error?: string }> {
+    const response = await api.get<{ data: BackendResume[]; total: number }>('/resumes');
     if (response.error) return { error: response.error };
-    const normalized = (response.data || []).map(normalizeResume);
-    return { data: normalized };
+    const raw = response.data;
+    if (!raw) return { data: [], total: 0 };
+    const normalized = (raw.data || []).map(normalizeResume);
+    return { data: normalized, total: raw.total };
   },
 
   async adminListResumes(offset = 0, limit = 10): Promise<{ data?: SavedResume[]; total?: number; error?: string }> {
