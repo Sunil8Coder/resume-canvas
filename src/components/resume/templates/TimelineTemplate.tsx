@@ -114,7 +114,7 @@ export const TimelineTemplate: React.FC<TimelineTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-medium rounded-sm border border-emerald-200"
+                className="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-medium border border-emerald-200"
               >
                 {skill.name}
               </span>

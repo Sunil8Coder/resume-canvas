@@ -141,7 +141,7 @@ export const CompactTemplate: React.FC<CompactTemplateProps> = ({ data }) => {
                 {skills.map((skill) => (
                   <span
                     key={skill.id}
-                    className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded"
+                    className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs"
                   >
                     {skill.name}
                   </span>

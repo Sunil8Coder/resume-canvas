@@ -134,7 +134,7 @@ export const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded"
+                className="px-3 py-1 bg-gray-100 text-gray-800 text-sm"
               >
                 {skill.name}
               </span>

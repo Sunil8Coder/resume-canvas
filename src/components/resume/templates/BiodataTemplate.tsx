@@ -115,7 +115,7 @@ export const BiodataTemplate: React.FC<BiodataTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-sm border border-amber-300 text-sm"
+                className="px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 border border-amber-300 text-sm"
               >
                 {skill.name}
               </span>

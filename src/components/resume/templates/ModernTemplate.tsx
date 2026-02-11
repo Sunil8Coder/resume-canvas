@@ -86,9 +86,9 @@ export const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
                     <span>{skill.name}</span>
                     <span className="text-slate-400 text-xs capitalize">{skill.level}</span>
                   </div>
-                   <div className="h-1.5 bg-slate-600 rounded-sm overflow-hidden">
+                   <div className="h-1.5 bg-slate-600 overflow-hidden">
                      <div
-                       className="h-full bg-blue-400 rounded-sm transition-all"
+                       className="h-full bg-blue-400 transition-all"
                       style={{ width: skillLevelWidth[skill.level] }}
                     />
                   </div>

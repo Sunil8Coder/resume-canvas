@@ -75,9 +75,9 @@ export const CorporateTemplate: React.FC<CorporateTemplateProps> = ({ data }) =>
               {skills.map((skill) => (
                 <div key={skill.id}>
                   <span className="text-xs text-slate-300">{skill.name}</span>
-                   <div className="w-full bg-slate-600 rounded-sm h-1.5 mt-1">
+                   <div className="w-full bg-slate-600 h-1.5 mt-1">
                      <div
-                       className="bg-sky-400 h-1.5 rounded-sm"
+                       className="bg-sky-400 h-1.5"
                       style={{
                         width: skill.level === 'expert' ? '95%' : skill.level === 'advanced' ? '80%' : skill.level === 'intermediate' ? '60%' : '40%',
                       }}
