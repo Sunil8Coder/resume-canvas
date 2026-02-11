@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { resumeTypeDataMap } from '@/data/resumeTypeData';
 import { PersonalInfoForm } from '@/components/resume/PersonalInfoForm';
 import { ExperienceForm } from '@/components/resume/ExperienceForm';
 import { EducationForm } from '@/components/resume/EducationForm';
@@ -73,6 +74,11 @@ const ResumeBuilderContent: React.FC = () => {
     setSelectedResumeType(type);
     if (recommendedTemplates.length > 0) {
       setSelectedTemplate(recommendedTemplates[0]);
+    }
+    // Load prefilled data for this type if available
+    const prefilledData = resumeTypeDataMap[type];
+    if (prefilledData) {
+      loadResume(null, `My ${type.charAt(0).toUpperCase() + type.slice(1)} Resume`, prefilledData, recommendedTemplates[0] || selectedTemplate, type);
     }
   };
 
