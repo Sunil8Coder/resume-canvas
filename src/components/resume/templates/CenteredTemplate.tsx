@@ -103,7 +103,7 @@ export const CenteredTemplate: React.FC<CenteredTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-sm border border-gray-200"
+                className="px-3 py-1 bg-gray-100 text-gray-700 text-xs border border-gray-200"
               >
                 {skill.name}
               </span>

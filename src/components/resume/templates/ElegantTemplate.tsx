@@ -139,7 +139,7 @@ export const ElegantTemplate: React.FC<ElegantTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-4 py-1.5 bg-white/60 text-stone-700 text-sm rounded-sm border border-amber-200 shadow-sm"
+                className="px-4 py-1.5 bg-white/60 text-stone-700 text-sm border border-amber-200 shadow-sm"
               >
                 {skill.name}
               </span>

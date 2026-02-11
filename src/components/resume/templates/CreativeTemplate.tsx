@@ -173,7 +173,7 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
                 </div>
                 <div className="space-y-3">
                   {skills.map((skill) => (
-                    <div key={skill.id} className="bg-gray-50 p-3 rounded-xl">
+                    <div key={skill.id} className="bg-gray-50 p-3">
                       <div className="flex justify-between items-center mb-2">
                         <span className="font-medium text-gray-900 text-sm">{skill.name}</span>
                       </div>
@@ -181,7 +181,7 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
                         {[1, 2, 3, 4].map((dot) => (
                           <div
                             key={dot}
-                            className={`w-3 h-3 rounded-sm ${
+                            className={`w-3 h-3 ${
                               dot <= skillLevelDots[skill.level]
                                 ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500'
                                 : 'bg-gray-200'

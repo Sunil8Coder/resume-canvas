@@ -159,9 +159,9 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
                 {safeSkills.map((skill) => (
                   <div key={skill.id} className="flex items-center gap-2">
                     <span className="text-[11px] text-gray-700 w-28 shrink-0 font-medium">{skill.name}</span>
-                    <div className="flex-1 bg-gray-100 rounded-sm h-2">
+                    <div className="flex-1 bg-gray-100 h-2">
                       <div
-                        className="bg-emerald-500 h-2 rounded-sm"
+                        className="bg-emerald-500 h-2"
                         style={{ width: `${skillLevelPercent(skill.level)}%` }}
                       />
                     </div>
@@ -210,7 +210,7 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
                 {safeSkills.map((skill) => (
                   <span
                     key={skill.id}
-                    className="px-2 py-0.5 bg-white border border-gray-300 text-[10px] text-gray-700 rounded font-medium"
+                    className="px-2 py-0.5 bg-white border border-gray-300 text-[10px] text-gray-700 font-medium"
                   >
                     {skill.name}
                   </span>

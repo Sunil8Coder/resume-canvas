@@ -139,7 +139,7 @@ export const AcademicTemplate: React.FC<AcademicTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-3 py-1 bg-indigo-50 text-indigo-800 text-sm rounded-sm border border-indigo-200"
+                className="px-3 py-1 bg-indigo-50 text-indigo-800 text-sm border border-indigo-200"
               >
                 {skill.name}
               </span>

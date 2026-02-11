@@ -147,7 +147,7 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-3 py-1 bg-slate-800 text-emerald-400 text-sm rounded border border-emerald-500/30"
+                className="px-3 py-1 bg-slate-800 text-emerald-400 text-sm border border-emerald-500/30"
               >
                 {skill.name}
                 <span className="text-gray-500 text-xs ml-1">@{skill.level}</span>

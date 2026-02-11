@@ -143,7 +143,7 @@ export const ExecutiveTemplate: React.FC<ExecutiveTemplateProps> = ({ data }) =>
                 {skills.map((skill) => (
                   <span
                     key={skill.id}
-                    className="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-900 text-xs rounded"
+                    className="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-900 text-xs"
                   >
                     {skill.name}
                   </span>
