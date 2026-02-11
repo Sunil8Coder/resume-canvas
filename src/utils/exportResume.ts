@@ -1,4 +1,5 @@
-import html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, ImageRun } from 'docx';
 import { saveAs } from 'file-saver';
 import { ResumeData } from '@/types/resume';
@@ -24,8 +25,10 @@ export const exportToPDF = async () => {
   const originalWidth = element.style.width;
   const originalMinHeight = element.style.minHeight;
   const originalHeight = element.style.height;
+  const originalMaxHeight = element.style.maxHeight;
+  const originalOverflow = element.style.overflow;
 
-  // Reset transform for accurate PDF capture - use exact A4 dimensions
+  // Reset transform for accurate capture - use exact A4 dimensions
   element.style.transform = 'none';
   element.style.transformOrigin = 'top left';
   element.style.width = '210mm';
@@ -35,31 +38,32 @@ export const exportToPDF = async () => {
   element.style.overflow = 'hidden';
 
   // Wait for styles to apply
-  await new Promise(resolve => setTimeout(resolve, 100));
-
-  const opt = {
-    margin: 0,
-    filename: 'resume.pdf',
-    image: { type: 'jpeg' as const, quality: 0.98 },
-    html2canvas: { 
-      scale: 2,
-      useCORS: true,
-      letterRendering: true,
-      scrollY: 0,
-      scrollX: 0,
-      height: element.scrollHeight,
-      windowHeight: element.scrollHeight,
-    },
-    jsPDF: { 
-      unit: 'mm' as const, 
-      format: 'a4' as const, 
-      orientation: 'portrait' as const,
-    },
-    pagebreak: { mode: ['avoid-all'] },
-  };
+  await new Promise(resolve => setTimeout(resolve, 150));
 
   try {
-    await html2pdf().set(opt).from(element).save();
+    // Capture the element as a single canvas
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      scrollY: 0,
+      scrollX: 0,
+      width: element.offsetWidth,
+      height: element.offsetHeight,
+      windowWidth: element.offsetWidth,
+      windowHeight: element.offsetHeight,
+    });
+
+    // Create a single-page A4 PDF and fit the canvas image into it
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+    // Place image at 0,0 filling the entire A4 page
+    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    pdf.save('resume.pdf');
   } finally {
     // Restore original styles
     element.style.transform = originalTransform;
@@ -67,8 +71,8 @@ export const exportToPDF = async () => {
     element.style.width = originalWidth;
     element.style.height = originalHeight;
     element.style.minHeight = originalMinHeight;
-    element.style.maxHeight = '';
-    element.style.overflow = '';
+    element.style.maxHeight = originalMaxHeight;
+    element.style.overflow = originalOverflow;
   }
 };
 
