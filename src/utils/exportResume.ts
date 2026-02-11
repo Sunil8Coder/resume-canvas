@@ -1,7 +1,18 @@
 import html2pdf from 'html2pdf.js';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, ImageRun } from 'docx';
 import { saveAs } from 'file-saver';
 import { ResumeData } from '@/types/resume';
+
+const dataUrlToBuffer = async (dataUrl: string): Promise<ArrayBuffer> => {
+  const response = await fetch(dataUrl);
+  return response.arrayBuffer();
+};
+
+const urlToBuffer = async (url: string): Promise<ArrayBuffer> => {
+  if (url.startsWith('data:')) return dataUrlToBuffer(url);
+  const response = await fetch(url);
+  return response.arrayBuffer();
+};
 
 export const exportToPDF = async () => {
   const element = document.getElementById('resume-preview');
@@ -67,11 +78,37 @@ const formatDate = (dateStr: string) => {
 export const exportToWord = async (data: ResumeData) => {
   const { personalInfo, experiences, education, skills } = data;
 
+  // Photo
+  const photoChildren: Paragraph[] = [];
+  if (personalInfo.photo) {
+    try {
+      const imageBuffer = await urlToBuffer(personalInfo.photo);
+      photoChildren.push(
+        new Paragraph({
+          children: [
+            new ImageRun({
+              data: imageBuffer,
+              transformation: { width: 100, height: 100 },
+              type: 'jpg',
+            }),
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 200 },
+        })
+      );
+    } catch {
+      // Skip photo if it fails to load
+    }
+  }
+
   const doc = new Document({
     sections: [
       {
         properties: {},
         children: [
+          // Photo
+          ...photoChildren,
+
           // Name
           new Paragraph({
             children: [
