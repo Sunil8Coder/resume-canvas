@@ -15,8 +15,12 @@ export interface CreateUserRequest {
 }
 
 export const userService = {
-  async listUsers(): Promise<{ data?: User[]; error?: string }> {
-    return api.get<User[]>('/users');
+  async listUsers(offset = 0, limit = 10): Promise<{ data?: User[]; total?: number; error?: string }> {
+    const response = await api.get<{ data: User[]; total: number }>('/users', true, { offset, limit });
+    if (response.error) return { error: response.error };
+    const raw = response.data;
+    if (!raw) return { data: [], total: 0 };
+    return { data: raw.data, total: raw.total };
   },
 
   async getUser(id: string): Promise<{ data?: User; error?: string }> {

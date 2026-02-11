@@ -58,8 +58,12 @@ export const visitorService = {
     }
   },
 
-  async listVisitors(): Promise<{ data?: Visitor[]; error?: string }> {
-    return api.get<Visitor[]>('/visitors');
+  async listVisitors(offset = 0, limit = 10): Promise<{ data?: Visitor[]; total?: number; error?: string }> {
+    const response = await api.get<{ data: Visitor[]; total: number }>('/visitors', true, { offset, limit });
+    if (response.error) return { error: response.error };
+    const raw = response.data;
+    if (!raw) return { data: [], total: 0 };
+    return { data: raw.data, total: raw.total };
   },
 
   async getVisitor(id: string): Promise<{ data?: Visitor; error?: string }> {

@@ -42,11 +42,13 @@ function normalizeLog(raw: BackendLog): RequestLog {
 }
 
 export const logService = {
-  async listLogs(): Promise<{ data?: RequestLog[]; error?: string }> {
-    const response = await api.get<BackendLog[]>('/logs');
+  async listLogs(offset = 0, limit = 10): Promise<{ data?: RequestLog[]; total?: number; error?: string }> {
+    const response = await api.get<{ data: BackendLog[]; total: number }>('/logs', true, { offset, limit });
     if (response.error) return { error: response.error };
-    const normalized = (response.data || []).map(normalizeLog);
-    return { data: normalized };
+    const raw = response.data;
+    if (!raw) return { data: [], total: 0 };
+    const normalized = (raw.data || []).map(normalizeLog);
+    return { data: normalized, total: raw.total };
   },
 
   async getLog(id: string): Promise<{ data?: RequestLog; error?: string }> {
