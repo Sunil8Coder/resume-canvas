@@ -90,7 +90,7 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
           <div className="space-y-4">
             {experiences.map((exp, index) => (
               <div key={exp.id} className="relative pl-6 border-l-2 border-slate-700">
-                <div className="absolute left-[-9px] top-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                <div className="absolute left-[-9px] top-1 w-4 h-4 bg-emerald-500 rounded-sm flex items-center justify-center">
                   <span className="text-xs text-slate-900 font-bold">{index + 1}</span>
                 </div>
                 <div className="bg-slate-800/30 rounded-lg p-3">

@@ -28,8 +28,8 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600"></div>
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2"></div>
+           <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-lg -translate-y-1/2 translate-x-1/2"></div>
+           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-lg translate-y-1/2 -translate-x-1/2"></div>
         </div>
         
         <div className="relative px-8 py-10 text-white">
@@ -49,31 +49,31 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
           
           <div className="flex flex-wrap gap-4 text-sm">
             {personalInfo.email && (
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+               <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-sm">
                 <Mail className="w-4 h-4" />
                 <span>{personalInfo.email}</span>
               </div>
             )}
             {personalInfo.phone && (
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+               <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-sm">
                 <Phone className="w-4 h-4" />
                 <span>{personalInfo.phone}</span>
               </div>
             )}
             {personalInfo.location && (
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+               <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-sm">
                 <MapPin className="w-4 h-4" />
                 <span>{personalInfo.location}</span>
               </div>
             )}
             {personalInfo.linkedin && (
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+               <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-sm">
                 <Linkedin className="w-4 h-4" />
                 <span>{personalInfo.linkedin}</span>
               </div>
             )}
             {personalInfo.website && (
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-sm">
                 <Globe className="w-4 h-4" />
                 <span>{personalInfo.website}</span>
               </div>
@@ -112,7 +112,7 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
                 <div className="space-y-5">
                   {experiences.map((exp, index) => (
                     <div key={exp.id} className="relative">
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-400 to-fuchsia-400 rounded-full"></div>
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-400 to-fuchsia-400 rounded-sm"></div>
                       <div className="pl-5">
                         <div className="flex justify-between items-start mb-1">
                           <div>
@@ -181,7 +181,7 @@ export const CreativeTemplate: React.FC<CreativeTemplateProps> = ({ data }) => {
                         {[1, 2, 3, 4].map((dot) => (
                           <div
                             key={dot}
-                            className={`w-3 h-3 rounded-full ${
+                            className={`w-3 h-3 rounded-sm ${
                               dot <= skillLevelDots[skill.level]
                                 ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500'
                                 : 'bg-gray-200'

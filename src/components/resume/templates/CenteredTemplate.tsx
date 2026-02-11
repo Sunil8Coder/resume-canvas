@@ -21,7 +21,7 @@ export const CenteredTemplate: React.FC<CenteredTemplateProps> = ({ data }) => {
       <header className="text-center mb-6 pb-4 border-b border-gray-200">
         <div className="flex items-center justify-center gap-4 mb-2">
           {personalInfo.photo && (
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-full object-cover" />
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-sm object-cover" />
           )}
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
@@ -103,7 +103,7 @@ export const CenteredTemplate: React.FC<CenteredTemplateProps> = ({ data }) => {
             {skills.map((skill) => (
               <span
                 key={skill.id}
-                className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full border border-gray-200"
+                className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-sm border border-gray-200"
               >
                 {skill.name}
               </span>

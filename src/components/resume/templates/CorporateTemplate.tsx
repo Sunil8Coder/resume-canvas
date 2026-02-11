@@ -75,9 +75,9 @@ export const CorporateTemplate: React.FC<CorporateTemplateProps> = ({ data }) =>
               {skills.map((skill) => (
                 <div key={skill.id}>
                   <span className="text-xs text-slate-300">{skill.name}</span>
-                  <div className="w-full bg-slate-600 rounded-full h-1.5 mt-1">
-                    <div
-                      className="bg-sky-400 h-1.5 rounded-full"
+                   <div className="w-full bg-slate-600 rounded-sm h-1.5 mt-1">
+                     <div
+                       className="bg-sky-400 h-1.5 rounded-sm"
                       style={{
                         width: skill.level === 'expert' ? '95%' : skill.level === 'advanced' ? '80%' : skill.level === 'intermediate' ? '60%' : '40%',
                       }}
@@ -143,7 +143,7 @@ export const CorporateTemplate: React.FC<CorporateTemplateProps> = ({ data }) =>
             <div className="space-y-4">
               {experiences.map((exp) => (
                 <div key={exp.id} className="relative pl-4 border-l-2 border-sky-200">
-                  <div className="absolute left-[-5px] top-1 w-2 h-2 bg-sky-500 rounded-full" />
+                  <div className="absolute left-[-5px] top-1 w-2 h-2 bg-sky-500 rounded-sm" />
                   <h3 className="font-semibold text-slate-800">{exp.position}</h3>
                   <p className="text-sm text-sky-600 font-medium">{exp.company}</p>
                   <p className="text-xs text-slate-400 mb-1">
