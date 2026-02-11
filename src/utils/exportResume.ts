@@ -28,41 +28,74 @@ export const exportToPDF = async () => {
   const originalMaxHeight = element.style.maxHeight;
   const originalOverflow = element.style.overflow;
 
-  // Reset transform for accurate capture - use exact A4 dimensions
+  // Reset transform for accurate capture - allow full content height
   element.style.transform = 'none';
   element.style.transformOrigin = 'top left';
   element.style.width = '210mm';
-  element.style.height = '297mm';
   element.style.minHeight = '297mm';
-  element.style.maxHeight = '297mm';
-  element.style.overflow = 'hidden';
+  element.style.height = 'auto';
+  element.style.maxHeight = 'none';
+  element.style.overflow = 'visible';
 
   // Wait for styles to apply
   await new Promise(resolve => setTimeout(resolve, 150));
 
   try {
-    // Capture the element as a single canvas
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
       scrollY: 0,
       scrollX: 0,
       width: element.offsetWidth,
-      height: element.offsetHeight,
+      height: element.scrollHeight,
       windowWidth: element.offsetWidth,
-      windowHeight: element.offsetHeight,
+      windowHeight: element.scrollHeight,
     });
 
-    // Create a single-page A4 PDF and fit the canvas image into it
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
       format: 'a4',
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.98);
-    // Place image at 0,0 filling the entire A4 page
-    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    const pageWidthMM = 210;
+    const pageHeightMM = 297;
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+
+    // Calculate how tall the image is in mm when scaled to page width
+    const scaledHeightMM = (imgHeight * pageWidthMM) / imgWidth;
+
+    if (scaledHeightMM <= pageHeightMM) {
+      // Fits on one page - fill the page
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, scaledHeightMM);
+    } else {
+      // Multi-page: slice the canvas into page-sized chunks
+      const scaleFactor = imgWidth / pageWidthMM;
+      const pageHeightPx = pageHeightMM * scaleFactor;
+      const totalPages = Math.ceil(imgHeight / pageHeightPx);
+
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) pdf.addPage();
+
+        const srcY = page * pageHeightPx;
+        const srcH = Math.min(pageHeightPx, imgHeight - srcY);
+        const destH = (srcH / scaleFactor);
+
+        // Create a canvas for this page slice
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = imgWidth;
+        pageCanvas.height = srcH;
+        const ctx = pageCanvas.getContext('2d');
+        if (!ctx) continue;
+        ctx.drawImage(canvas, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
+
+        const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.98);
+        pdf.addImage(pageImgData, 'JPEG', 0, 0, pageWidthMM, destH);
+      }
+    }
+
     pdf.save('resume.pdf');
   } finally {
     // Restore original styles
