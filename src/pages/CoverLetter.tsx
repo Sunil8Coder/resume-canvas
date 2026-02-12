@@ -5,6 +5,7 @@ import { coverLetterProfessions, coverLetterTemplates } from '@/data/coverLetter
 import { CoverLetterData, CoverLetterProfession } from '@/types/coverLetter';
 import { aiService } from '@/services/aiService';
 import { exportCoverLetterToPDF, exportCoverLetterToWord } from '@/utils/exportCoverLetter';
+import { useCoverLetters } from '@/hooks/useCoverLetters';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -14,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import Footer from '@/components/Footer';
 import {
   FileText, User, LogOut, FolderOpen, Shield, UserCircle,
-  Sparkles, Download, ChevronLeft, ChevronRight, Loader2, Eye, PenLine
+  Sparkles, Download, ChevronLeft, ChevronRight, Loader2, Eye, PenLine, Save
 } from 'lucide-react';
 
 type Step = 'select' | 'edit' | 'preview';
@@ -23,10 +24,12 @@ const CoverLetterPage: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { createCoverLetter, updateCoverLetter, isLoading: isSaving } = useCoverLetters();
 
   const [step, setStep] = useState<Step>('select');
   const [selectedProfession, setSelectedProfession] = useState<CoverLetterProfession | null>(null);
   const [coverLetterData, setCoverLetterData] = useState<CoverLetterData | null>(null);
+  const [currentCoverLetterId, setCurrentCoverLetterId] = useState<string | null>(null);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -78,6 +81,23 @@ const CoverLetterPage: React.FC = () => {
       await exportCoverLetterToWord(coverLetterData);
     } finally {
       setIsExporting(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!coverLetterData || !selectedProfession) return;
+    if (!isAuthenticated) {
+      toast({ title: 'Login Required', description: 'Please log in to save your cover letter.', variant: 'destructive' });
+      navigate('/auth');
+      return;
+    }
+    const title = `${coverLetterProfessions.find(p => p.id === selectedProfession)?.name || 'My'} Cover Letter`;
+    if (currentCoverLetterId) {
+      const result = await updateCoverLetter(currentCoverLetterId, { title, profession: selectedProfession, data: coverLetterData });
+      if (result) setCurrentCoverLetterId(result.id);
+    } else {
+      const result = await createCoverLetter({ title, profession: selectedProfession, data: coverLetterData });
+      if (result) setCurrentCoverLetterId(result.id);
     }
   };
 
@@ -287,10 +307,16 @@ const CoverLetterPage: React.FC = () => {
               <Button variant="outline" onClick={() => setStep('select')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                 <ChevronLeft className="w-4 h-4" /> Back
               </Button>
-              <Button onClick={() => setStep('preview')} className="gap-2 glow-sm"
-                style={{ background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))` }}>
-                Preview <ChevronRight className="w-4 h-4" />
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={handleSave} disabled={isSaving} variant="outline" className="gap-2 border-primary/50 text-primary hover:bg-primary/10">
+                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  Save
+                </Button>
+                <Button onClick={() => setStep('preview')} className="gap-2 glow-sm"
+                  style={{ background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))` }}>
+                  Preview <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
           </div>
         )}
@@ -355,6 +381,10 @@ const CoverLetterPage: React.FC = () => {
                 <ChevronLeft className="w-4 h-4" /> Edit
               </Button>
               <div className="flex gap-2">
+                <Button onClick={handleSave} disabled={isSaving} variant="outline" className="gap-2 border-primary/50 text-primary hover:bg-primary/10">
+                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  Save
+                </Button>
                 <Button onClick={handleExportPDF} disabled={isExporting} className="gap-2 glow-sm"
                   style={{ background: `linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))` }}>
                   {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
