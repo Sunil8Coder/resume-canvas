@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { ResumeData, TemplateType, ResumeType, defaultResumeData } from '@/types/resume';
+import { ResumeData, TemplateType, ResumeType, FontFamily, defaultResumeData } from '@/types/resume';
 
 interface ResumeContextType {
   resumeData: ResumeData;
@@ -12,6 +12,8 @@ interface ResumeContextType {
   setCurrentResumeId: React.Dispatch<React.SetStateAction<string | null>>;
   resumeTitle: string;
   setResumeTitle: React.Dispatch<React.SetStateAction<string>>;
+  selectedFont: FontFamily;
+  setSelectedFont: React.Dispatch<React.SetStateAction<FontFamily>>;
   updatePersonalInfo: (field: string, value: string) => void;
   addExperience: () => void;
   updateExperience: (id: string, field: string, value: string | boolean) => void;
@@ -23,7 +25,7 @@ interface ResumeContextType {
   updateSkill: (id: string, field: string, value: string) => void;
   removeSkill: (id: string) => void;
   reorderSections: (newOrder: string[]) => void;
-  loadResume: (id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType) => void;
+  loadResume: (id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType, font?: FontFamily) => void;
   resetResume: () => void;
 }
 
@@ -35,6 +37,7 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [selectedResumeType, setSelectedResumeType] = useState<ResumeType>('professional');
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(null);
   const [resumeTitle, setResumeTitle] = useState<string>('My Resume');
+  const [selectedFont, setSelectedFont] = useState<FontFamily>('default');
 
   const updatePersonalInfo = (field: string, value: string) => {
     setResumeData(prev => ({
@@ -143,12 +146,13 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }));
   };
 
-  const loadResume = useCallback((id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType) => {
+  const loadResume = useCallback((id: string | null, title: string, data: ResumeData, template: TemplateType, resumeType: ResumeType, font?: FontFamily) => {
     setCurrentResumeId(id);
     setResumeTitle(title);
     setResumeData(data);
     setSelectedTemplate(template);
     setSelectedResumeType(resumeType);
+    setSelectedFont(font || data.fontFamily || 'default');
   }, []);
 
   const resetResume = useCallback(() => {
@@ -157,6 +161,7 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setResumeData(defaultResumeData);
     setSelectedTemplate('classic');
     setSelectedResumeType('professional');
+    setSelectedFont('default');
   }, []);
 
   return (
@@ -172,6 +177,8 @@ export const ResumeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setCurrentResumeId,
         resumeTitle,
         setResumeTitle,
+        selectedFont,
+        setSelectedFont,
         updatePersonalInfo,
         addExperience,
         updateExperience,

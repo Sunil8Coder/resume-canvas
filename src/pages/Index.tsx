@@ -9,6 +9,7 @@ import { ResumePreview } from '@/components/resume/ResumePreview';
 import { TemplateSelector } from '@/components/resume/TemplateSelector';
 import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
+import { FontSelector } from '@/components/resume/FontSelector';
 
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
 import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield, UserCircle } from 'lucide-react';
@@ -31,7 +32,7 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 ];
 
 const ResumeBuilderContent: React.FC = () => {
-  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, currentResumeId, loadResume, resetResume } = useResume();
+  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, currentResumeId, loadResume, resetResume, selectedFont, setSelectedFont } = useResume();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('purpose');
@@ -42,9 +43,9 @@ const ResumeBuilderContent: React.FC = () => {
     if (editResumeData) {
       try {
         const resume = JSON.parse(editResumeData);
-        loadResume(resume.id, resume.title, resume.data, resume.templateType, resume.resumeType);
+        loadResume(resume.id, resume.title, resume.data, resume.templateType, resume.resumeType, resume.data?.fontFamily);
+        setSelectedFont(resume.data?.fontFamily || 'default');
         sessionStorage.removeItem('editResume');
-        // Stay on purpose tab (default) — data is already loaded into context
         // so all tabs will show the saved data
       } catch {
         console.error('Failed to load resume from session');
@@ -136,13 +137,19 @@ const ResumeBuilderContent: React.FC = () => {
             </div>
 
             <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-foreground">Choose Font Style</h2>
+              <p className="text-sm text-muted-foreground">Pick a font that matches your personality</p>
+              <FontSelector selected={selectedFont} onSelect={setSelectedFont} />
+            </div>
+
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
                 <ExportButton />
               </div>
               <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
                 <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
-                  <ResumePreview data={resumeData} template={selectedTemplate} />
+                  <ResumePreview data={resumeData} template={selectedTemplate} fontFamily={selectedFont} />
                 </div>
               </div>
             </div>
