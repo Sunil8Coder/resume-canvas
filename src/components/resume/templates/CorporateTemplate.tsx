@@ -25,7 +25,7 @@ export const CorporateTemplate: React.FC<CorporateTemplateProps> = ({ data }) =>
             <img
               src={personalInfo.photo}
               alt={personalInfo.fullName}
-              className="w-28 h-28 rounded-lg object-cover border-2 border-sky-400 shadow-lg"
+              className="w-28 h-28 object-cover border-2 border-sky-400 shadow-lg"
             />
           </div>
         )}
@@ -143,7 +143,7 @@ export const CorporateTemplate: React.FC<CorporateTemplateProps> = ({ data }) =>
             <div className="space-y-4">
               {experiences.map((exp) => (
                 <div key={exp.id} className="relative pl-4 border-l-2 border-sky-200">
-                  <div className="absolute left-[-5px] top-1 w-2 h-2 bg-sky-500 rounded-sm" />
+                  <div className="absolute left-[-5px] top-1 w-2 h-2 bg-sky-500" />
                   <h3 className="font-semibold text-slate-800">{exp.position}</h3>
                   <p className="text-sm text-sky-600 font-medium">{exp.company}</p>
                   <p className="text-xs text-slate-400 mb-1">

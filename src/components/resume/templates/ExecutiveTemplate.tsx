@@ -21,7 +21,7 @@ export const ExecutiveTemplate: React.FC<ExecutiveTemplateProps> = ({ data }) =>
        <header className="bg-gradient-to-r from-amber-900 to-amber-800 text-white px-8 py-8">
         <div className="flex items-center gap-6">
           {personalInfo.photo && (
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-sm object-cover border-2 border-amber-300" />
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 object-cover border-2 border-amber-300" />
           )}
           <div>
             <h1 className="text-4xl font-bold tracking-wide mb-2">

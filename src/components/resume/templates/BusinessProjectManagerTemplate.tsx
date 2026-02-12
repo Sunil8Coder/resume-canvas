@@ -69,7 +69,7 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
             <img
               src={personalInfo.photo}
               alt={personalInfo.fullName}
-              className="w-[72px] h-[72px] rounded-sm object-cover border-2 border-gray-200 ml-4 shadow-sm"
+              className="w-[72px] h-[72px] object-cover border-2 border-gray-200 ml-4 shadow-sm"
             />
           )}
         </div>
@@ -275,7 +275,7 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
               <div className="space-y-1.5">
                 {safeSkills.slice(0, 5).map((skill) => (
                   <div key={skill.id} className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-sm bg-emerald-500 shrink-0" />
+                    <div className="w-1.5 h-1.5 bg-emerald-500 shrink-0" />
                     <span className="text-[10px] text-gray-700 leading-tight">{skill.name} — <span className="capitalize text-gray-500">{skill.level}</span></span>
                   </div>
                 ))}

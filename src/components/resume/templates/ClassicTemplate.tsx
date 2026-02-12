@@ -20,7 +20,7 @@ export const ClassicTemplate: React.FC<ClassicTemplateProps> = ({ data }) => {
       {/* Header */}
       <header className="text-center border-b-2 border-gray-800 pb-4 mb-6">
         {personalInfo.photo && (
-          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-20 h-20 rounded-sm object-cover mx-auto mb-3" />
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-20 h-20 object-cover mx-auto mb-3" />
         )}
         <h1 className="text-3xl font-bold tracking-wide text-gray-900 mb-1">
           {personalInfo.fullName || 'Your Name'}

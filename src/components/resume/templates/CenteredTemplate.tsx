@@ -21,7 +21,7 @@ export const CenteredTemplate: React.FC<CenteredTemplateProps> = ({ data }) => {
       <header className="text-center mb-6 pb-4 border-b border-gray-200">
         <div className="flex items-center justify-center gap-4 mb-2">
           {personalInfo.photo && (
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-sm object-cover" />
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 object-cover" />
           )}
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
@@ -143,7 +143,7 @@ export const CenteredTemplate: React.FC<CenteredTemplateProps> = ({ data }) => {
           </h2>
           <div className="grid grid-cols-2 gap-3">
             {experiences.slice(0, 4).map((exp) => (
-              <div key={exp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+              <div key={exp.id} className="bg-gray-50 p-3 border border-gray-100">
                 <h3 className="text-xs font-bold text-gray-800 mb-1">{exp.position}</h3>
                 <p className="text-xs text-gray-500 line-clamp-3">
                   {exp.description?.split('\n')[0] || `Key role at ${exp.company}`}

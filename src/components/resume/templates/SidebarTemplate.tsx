@@ -100,7 +100,7 @@ export const SidebarTemplate: React.FC<SidebarTemplateProps> = ({ data }) => {
         {/* Photo */}
         {personalInfo.photo && (
           <div className="mb-4 flex justify-center">
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-20 h-20 rounded-sm object-cover border-2 border-teal-400" />
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-20 h-20 object-cover border-2 border-teal-400" />
           </div>
         )}
 
