@@ -27,7 +27,7 @@ export const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
        {/* Sidebar */}
        <aside className="w-1/3 bg-slate-800 text-white p-6 pt-8">
         {personalInfo.photo && (
-          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-sm object-cover border-2 border-blue-400 mb-4" />
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 object-cover border-2 border-blue-400 mb-4" />
         )}
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1">{personalInfo.fullName || 'Your Name'}</h1>
@@ -122,7 +122,7 @@ export const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
             <div className="space-y-4">
               {experiences.map((exp) => (
                 <div key={exp.id} className="relative pl-4 border-l-2 border-blue-200">
-                   <div className="absolute left-[-5px] top-0 w-2 h-2 bg-blue-500 rounded-sm"></div>
+                    <div className="absolute left-[-5px] top-0 w-2 h-2 bg-blue-500"></div>
                   <div className="mb-1">
                     <h3 className="font-bold text-gray-900">{exp.position}</h3>
                     <p className="text-blue-600 text-sm">{exp.company}</p>
@@ -149,7 +149,7 @@ export const ModernTemplate: React.FC<ModernTemplateProps> = ({ data }) => {
             <div className="space-y-3">
               {education.map((edu) => (
                 <div key={edu.id} className="relative pl-4 border-l-2 border-blue-200">
-                  <div className="absolute left-[-5px] top-0 w-2 h-2 bg-blue-500 rounded-sm"></div>
+                  <div className="absolute left-[-5px] top-0 w-2 h-2 bg-blue-500"></div>
                   <h3 className="font-bold text-gray-900">{edu.institution}</h3>
                   <p className="text-sm text-gray-700">
                     {edu.degree} in {edu.field}

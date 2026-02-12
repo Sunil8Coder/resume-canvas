@@ -23,7 +23,7 @@ export const TimelineTemplate: React.FC<TimelineTemplateProps> = ({ data }) => {
           <img
             src={personalInfo.photo}
             alt={personalInfo.fullName}
-            className="w-20 h-20 rounded-sm object-cover border-3 border-emerald-500 shadow-md"
+            className="w-20 h-20 object-cover border-3 border-emerald-500 shadow-md"
           />
         )}
         <div className="flex-1">
@@ -51,7 +51,7 @@ export const TimelineTemplate: React.FC<TimelineTemplateProps> = ({ data }) => {
 
       {/* Summary */}
       {personalInfo.summary && (
-        <section className="mb-7 bg-emerald-50 rounded-lg p-4 border-l-4 border-emerald-500">
+        <section className="mb-7 bg-emerald-50 p-4 border-l-4 border-emerald-500">
           <p className="text-sm text-gray-700 leading-relaxed">{personalInfo.summary}</p>
         </section>
       )}
@@ -65,7 +65,7 @@ export const TimelineTemplate: React.FC<TimelineTemplateProps> = ({ data }) => {
             <div className="space-y-5">
               {experiences.map((exp) => (
                 <div key={exp.id} className="relative pl-7">
-                  <div className="absolute left-0 top-1.5 w-4 h-4 bg-emerald-500 rounded-sm border-2 border-white shadow" />
+                  <div className="absolute left-0 top-1.5 w-4 h-4 bg-emerald-500 border-2 border-white shadow" />
                   <div className="flex items-baseline justify-between">
                     <h3 className="font-bold text-gray-900">{exp.position}</h3>
                     <span className="text-xs text-emerald-600 font-medium shrink-0 ml-2">
@@ -92,7 +92,7 @@ export const TimelineTemplate: React.FC<TimelineTemplateProps> = ({ data }) => {
             <div className="space-y-4">
               {education.map((edu) => (
                 <div key={edu.id} className="relative pl-7">
-                  <div className="absolute left-0 top-1.5 w-4 h-4 bg-emerald-400 rounded-sm border-2 border-white shadow" />
+                  <div className="absolute left-0 top-1.5 w-4 h-4 bg-emerald-400 border-2 border-white shadow" />
                   <h3 className="font-bold text-gray-900">{edu.institution}</h3>
                   <p className="text-sm text-emerald-700">{edu.degree} in {edu.field}</p>
                   <p className="text-xs text-gray-500">

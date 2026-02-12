@@ -25,7 +25,7 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
         </div>
         <div className="flex items-center gap-4">
           {personalInfo.photo && (
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-lg object-cover border border-emerald-500/50" />
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 object-cover border border-emerald-500/50" />
           )}
           <div>
             <h1 className="text-3xl font-bold text-white mb-1">
@@ -75,7 +75,7 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
             <Code className="w-4 h-4" />
             README.md
           </h2>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+          <div className="bg-slate-800/50 p-4 border border-slate-700">
             <p className="text-sm leading-relaxed text-gray-300">{personalInfo.summary}</p>
           </div>
         </section>
@@ -90,16 +90,16 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
           <div className="space-y-4">
             {experiences.map((exp, index) => (
               <div key={exp.id} className="relative pl-6 border-l-2 border-slate-700">
-                <div className="absolute left-[-9px] top-1 w-4 h-4 bg-emerald-500 rounded-sm flex items-center justify-center">
+                <div className="absolute left-[-9px] top-1 w-4 h-4 bg-emerald-500 flex items-center justify-center">
                   <span className="text-xs text-slate-900 font-bold">{index + 1}</span>
                 </div>
-                <div className="bg-slate-800/30 rounded-lg p-3">
+                <div className="bg-slate-800/30 p-3">
                   <div className="flex justify-between items-start mb-1 flex-wrap gap-2">
                     <div>
                       <h3 className="font-bold text-white">{exp.position}</h3>
                       <p className="text-emerald-400 text-sm">{exp.company}</p>
                     </div>
-                    <span className="text-xs text-gray-500 bg-slate-800 px-2 py-1 rounded">
+                    <span className="text-xs text-gray-500 bg-slate-800 px-2 py-1">
                       {formatDate(exp.startDate)} → {exp.current ? 'HEAD' : formatDate(exp.endDate)}
                     </span>
                   </div>
@@ -119,7 +119,7 @@ export const TechTemplate: React.FC<TechTemplateProps> = ({ data }) => {
           <h2 className="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2">
             <span className="text-gray-500">$</span> cat education.json
           </h2>
-          <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700">
+          <div className="bg-slate-800/30 p-4 border border-slate-700">
             {education.map((edu, index) => (
               <div key={edu.id} className={index > 0 ? 'mt-3 pt-3 border-t border-slate-700' : ''}>
                 <h3 className="font-bold text-white">{edu.institution}</h3>

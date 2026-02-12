@@ -20,7 +20,7 @@ export const ElegantTemplate: React.FC<ElegantTemplateProps> = ({ data }) => {
       {/* Header */}
       <header className="text-center mb-8">
         {personalInfo.photo && (
-          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 rounded-sm object-cover mx-auto mb-4 border-2 border-amber-400 shadow-md" />
+          <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-24 h-24 object-cover mx-auto mb-4 border-2 border-amber-400 shadow-md" />
         )}
         <div className="inline-block">
           <h1 className="text-4xl font-light text-stone-800 tracking-widest mb-2">

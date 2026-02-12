@@ -20,7 +20,7 @@ export const MinimalTemplate: React.FC<MinimalTemplateProps> = ({ data }) => {
       <header className="mb-8">
         <div className="flex items-center gap-4">
           {personalInfo.photo && (
-            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 rounded-sm object-cover" />
+            <img src={personalInfo.photo} alt={personalInfo.fullName} className="w-16 h-16 object-cover" />
           )}
           <div>
             <h1 className="text-4xl font-light tracking-tight text-gray-900 mb-1">
