@@ -31,23 +31,38 @@ const fonts: { id: FontFamily; name: string }[] = [
 ];
 
 export const FontSelector: React.FC<FontSelectorProps> = ({ selected, onSelect }) => {
+  const selectedFont = fonts.find(f => f.id === selected);
+
   return (
-    <Select value={selected} onValueChange={(val) => onSelect(val as FontFamily)}>
-      <SelectTrigger className="w-[220px] gap-2">
-        <Type className="w-4 h-4 text-muted-foreground" />
-        <SelectValue placeholder="Choose font style" />
-      </SelectTrigger>
-      <SelectContent className="z-50 bg-popover">
-        {fonts.map((font) => (
-          <SelectItem
-            key={font.id}
-            value={font.id}
-            style={{ fontFamily: fontFamilyMap[font.id] !== 'inherit' ? fontFamilyMap[font.id] : undefined }}
-          >
-            {font.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex items-center gap-3 p-3 bg-secondary/50 border border-border">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
+        <Type className="w-4 h-4" />
+        <span className="font-medium">Font Style:</span>
+      </div>
+      <Select value={selected} onValueChange={(val) => onSelect(val as FontFamily)}>
+        <SelectTrigger className="w-[200px] bg-card border-border">
+          <SelectValue placeholder="Choose font style" />
+        </SelectTrigger>
+        <SelectContent className="z-50 bg-popover border border-border shadow-lg">
+          {fonts.map((font) => (
+            <SelectItem
+              key={font.id}
+              value={font.id}
+              style={{ fontFamily: fontFamilyMap[font.id] !== 'inherit' ? fontFamilyMap[font.id] : undefined }}
+            >
+              {font.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {selected !== 'default' && (
+        <span
+          className="text-sm text-foreground/70 hidden sm:inline"
+          style={{ fontFamily: fontFamilyMap[selected] }}
+        >
+          The quick brown fox jumps
+        </span>
+      )}
+    </div>
   );
 };

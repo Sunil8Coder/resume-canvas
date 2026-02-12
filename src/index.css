@@ -163,4 +163,10 @@ All colors MUST be HSL.
       transparent
     );
   }
+
+  /* Font override for resume preview - forces selected font over template defaults */
+  .resume-font-override,
+  .resume-font-override * {
+    font-family: inherit !important;
+  }
 }
