@@ -210,7 +210,7 @@ export const BusinessProjectManagerTemplate: React.FC<BusinessProjectManagerTemp
                 {safeSkills.map((skill) => (
                   <span
                     key={skill.id}
-                    className="px-2 py-0.5 bg-gray-100 text-[10px] text-gray-700 font-medium"
+                    className="px-3 py-1 bg-gray-100 text-[10px] text-gray-700 font-medium leading-none inline-flex items-center justify-center"
                   >
                     {skill.name}
                   </span>
