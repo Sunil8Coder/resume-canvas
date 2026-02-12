@@ -16,7 +16,7 @@ export const ExecutiveTemplate: React.FC<ExecutiveTemplateProps> = ({ data }) =>
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-     <div className="bg-white text-gray-900 min-h-full pt-3" style={{ fontFamily: 'Georgia, serif' }}>
+     <div className="bg-white text-gray-900 min-h-full" style={{ fontFamily: 'Georgia, serif' }}>
        {/* Header with elegant gold accent */}
        <header className="bg-gradient-to-r from-amber-900 to-amber-800 text-white px-8 py-8">
         <div className="flex items-center gap-6">

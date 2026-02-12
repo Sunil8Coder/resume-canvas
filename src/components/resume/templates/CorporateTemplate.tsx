@@ -16,9 +16,9 @@ export const CorporateTemplate: React.FC<CorporateTemplateProps> = ({ data }) =>
   const { personalInfo, experiences, education, skills } = data;
 
   return (
-     <div className="flex min-h-full font-sans pt-3">
+     <div className="flex min-h-full font-sans">
        {/* Left Sidebar */}
-       <div className="w-[35%] bg-slate-800 text-white p-6 pt-8 flex flex-col">
+       <div className="w-[35%] bg-slate-800 text-white p-6 pt-6 flex flex-col">
         {/* Photo */}
         {personalInfo.photo && (
           <div className="mb-5 flex justify-center">
