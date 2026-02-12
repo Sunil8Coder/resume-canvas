@@ -73,10 +73,15 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template, fo
         minHeight: '297mm',
         transform: 'scale(0.6)',
         transformOrigin: 'top left',
-        ...(fontStyle ? { fontFamily: fontStyle } : {}),
       }}
     >
-      {renderTemplate()}
+      {fontStyle ? (
+        <div style={{ fontFamily: fontStyle }} className="resume-font-override min-h-full">
+          {renderTemplate()}
+        </div>
+      ) : (
+        renderTemplate()
+      )}
     </div>
   );
 };
