@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { resumeService } from '@/services/resumeService';
 
 export const ExportButton: React.FC = () => {
-  const { resumeData, selectedTemplate, selectedResumeType, currentResumeId, setCurrentResumeId, resumeTitle } = useResume();
+  const { resumeData, selectedTemplate, selectedResumeType, currentResumeId, setCurrentResumeId, resumeTitle, selectedFont } = useResume();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = React.useState(false);
@@ -38,6 +38,7 @@ export const ExportButton: React.FC = () => {
 
   const saveResumeToBackend = async (): Promise<boolean> => {
     setIsSaving(true);
+    const dataWithFont = { ...resumeData, fontFamily: selectedFont };
     try {
       if (currentResumeId) {
         // Update existing resume
@@ -45,7 +46,7 @@ export const ExportButton: React.FC = () => {
           title: resumeTitle,
           templateType: selectedTemplate,
           resumeType: selectedResumeType,
-          data: resumeData,
+          data: dataWithFont,
         });
         if (result.error) {
           toast({
@@ -61,7 +62,7 @@ export const ExportButton: React.FC = () => {
           title: resumeTitle,
           templateType: selectedTemplate,
           resumeType: selectedResumeType,
-          data: resumeData,
+          data: dataWithFont,
         });
         if (result.error) {
           toast({

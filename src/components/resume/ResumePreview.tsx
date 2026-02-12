@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResumeData, TemplateType } from '@/types/resume';
+import { ResumeData, TemplateType, FontFamily, fontFamilyMap } from '@/types/resume';
 import { ClassicTemplate } from './templates/ClassicTemplate';
 import { ModernTemplate } from './templates/ModernTemplate';
 import { MinimalTemplate } from './templates/MinimalTemplate';
@@ -20,9 +20,10 @@ import { BusinessProjectManagerTemplate } from './templates/BusinessProjectManag
 interface ResumePreviewProps {
   data: ResumeData;
   template: TemplateType;
+  fontFamily?: FontFamily;
 }
 
-export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) => {
+export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template, fontFamily = 'default' }) => {
   const renderTemplate = () => {
     switch (template) {
       case 'modern':
@@ -61,6 +62,8 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) 
     }
   };
 
+  const fontStyle = fontFamily !== 'default' ? fontFamilyMap[fontFamily] : undefined;
+
   return (
     <div 
       id="resume-preview" 
@@ -70,6 +73,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template }) 
         minHeight: '297mm',
         transform: 'scale(0.6)',
         transformOrigin: 'top left',
+        ...(fontStyle ? { fontFamily: fontStyle } : {}),
       }}
     >
       {renderTemplate()}
