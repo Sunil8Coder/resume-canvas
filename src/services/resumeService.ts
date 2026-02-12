@@ -5,8 +5,9 @@ import { ResumeData, TemplateType, ResumeType } from "@/types/resume";
 interface BackendResume {
   id: string;
   title: string;
-  resumeType: string;
-  content: string; // JSON string of ResumeData
+  resumeType?: string;
+  resume_type?: string;
+  content: string; // JSON string of ResumeData (may be double-stringified)
   template: string;
   created_at: string;
   updated_at?: string;
@@ -44,7 +45,15 @@ export interface UpdateResumeRequest {
 function normalizeResume(raw: BackendResume): SavedResume {
   let parsedData: ResumeData;
   try {
-    parsedData = typeof raw.content === "string" ? JSON.parse(raw.content) : raw.content;
+    let content = raw.content;
+    // Handle double-stringified JSON from backend
+    if (typeof content === "string") {
+      content = JSON.parse(content);
+    }
+    if (typeof content === "string") {
+      content = JSON.parse(content);
+    }
+    parsedData = content as unknown as ResumeData;
   } catch {
     console.error("Failed to parse resume content:", raw.content);
     parsedData = {
@@ -61,7 +70,7 @@ function normalizeResume(raw: BackendResume): SavedResume {
     userId: raw.userId || raw.user_id || "",
     title: raw.title || "Untitled",
     templateType: (raw.template as TemplateType) || "classic",
-    resumeType: (raw.resumeType as ResumeType) || "professional",
+    resumeType: ((raw.resumeType || raw.resume_type) as ResumeType) || "professional",
     data: parsedData,
     createdAt: raw.created_at || new Date().toISOString(),
     updatedAt: raw.updated_at || raw.created_at || new Date().toISOString(),
