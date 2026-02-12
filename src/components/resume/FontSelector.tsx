@@ -1,61 +1,53 @@
 import React from 'react';
 import { FontFamily, fontFamilyMap } from '@/types/resume';
-import { cn } from '@/lib/utils';
 import { Type } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface FontSelectorProps {
   selected: FontFamily;
   onSelect: (font: FontFamily) => void;
 }
 
-const fonts: { id: FontFamily; name: string; preview: string }[] = [
-  { id: 'default', name: 'Default', preview: 'Template default' },
-  { id: 'serif', name: 'Serif', preview: 'Classic elegance' },
-  { id: 'sans-serif', name: 'Sans Serif', preview: 'Clean modern' },
-  { id: 'georgia', name: 'Georgia', preview: 'Warm & readable' },
-  { id: 'times', name: 'Times New Roman', preview: 'Traditional' },
-  { id: 'garamond', name: 'Garamond', preview: 'Refined literary' },
-  { id: 'palatino', name: 'Palatino', preview: 'Book-style serif' },
-  { id: 'calibri', name: 'Calibri', preview: 'Business standard' },
-  { id: 'arial', name: 'Arial', preview: 'Universal clean' },
-  { id: 'helvetica', name: 'Helvetica', preview: 'Swiss precision' },
-  { id: 'trebuchet', name: 'Trebuchet MS', preview: 'Friendly modern' },
-  { id: 'verdana', name: 'Verdana', preview: 'Screen-optimized' },
-  { id: 'cambria', name: 'Cambria', preview: 'Formal elegance' },
+const fonts: { id: FontFamily; name: string }[] = [
+  { id: 'default', name: 'Default' },
+  { id: 'serif', name: 'Serif' },
+  { id: 'sans-serif', name: 'Sans Serif' },
+  { id: 'georgia', name: 'Georgia' },
+  { id: 'times', name: 'Times New Roman' },
+  { id: 'garamond', name: 'Garamond' },
+  { id: 'palatino', name: 'Palatino' },
+  { id: 'calibri', name: 'Calibri' },
+  { id: 'arial', name: 'Arial' },
+  { id: 'helvetica', name: 'Helvetica' },
+  { id: 'trebuchet', name: 'Trebuchet MS' },
+  { id: 'verdana', name: 'Verdana' },
+  { id: 'cambria', name: 'Cambria' },
 ];
 
 export const FontSelector: React.FC<FontSelectorProps> = ({ selected, onSelect }) => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-      {fonts.map((font) => (
-        <button
-          key={font.id}
-          onClick={() => onSelect(font.id)}
-          className={cn(
-            'p-3 border-2 transition-all duration-150 text-left',
-            'hover:border-resume-accent/50 hover:shadow-sm',
-            selected === font.id
-              ? 'border-resume-accent bg-resume-accent/15'
-              : 'border-border bg-card'
-          )}
-        >
-          <div
-            className={cn(
-              'font-medium text-sm truncate',
-              selected === font.id ? 'text-resume-accent' : 'text-foreground'
-            )}
+    <Select value={selected} onValueChange={(val) => onSelect(val as FontFamily)}>
+      <SelectTrigger className="w-[220px] gap-2">
+        <Type className="w-4 h-4 text-muted-foreground" />
+        <SelectValue placeholder="Choose font style" />
+      </SelectTrigger>
+      <SelectContent className="z-50 bg-popover">
+        {fonts.map((font) => (
+          <SelectItem
+            key={font.id}
+            value={font.id}
             style={{ fontFamily: fontFamilyMap[font.id] !== 'inherit' ? fontFamilyMap[font.id] : undefined }}
           >
             {font.name}
-          </div>
-          <div className={cn(
-            'text-xs mt-0.5',
-            selected === font.id ? 'text-resume-accent/70' : 'text-muted-foreground'
-          )}>
-            {font.preview}
-          </div>
-        </button>
-      ))}
-    </div>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 };
