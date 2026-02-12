@@ -12,7 +12,7 @@ import { ExportButton } from '@/components/resume/ExportButton';
 import { FontSelector } from '@/components/resume/FontSelector';
 
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
-import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield, UserCircle } from 'lucide-react';
+import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield, UserCircle, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { TemplateType, ResumeType } from '@/types/resume';
@@ -212,6 +212,10 @@ const ResumeBuilderContent: React.FC = () => {
                 <Button variant="outline" size="sm" onClick={() => navigate('/my-resumes')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
                   <FolderOpen className="w-4 h-4" />
                   <span className="hidden sm:inline">My Resumes</span>
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => navigate('/cover-letter')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
+                  <Mail className="w-4 h-4" />
+                  <span className="hidden sm:inline">Cover Letter</span>
                 </Button>
                 {user?.role?.toLowerCase() === 'admin' && (
                   <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="gap-2 border-border/50 bg-secondary/50 hover:bg-secondary">
