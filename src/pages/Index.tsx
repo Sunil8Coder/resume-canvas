@@ -9,10 +9,12 @@ import { ResumePreview } from '@/components/resume/ResumePreview';
 import { TemplateSelector } from '@/components/resume/TemplateSelector';
 import { ResumeTypeSelector } from '@/components/resume/ResumeTypeSelector';
 import { ExportButton } from '@/components/resume/ExportButton';
+import { resumeService } from '@/services/resumeService';
+import { toast } from '@/hooks/use-toast';
 import { FontSelector } from '@/components/resume/FontSelector';
 
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
-import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield, UserCircle, Mail } from 'lucide-react';
+import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield, UserCircle, Mail, Save, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { TemplateType, ResumeType } from '@/types/resume';
@@ -32,10 +34,43 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 ];
 
 const ResumeBuilderContent: React.FC = () => {
-  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, currentResumeId, loadResume, resetResume, selectedFont, setSelectedFont } = useResume();
+  const { resumeData, selectedTemplate, setSelectedTemplate, selectedResumeType, setSelectedResumeType, currentResumeId, setCurrentResumeId, loadResume, resetResume, selectedFont, setSelectedFont, resumeTitle } = useResume();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('purpose');
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveResume = async () => {
+    if (!isAuthenticated) {
+      sessionStorage.setItem('pendingResume', JSON.stringify({
+        data: resumeData,
+        template: selectedTemplate,
+        resumeType: selectedResumeType,
+        title: resumeTitle,
+      }));
+      toast({ title: 'Login Required', description: 'Please login to save your resume.', variant: 'destructive' });
+      navigate('/auth?redirect=export');
+      return;
+    }
+    setIsSaving(true);
+    const dataWithFont = { ...resumeData, fontFamily: selectedFont };
+    try {
+      if (currentResumeId) {
+        const result = await resumeService.updateResume(currentResumeId, { title: resumeTitle, templateType: selectedTemplate, resumeType: selectedResumeType, data: dataWithFont });
+        if (result.error) { toast({ title: 'Save Failed', description: result.error, variant: 'destructive' }); return; }
+        toast({ title: 'Saved!', description: 'Resume updated successfully.' });
+      } else {
+        const result = await resumeService.createResume({ title: resumeTitle, templateType: selectedTemplate, resumeType: selectedResumeType, data: dataWithFont });
+        if (result.error) { toast({ title: 'Save Failed', description: result.error, variant: 'destructive' }); return; }
+        if (result.data?.id) { setCurrentResumeId(result.data.id); }
+        toast({ title: 'Saved!', description: 'Resume saved successfully.' });
+      }
+    } catch {
+      toast({ title: 'Save Failed', description: 'Could not save resume.', variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // Load resume from sessionStorage if editing or restoring after auth
   useEffect(() => {
@@ -141,7 +176,13 @@ const ResumeBuilderContent: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-foreground">Live Preview</h2>
-                <ExportButton />
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={handleSaveResume} disabled={isSaving} className="gap-2">
+                    {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    {isSaving ? 'Saving...' : 'Save'}
+                  </Button>
+                  <ExportButton />
+                </div>
               </div>
               <div className="bg-muted/30 rounded-xl p-4 overflow-auto">
                 <div className="overflow-hidden rounded-lg shadow-2xl mx-auto" style={{ width: 'fit-content' }}>
