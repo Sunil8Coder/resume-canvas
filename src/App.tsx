@@ -9,6 +9,7 @@ import { ResumeProvider } from "@/contexts/ResumeContext";
 import { visitorService } from "@/services/visitorService";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
 import MyResumes from "./pages/MyResumes";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -33,6 +34,7 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
                 <Route path="/my-resumes" element={<MyResumes />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/profile" element={<Profile />} />
