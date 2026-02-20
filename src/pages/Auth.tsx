@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Mail, Lock, User, ArrowLeft, CheckCircle, Loader2, Chrome } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { authService } from '@/services/authService';
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
@@ -146,8 +147,7 @@ const Auth: React.FC = () => {
                 variant="outline"
                 className="w-full gap-3 h-11"
                 onClick={() => {
-                  const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
-                  window.location.href = `https://resumbe4j.yadavsunil9699.workers.dev/auth/oauth/google?redirect_uri=${redirectUri}`;
+                  window.location.href = authService.getOAuthUrl('google');
                 }}
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -164,8 +164,7 @@ const Auth: React.FC = () => {
                 variant="outline"
                 className="w-full gap-3 h-11"
                 onClick={() => {
-                  const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
-                  window.location.href = `https://resumbe4j.yadavsunil9699.workers.dev/auth/oauth/microsoft?redirect_uri=${redirectUri}`;
+                  window.location.href = authService.getOAuthUrl('microsoft');
                 }}
               >
                 <svg className="w-5 h-5" viewBox="0 0 23 23">
@@ -226,9 +225,15 @@ const Auth: React.FC = () => {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Logging in...' : 'Login'}
-                  </Button>
+                   <Button type="submit" className="w-full" disabled={isLoading}>
+                     {isLoading ? 'Logging in...' : 'Login'}
+                   </Button>
+
+                   <div className="text-center">
+                     <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                       Forgot your password?
+                     </Link>
+                   </div>
                 </form>
               </TabsContent>
 

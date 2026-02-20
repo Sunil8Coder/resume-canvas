@@ -57,6 +57,19 @@ export const authService = {
     }
   },
 
+  async forgotPassword(email: string): Promise<{ data?: { message: string }; error?: string }> {
+    return api.post<{ message: string }>('/auth/forgot-password', { email }, false);
+  },
+
+  async resetPassword(token: string, password: string): Promise<{ data?: { message: string }; error?: string }> {
+    return api.post<{ message: string }>('/auth/reset-password', { token, password }, false);
+  },
+
+  getOAuthUrl(provider: string): string {
+    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
+    return `https://resumbe4j.yadavsunil9699.workers.dev/auth/oauth/${provider}?redirect_uri=${redirectUri}`;
+  },
+
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem('user');
     if (userStr) {
