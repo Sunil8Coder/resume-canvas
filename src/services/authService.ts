@@ -1,4 +1,4 @@
-import { api } from '@/lib/api';
+import { api } from "@/lib/api";
 
 export interface User {
   id: string;
@@ -27,51 +27,51 @@ export interface AuthResponse {
 
 export const authService = {
   async login(credentials: LoginRequest): Promise<{ data?: AuthResponse; error?: string }> {
-    const response = await api.post<AuthResponse>('/auth/login', credentials, false);
-    
+    const response = await api.post<AuthResponse>("/auth/login", credentials, false);
+
     if (response.data?.token) {
-      localStorage.setItem('auth_token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem("auth_token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
     }
-    
+
     return response;
   },
 
   async register(data: RegisterRequest): Promise<{ data?: AuthResponse; error?: string }> {
-    const response = await api.post<AuthResponse>('/auth/register', data, false);
-    
+    const response = await api.post<AuthResponse>("/auth/register", data, false);
+
     if (response.data?.token) {
-      localStorage.setItem('auth_token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem("auth_token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
     }
-    
+
     return response;
   },
 
   async logout(): Promise<void> {
     try {
-      await api.post('/auth/logout', {});
+      await api.post("/auth/logout", {});
     } finally {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('user');
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user");
     }
   },
 
   async forgotPassword(email: string): Promise<{ data?: { message: string }; error?: string }> {
-    return api.post<{ message: string }>('/auth/forgot-password', { email }, false);
+    return api.post<{ message: string }>("/auth/forgot-password", { email }, false);
   },
 
   async resetPassword(token: string, password: string): Promise<{ data?: { message: string }; error?: string }> {
-    return api.post<{ message: string }>('/auth/reset-password', { token, password }, false);
+    return api.post<{ message: string }>("/auth/reset-password", { token, password }, false);
   },
 
   getOAuthUrl(provider: string): string {
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
+    const redirectUri = encodeURIComponent(`https://resumbe4j.yadavsunil9699.workers.dev/auth/callback`);
     return `https://resumbe4j.yadavsunil9699.workers.dev/auth/oauth/${provider}?redirect_uri=${redirectUri}`;
   },
 
   getCurrentUser(): User | null {
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem("user");
     if (userStr) {
       try {
         return JSON.parse(userStr);
@@ -83,10 +83,10 @@ export const authService = {
   },
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('auth_token');
+    return !!localStorage.getItem("auth_token");
   },
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return localStorage.getItem("auth_token");
   },
 };
