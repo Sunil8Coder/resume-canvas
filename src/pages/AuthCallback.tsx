@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { api } from '@/lib/api';
 import { Loader2 } from 'lucide-react';
 
 const AuthCallback = () => {
@@ -11,22 +12,34 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const token = searchParams.get('token');
-    const userStr = searchParams.get('user');
 
     if (token) {
+      // Store the token
       localStorage.setItem('auth_token', token);
 
-      if (userStr) {
+      // Fetch user profile using the token
+      const fetchUser = async () => {
         try {
-          const user = JSON.parse(decodeURIComponent(userStr));
-          localStorage.setItem('user', JSON.stringify(user));
+          const res = await api.get<{ id: string; name: string; email: string; role?: string }>('/auth/me');
+          if (res.data) {
+            localStorage.setItem('user', JSON.stringify(res.data));
+          }
         } catch {
-          // User data parsing failed, token is still saved
+          // Token is saved, user data will load on next refresh
         }
-      }
 
-      refreshUser();
-      navigate('/', { replace: true });
+        refreshUser();
+
+        // Redirect based on pending action
+        const pendingResume = sessionStorage.getItem('pendingResume');
+        if (pendingResume) {
+          navigate('/?export=true', { replace: true });
+        } else {
+          navigate('/', { replace: true });
+        }
+      };
+
+      fetchUser();
     } else {
       const errorMsg = searchParams.get('error');
       setError(errorMsg || 'Authentication failed. Please try again.');
