@@ -14,32 +14,59 @@ const AuthCallback = () => {
     const token = searchParams.get('token');
 
     if (token) {
-      // Store the token
+      // Store the token immediately
       localStorage.setItem('auth_token', token);
 
-      // Fetch user profile using the token
-      const fetchUser = async () => {
+      // Try to fetch user profile from backend
+      const fetchAndRedirect = async () => {
         try {
-          const res = await api.get<{ id: string; name: string; email: string; role?: string }>('/auth/me');
+          const res = await api.get<{ id: string; name: string; email: string; role?: string; roleId?: string }>('/auth/me');
           if (res.data) {
             localStorage.setItem('user', JSON.stringify(res.data));
+          } else {
+            // Fallback: decode JWT payload to get basic user info
+            try {
+              const payload = JSON.parse(atob(token.split('.')[1]));
+              const fallbackUser = {
+                id: payload.userId || payload.sub || '',
+                name: payload.name || 'User',
+                email: payload.email || '',
+                role: payload.roleId || payload.role || 'USER',
+              };
+              localStorage.setItem('user', JSON.stringify(fallbackUser));
+            } catch {
+              // Could not decode token
+            }
           }
         } catch {
-          // Token is saved, user data will load on next refresh
+          // Fallback: decode JWT payload
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const fallbackUser = {
+              id: payload.userId || payload.sub || '',
+              name: payload.name || 'User',
+              email: payload.email || '',
+              role: payload.roleId || payload.role || 'USER',
+            };
+            localStorage.setItem('user', JSON.stringify(fallbackUser));
+          } catch {
+            // Minimal fallback
+          }
         }
 
+        // Refresh auth context with stored data
         refreshUser();
 
         // Redirect based on pending action
         const pendingResume = sessionStorage.getItem('pendingResume');
         if (pendingResume) {
-          navigate('/?export=true', { replace: true });
+          navigate('/?restoreResume=true', { replace: true });
         } else {
           navigate('/', { replace: true });
         }
       };
 
-      fetchUser();
+      fetchAndRedirect();
     } else {
       const errorMsg = searchParams.get('error');
       setError(errorMsg || 'Authentication failed. Please try again.');
