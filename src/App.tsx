@@ -50,6 +50,12 @@ const App = () => {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/cover-letter" element={<CoverLetter />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/how-to-make-biodata-for-first-job" element={<BiodataFirstJob />} />
+                <Route path="/blog/best-resume-format-freshers-india-2026" element={<ResumeFormatFreshersIndia2026 />} />
+                <Route path="/blog/free-resume-templates-software-engineers" element={<FreeResumeTemplatesSoftwareEngineers />} />
+                <Route path="/blog/java-developer-resume-guide" element={<JavaDeveloperResumeGuide />} />
+                <Route path="/blog/biodata-format-maker-online-guide" element={<BiodataFormatMakerOnline />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
