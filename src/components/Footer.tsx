@@ -57,6 +57,14 @@ const Footer: React.FC = () => {
                   My Profile
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => navigate("/blog")}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Blog
+                </button>
+              </li>
             </ul>
           </div>
 

@@ -17,6 +17,12 @@ import MyResumes from "./pages/MyResumes";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import CoverLetter from "./pages/CoverLetter";
+import Blog from "./pages/Blog";
+import BiodataFirstJob from "./pages/blog/BiodataFirstJob";
+import ResumeFormatFreshersIndia2026 from "./pages/blog/ResumeFormatFreshersIndia2026";
+import FreeResumeTemplatesSoftwareEngineers from "./pages/blog/FreeResumeTemplatesSoftwareEngineers";
+import JavaDeveloperResumeGuide from "./pages/blog/JavaDeveloperResumeGuide";
+import BiodataFormatMakerOnline from "./pages/blog/BiodataFormatMakerOnline";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +50,12 @@ const App = () => {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/cover-letter" element={<CoverLetter />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/how-to-make-biodata-for-first-job" element={<BiodataFirstJob />} />
+                <Route path="/blog/best-resume-format-freshers-india-2026" element={<ResumeFormatFreshersIndia2026 />} />
+                <Route path="/blog/free-resume-templates-software-engineers" element={<FreeResumeTemplatesSoftwareEngineers />} />
+                <Route path="/blog/java-developer-resume-guide" element={<JavaDeveloperResumeGuide />} />
+                <Route path="/blog/biodata-format-maker-online-guide" element={<BiodataFormatMakerOnline />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
