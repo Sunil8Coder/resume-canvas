@@ -110,8 +110,24 @@ export const ResumeUpload: React.FC = () => {
       if (jsonMatch) {
         jsonStr = jsonMatch[1];
       }
+      // Find first { to last } to isolate JSON object
+      const firstBrace = jsonStr.indexOf('{');
+      const lastBrace = jsonStr.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        jsonStr = jsonStr.slice(firstBrace, lastBrace + 1);
+      }
+      // Clean common AI JSON issues: trailing commas, single quotes
+      jsonStr = jsonStr
+        .replace(/,\s*([}\]])/g, '$1')        // trailing commas
+        .replace(/(['"])?(\w+)(['"])?\s*:/g, '"$2":') // unquoted keys
+        .replace(/:\s*'([^']*)'/g, ': "$1"');  // single-quoted values
 
-      const parsed = JSON.parse(jsonStr.trim());
+      let parsed: any;
+      try {
+        parsed = JSON.parse(jsonStr.trim());
+      } catch {
+        throw new Error('AI returned invalid format. Please try again.');
+      }
 
       // Step 3: Populate resume data with IDs
       const resumeData = {
