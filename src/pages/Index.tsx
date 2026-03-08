@@ -144,15 +144,34 @@ const ResumeBuilderContent: React.FC = () => {
     switch (activeTab) {
       case 'purpose':
         return (
-          <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
-            <p className="text-sm text-muted-foreground">
-              Choose the type that matches your career situation. This will pre-fill your resume with relevant sample data.
-            </p>
-            <ResumeTypeSelector 
-              selected={selectedResumeType} 
-              onSelect={handleResumeTypeSelect} 
-            />
+          <div className="space-y-5">
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-foreground">Upload Existing Resume</h2>
+              <p className="text-sm text-muted-foreground">
+                Already have a resume? Upload it and we'll auto-fill all the fields for you.
+              </p>
+              <ResumeUpload />
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">or start fresh</span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-foreground">Select Resume Purpose</h2>
+              <p className="text-sm text-muted-foreground">
+                Choose the type that matches your career situation. This will pre-fill your resume with relevant sample data.
+              </p>
+              <ResumeTypeSelector 
+                selected={selectedResumeType} 
+                onSelect={handleResumeTypeSelect} 
+              />
+            </div>
           </div>
         );
       case 'personal':
