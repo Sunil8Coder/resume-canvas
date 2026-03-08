@@ -12,6 +12,7 @@ import { ExportButton } from '@/components/resume/ExportButton';
 import { resumeService } from '@/services/resumeService';
 import { toast } from '@/hooks/use-toast';
 import { FontSelector } from '@/components/resume/FontSelector';
+import { ResumeUpload } from '@/components/resume/ResumeUpload';
 
 import { ResumeProvider, useResume } from '@/contexts/ResumeContext';
 import { FileText, User, Briefcase, GraduationCap, Sparkles, Eye, ChevronRight, ChevronLeft, LogOut, FolderOpen, Shield, UserCircle, Mail, Save, Loader2 } from 'lucide-react';
