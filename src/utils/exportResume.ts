@@ -173,6 +173,15 @@ export const exportToPDF = async () => {
     element.style.maxHeight = originalMaxHeight;
     element.style.overflow = originalOverflow;
     element.style.fontSize = originalFontSize;
+    element.style.padding = originalPadding;
+
+    // Restore child spacing
+    originalChildStyles.forEach(({ el, paddingTop, paddingBottom, marginTop, marginBottom }) => {
+      el.style.paddingTop = paddingTop;
+      el.style.paddingBottom = paddingBottom;
+      el.style.marginTop = marginTop;
+      el.style.marginBottom = marginBottom;
+    });
 
     // Restore rounded element styles
     originalRoundedStyles.forEach(({ el, borderRadius, overflow }) => {
