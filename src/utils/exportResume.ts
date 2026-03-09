@@ -28,6 +28,7 @@ export const exportToPDF = async () => {
   const originalMaxHeight = element.style.maxHeight;
   const originalOverflow = element.style.overflow;
   const originalFontSize = element.style.fontSize;
+  const originalPadding = element.style.padding;
 
   // Reset transform for accurate measurement
   element.style.transform = 'none';
@@ -37,6 +38,33 @@ export const exportToPDF = async () => {
   element.style.height = 'auto';
   element.style.maxHeight = 'none';
   element.style.overflow = 'visible';
+  element.style.padding = '0';
+
+  // Optimize spacing: reduce top/bottom padding in all child sections
+  const childSections = element.querySelectorAll<HTMLElement>('div, section, header');
+  const originalChildStyles: { el: HTMLElement; paddingTop: string; paddingBottom: string; marginTop: string; marginBottom: string }[] = [];
+  childSections.forEach((el) => {
+    const computed = window.getComputedStyle(el);
+    const ptValue = parseFloat(computed.paddingTop);
+    const pbValue = parseFloat(computed.paddingBottom);
+    const mtValue = parseFloat(computed.marginTop);
+    const mbValue = parseFloat(computed.marginBottom);
+    
+    if (ptValue > 0 || pbValue > 0 || mtValue > 0 || mbValue > 0) {
+      originalChildStyles.push({
+        el,
+        paddingTop: el.style.paddingTop,
+        paddingBottom: el.style.paddingBottom,
+        marginTop: el.style.marginTop,
+        marginBottom: el.style.marginBottom,
+      });
+      // Reduce excessive spacing by 40%
+      if (ptValue > 20) el.style.paddingTop = `${ptValue * 0.6}px`;
+      if (pbValue > 20) el.style.paddingBottom = `${pbValue * 0.6}px`;
+      if (mtValue > 20) el.style.marginTop = `${mtValue * 0.6}px`;
+      if (mbValue > 20) el.style.marginBottom = `${mbValue * 0.6}px`;
+    }
+  });
 
   // Fix rounded elements for html2canvas: temporarily remove border-radius
   // and ensure text stays contained. html2canvas misrenders text in rounded containers.
@@ -67,13 +95,17 @@ export const exportToPDF = async () => {
   const a4HeightPx = element.offsetWidth * (297 / 210);
   const naturalHeight = element.scrollHeight;
 
-  // If content is shorter than A4, scale font up to fill the page
-  // If content is taller, leave as-is for multi-page
-  if (naturalHeight < a4HeightPx * 0.92) {
-    // Content is significantly shorter than A4 — scale up
-    const scaleRatio = Math.min(a4HeightPx / naturalHeight, 1.35); // cap at 35% increase
+  // Smart scaling: fill page without cutting text
+  if (naturalHeight < a4HeightPx * 0.88) {
+    // Content is significantly shorter than A4 — scale up moderately
+    const scaleRatio = Math.min(a4HeightPx / naturalHeight, 1.25); // cap at 25% increase for safety
     element.style.fontSize = `${scaleRatio}em`;
     element.style.minHeight = '297mm';
+    await new Promise(resolve => setTimeout(resolve, 150));
+  } else if (naturalHeight > a4HeightPx * 1.02) {
+    // Content slightly overflows — scale down to fit
+    const scaleRatio = Math.max((a4HeightPx * 0.98) / naturalHeight, 0.85); // min 85% to maintain readability
+    element.style.fontSize = `${scaleRatio}em`;
     await new Promise(resolve => setTimeout(resolve, 150));
   } else {
     element.style.minHeight = '297mm';
@@ -141,6 +173,15 @@ export const exportToPDF = async () => {
     element.style.maxHeight = originalMaxHeight;
     element.style.overflow = originalOverflow;
     element.style.fontSize = originalFontSize;
+    element.style.padding = originalPadding;
+
+    // Restore child spacing
+    originalChildStyles.forEach(({ el, paddingTop, paddingBottom, marginTop, marginBottom }) => {
+      el.style.paddingTop = paddingTop;
+      el.style.paddingBottom = paddingBottom;
+      el.style.marginTop = marginTop;
+      el.style.marginBottom = marginBottom;
+    });
 
     // Restore rounded element styles
     originalRoundedStyles.forEach(({ el, borderRadius, overflow }) => {
