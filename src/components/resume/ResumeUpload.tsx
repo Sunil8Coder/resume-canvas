@@ -104,29 +104,27 @@ export const ResumeUpload: React.FC = () => {
       const aiData = await aiRes.json();
       const aiText = aiData.answer || aiData.response || aiData.data || '';
 
-      // Extract JSON from response (handle markdown code blocks)
-      let jsonStr = aiText;
-      const jsonMatch = aiText.match(/```(?:json)?\s*([\s\S]*?)```/);
-      if (jsonMatch) {
-        jsonStr = jsonMatch[1];
-      }
-      // Find first { to last } to isolate JSON object
-      const firstBrace = jsonStr.indexOf('{');
-      const lastBrace = jsonStr.lastIndexOf('}');
-      if (firstBrace !== -1 && lastBrace !== -1) {
-        jsonStr = jsonStr.slice(firstBrace, lastBrace + 1);
-      }
-      // Clean common AI JSON issues: trailing commas, single quotes
-      jsonStr = jsonStr
-        .replace(/,\s*([}\]])/g, '$1')        // trailing commas
-        .replace(/(['"])?(\w+)(['"])?\s*:/g, '"$2":') // unquoted keys
-        .replace(/:\s*'([^']*)'/g, ': "$1"');  // single-quoted values
-
+      // Try parsing directly first (answer is often valid JSON)
       let parsed: any;
       try {
-        parsed = JSON.parse(jsonStr.trim());
+        parsed = JSON.parse(aiText);
       } catch {
-        throw new Error('AI returned invalid format. Please try again.');
+        // Fallback: extract from markdown blocks, isolate JSON object
+        let jsonStr = aiText;
+        const jsonMatch = aiText.match(/```(?:json)?\s*([\s\S]*?)```/);
+        if (jsonMatch) jsonStr = jsonMatch[1];
+        const firstBrace = jsonStr.indexOf('{');
+        const lastBrace = jsonStr.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1) {
+          jsonStr = jsonStr.slice(firstBrace, lastBrace + 1);
+        }
+        // Light cleanup only: trailing commas
+        jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1');
+        try {
+          parsed = JSON.parse(jsonStr.trim());
+        } catch {
+          throw new Error('AI returned invalid format. Please try again.');
+        }
       }
 
       // Step 3: Populate resume data with IDs
